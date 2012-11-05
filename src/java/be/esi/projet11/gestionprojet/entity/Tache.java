@@ -36,18 +36,15 @@ public class Tache implements Serializable {
     @Column(unique = true, nullable = false)
     private String nom;
     @Column(nullable = false)
-    private String importance;
-
-    public String getImportance() {
-        return importance;
-    }
-
-    public void setImportance(String importance) {
-        this.importance = importance;
-    }
+    private ImportanceEnum importance;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
+    private Byte pourcentage;
+    private Long revision;
 
-    public Tache() {
+    public Tache() throws TacheException {
+        this("<nomInexistant>", "<descriptionInexistante>");
     }
 
     public Tache(String nom, String description) throws TacheException {
@@ -56,17 +53,40 @@ public class Tache implements Serializable {
         }
         this.nom = nom;
         this.description = description;
-        this.importance = "Normale";
+        this.importance = ImportanceEnum.NORMALE;
+        this.pourcentage = 0;
+        this.revision = null;
     }
 
-    public Tache(String nom, String description, String importance) throws TacheException {
+    public Tache(String nom, String description, ImportanceEnum importance) throws TacheException {
         this(nom, description);
-        if (!importance.equals(ImportanceEnum.IMPORTANT.getLibelle())
-                && !importance.equals(ImportanceEnum.NORMALE.getLibelle())
-                && !importance.equals(ImportanceEnum.TRESIMPORTANT.getLibelle())) {
-            throw new TacheException();
-        }
         this.importance = importance;
+    }
+
+    /**
+     * Get the value of pourcentage
+     *
+     * @return the value of pourcentage
+     */
+    public Byte getPourcentage() {
+        return pourcentage;
+    }
+
+    /**
+     * Set the value of pourcentage
+     *
+     * @param pourcentage est le pourcentage  ex: 50% = 50
+     */
+    public void setPourcentage(Byte pourcentage) throws TacheException {
+        if (pourcentage < 0 || pourcentage > 100) {
+            throw new TacheException("Le pourcentage doit être compris entre 0 et 10000(=100%)");
+        }
+        this.pourcentage = pourcentage;
+
+    }
+
+    public void setPourcentage(int pourcentage) throws TacheException {
+        this.setPourcentage(new Byte((byte) pourcentage));
     }
 
     public String getNom() {
@@ -89,10 +109,6 @@ public class Tache implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -111,6 +127,42 @@ public class Tache implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public ImportanceEnum getImportance() {
+        return importance;
+    }
+
+    public void setImportance(ImportanceEnum importance) {
+        this.importance = importance;
+    }
+
+    /**
+     * Get the value of revision
+     *
+     * @return the value of revision
+     */
+    public Long getSVNRevision() {
+        return revision;
+    }
+
+    /**
+     * Set the value of revision
+     *
+     * @param revision new value of revision
+     */
+    public void setSVNRevision(Long revision) throws TacheException {
+        if (revision != null && revision < 1L) {
+            throw new TacheException("Le numéro de révision doit être strictement positif");
+        }
+        if (revision != null && !this.isFinie()) {
+            throw new TacheException("La tache n'est pas finie");
+        }
+        this.revision = revision;
+    }
+
+    public boolean isFinie() {
+        return this.pourcentage == 100;
     }
 
     @Override

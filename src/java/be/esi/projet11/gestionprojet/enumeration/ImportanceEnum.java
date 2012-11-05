@@ -9,21 +9,24 @@ package be.esi.projet11.gestionprojet.enumeration;
  * @author j4un3
  */
 public enum ImportanceEnum {
-    NORMALE("Normale", "N"),
-    IMPORTANT("Important", "I"),
-    TRESIMPORTANT("Très important", "TI");
-     private ImportanceEnum(String libelle, String acro) {
+
+    NORMALE("Normale", 3),
+    IMPORTANT("Important", 2),
+    TRESIMPORTANT("Très important", 1);
+    
+    private String libelle;
+    private int imp;
+
+    private ImportanceEnum(String libelle, int imp) {
         this.libelle = libelle;
-        this.acro = acro;
-    }   
-    private String libelle, acro;
+        this.imp = imp;
+    }
 
     public String getLibelle() {
         return libelle;
     }
 
-    public String getAcro() {
-        return acro;
+    public int getImp() {
+        return imp;
     }
-     
 }

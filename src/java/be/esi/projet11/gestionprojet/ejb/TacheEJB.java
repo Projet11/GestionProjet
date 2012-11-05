@@ -5,6 +5,7 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Tache;
+import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.util.Collection;
 import javax.ejb.Stateless;
@@ -29,7 +30,8 @@ public class TacheEJB implements TacheEJBLocal {
         return uneTache;
     }
 
-    public Tache creerTache(String nom, String description, String importance) throws TacheException {
+    @Override
+    public Tache creerTache(String nom, String description, ImportanceEnum importance) throws TacheException{
         Tache uneTache = new Tache(nom, description, importance);
         em.persist(uneTache);
         return uneTache;
