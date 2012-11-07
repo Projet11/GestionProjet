@@ -7,7 +7,9 @@ package be.esi.projet11.gestionprojet.ejb;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
+import java.sql.Time;
 import java.util.Collection;
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,7 +44,6 @@ public class TacheEJB implements TacheEJBLocal {
         Query query = em.createNamedQuery("Tache.findByNom");
         query.setParameter("nom", nom);
         return (Tache) query.getSingleResult();
-
     }
 
     @Override
@@ -55,5 +56,30 @@ public class TacheEJB implements TacheEJBLocal {
         Query query = em.createNamedQuery("Tache.findAll");
         return query.getResultList();
 
+    }
+    
+    @Override
+    public void startTimer(long id) {
+        Tache tache=(Tache)em.find(Tache.class, id);
+        tache.setTimerLaunched(true);
+    }
+    
+    @Override
+    public void stopTimer(long id) {
+        Tache tache=(Tache)em.find(Tache.class, id);
+        tache.setTimerLaunched(true);
+    }
+
+    @Override
+    public Time getTimer(long id) {
+        Tache tache=(Tache)em.find(Tache.class, id);
+        Date currDate = new Date();
+        return new Time(currDate.getTime() - tache.getDateDeb().getTime());
+    }
+
+    @Override
+    public boolean isTimerLaunched(long id) {
+        Tache tache=(Tache)em.find(Tache.class, id);
+        return tache.isTimerLaunched();
     }
 }

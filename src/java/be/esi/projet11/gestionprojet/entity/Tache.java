@@ -8,6 +8,7 @@ import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.io.Serializable;
 import javax.persistence.Column;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -42,14 +44,20 @@ public class Tache implements Serializable {
     @Column(nullable = false)
     private Byte pourcentage;
     private Long revision;
+    private char timerLaunched;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateDeb;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date tempsPasseSurTache;
 
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");
+        this.timerLaunched='0';
     }
 
     public Tache(String nom, String description) throws TacheException {
         if (nom == null || nom.equals("")) {
-            throw new TacheException();
+            throw new TacheException("Le nom d'une tâche ne peut pas être vide");
         }
         this.nom = nom;
         this.description = description;
@@ -168,5 +176,45 @@ public class Tache implements Serializable {
     @Override
     public String toString() {
         return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + "\n Description : " + this.description;
+    }
+    
+    public boolean isTimerLaunched(){
+        return (timerLaunched=='1'?true:false);
+    }
+
+    /**
+     * @param timerLaunched the timerLaunched to set
+     */
+    public void setTimerLaunched(boolean timerLaunched) {
+        this.timerLaunched = (timerLaunched?'1':'0');
+        setDateDeb(new Date());
+    }
+
+    /**
+     * @return the dateDeb
+     */
+    public Date getDateDeb() {
+        return dateDeb;
+    }
+
+    /**
+     * @param dateDeb the dateDeb to set
+     */
+    public void setDateDeb(Date dateDeb) {
+        this.dateDeb = dateDeb;
+    }
+
+    /**
+     * @return the tempsPasseSurTache
+     */
+    public Date getTempsPasseSurTache() {
+        return tempsPasseSurTache;
+    }
+
+    /**
+     * @param tempsPasseSurTache the tempsPasseSurTache to set
+     */
+    public void setTempsPasseSurTache(Date tempsPasseSurTache) {
+        this.tempsPasseSurTache = tempsPasseSurTache;
     }
 }

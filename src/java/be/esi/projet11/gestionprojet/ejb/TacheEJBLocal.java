@@ -7,6 +7,7 @@ package be.esi.projet11.gestionprojet.ejb;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
+import java.sql.Time;
 import java.util.Collection;
 import javax.ejb.Local;
 
@@ -26,4 +27,12 @@ public interface TacheEJBLocal {
     Tache getTache(String nom);
 
     Tache getTache(long id);
+    
+    public void startTimer(long id) ;
+    
+    public void stopTimer(long id) ;
+
+    public Time getTimer(long id) ;
+
+    public boolean isTimerLaunched(long id);
 }
