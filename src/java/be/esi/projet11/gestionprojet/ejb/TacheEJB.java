@@ -4,16 +4,26 @@
  */
 package be.esi.projet11.gestionprojet.ejb;
 
+import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
+import be.esi.projet11.gestionprojet.servlet.FrontController;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 
 /**
  *
@@ -81,5 +91,50 @@ public class TacheEJB implements TacheEJBLocal {
     public boolean isTimerLaunched(long id) {
         Tache tache=(Tache)em.find(Tache.class, id);
         return tache.isTimerLaunched();
+    }
+    
+    @Override
+    public String inscrireMembresATache(HttpServletRequest request) {
+        Tache tache = null;
+        String page = "";
+        try {
+            int tacheId = Integer.parseInt(request.getParameter("tache"));
+            try {
+                tache = em.find(Tache.class, 1l);
+            } catch (/*Tache*/Exception ex) {
+                Logger.getLogger(FrontController.class.getName()).log(Level.SEVERE, null, ex); // FIXME
+            }
+            
+            for (String strId : request.getParameterValues("membres")) {
+                Long membreId = 0l;
+                try {
+                    membreId = Long.parseLong(strId);
+                    //Membre membre = MembreEJB.getById(membreId);
+                    Membre membre = new Membre(membreId, "Membre " + membreId, "Membre" + membreId + "@gmail.com");
+
+                    tache.addMembre(membre);
+                }
+                catch (NumberFormatException ex) { // Ne devrait pas arriver
+                    request.setAttribute("erreurTitre", "ID de membre invalide");
+                    request.setAttribute("erreurContenu", "Attribution de membres à une tâche : id de membre invalide : " + strId);
+                    page = "WEB-INF/pages/Erreur.jsp";
+                }
+            }
+            
+            em.merge(tache);
+            page = "WEB-INF/pages/Tache.jsp";
+        } catch (SecurityException ex) {
+            Logger.getLogger(FrontController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalStateException ex) {
+            Logger.getLogger(FrontController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NumberFormatException ex) {
+            request.setAttribute("erreurTitre", "Numéro de tâche invalide");
+            request.setAttribute("erreurContenu", "Attribution de membres à une tâche : numéro de tâche invalide : " + request.getParameter("tache"));
+            page = "WEB-INF/pages/Erreur.jsp";
+        }
+        
+        System.out.println("returning " + page);
+        return page;
     }
 }

@@ -10,6 +10,7 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import javax.ejb.Local;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -35,4 +36,6 @@ public interface TacheEJBLocal {
     public Time getTimer(long id) ;
 
     public boolean isTimerLaunched(long id);
+    
+    public String inscrireMembresATache(HttpServletRequest request);
 }

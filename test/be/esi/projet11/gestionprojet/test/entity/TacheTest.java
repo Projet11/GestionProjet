@@ -4,11 +4,17 @@
  */
 package be.esi.projet11.gestionprojet.test.entity;
 
+import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -125,5 +131,132 @@ public class TacheTest {
         Tache tache = new Tache("1", "a", ImportanceEnum.TRESIMPORTANT);
         tache.setPourcentage(99);
         tache.setSVNRevision(50L);
+    }
+    
+    @Test
+    public void testAjouterUnMembreOk() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tâche 1", "Tâche de test 1");
+        } catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        tache.addMembre(new Membre(1l, "Membre 1", "Membre1@gmail.com"));
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testAjouterUnMembreNull() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tâche 2", "Tâche de test 2");
+        } catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        tache.addMembre(null);
+    }
+    
+    @Test
+    public void testMembreEstSurTache() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tâche 3", "Tâche de test 3");
+        } catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Membre membre = new Membre(1l, "Membre 1", "Membre1@gmail.com");
+        Membre membrePasPresent = new Membre(2l, "Membre 2", "Membre2@yahoo.com");
+        tache.addMembre(membre);
+        
+        Assert.assertTrue(tache.hasMembre(membre));
+        Assert.assertFalse(tache.hasMembre(membrePasPresent));
+    }
+    
+    @Test
+    public void testNbMembreEnAjoutantDeuxFoisLeMemeMembre() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tâche 5", "Tâche de test 5");
+        } catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Membre membre = new Membre(1l, "Membre 1", "Membre1@gmail.com");
+        
+        tache.addMembre(membre);
+        tache.addMembre(membre);
+        
+        Assert.assertEquals(tache.getNbMembres(), 1);
+    }
+    
+    @Test
+    public void testNbMembresAvecDeuxMembres() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tâche 6", "Tâche de test 6");
+        } catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Membre membre1 = new Membre(1l, "Membre 1", "Membre1@gmail.com");
+        Membre membre2 = new Membre(2l, "Membre 2", "Membre2@yahoo.com");
+        
+        tache.addMembre(membre1);
+        tache.addMembre(membre2);
+        
+        Assert.assertEquals(tache.getNbMembres(), 2);
+    }
+    
+    @Test
+    public void testRecupererListeMembresSansMembre() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tâche 7", "Tâche de test 7");
+        } catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Collection<Membre> membres = tache.getMembres();
+        Collection<Membre> listeVide = new ArrayList<Membre>();
+        
+        Assert.assertArrayEquals(membres.toArray(), listeVide.toArray());
+    }
+    
+    @Test
+    public void testRecupererListeMembresPlusieursMembres() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tâche 8", "Tâche de test 8");
+        } catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Membre membre = new Membre(1l, "Membre 1", "Membre1@gmail.com");
+        Membre membre2 = new Membre(2l, "Membre 2", "Membre2@yahoo.com");
+        
+        tache.addMembre(membre);
+        tache.addMembre(membre2);
+        
+        Collection<Membre> membres = tache.getAllMembres();
+        Collection<Membre> attendu = new ArrayList<Membre>();
+        attendu.add(membre);
+        attendu.add(membre2);
+        
+        Assert.assertArrayEquals(membres.toArray(), attendu.toArray());
+    }
+    
+    @Test
+    public void testRecupererListeMembresPlusieursMembresNonActifs() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tâche 9", "Tâche de test 9");
+        } catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Membre membre = new Membre(1l, "Membre 1", "Membre1@gmail.com");
+        Membre membre2 = new Membre(2l, "Membre 2", "Membre2@yahoo.com");
+        
+        tache.addMembre(membre);
+        tache.addMembre(membre2);
+        
+        Collection<Membre> membres = tache.getMembres();
+        Collection<Membre> attendu = new ArrayList<Membre>();
+        
+        Assert.assertArrayEquals(membres.toArray(), attendu.toArray());
     }
 }

@@ -5,16 +5,27 @@
 package be.esi.projet11.gestionprojet.entity;
 
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
+import be.esi.projet11.gestionprojet.exception.MailException;
 import be.esi.projet11.gestionprojet.exception.TacheException;
+import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.Column;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
@@ -49,10 +60,18 @@ public class Tache implements Serializable {
     private Date dateDeb;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date tempsPasseSurTache;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Collection<ParticipeTache> membres;
+    @Basic(optional = false)
+    @Column(name = "PROJET")
+    @ManyToOne
+    private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
 
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");
-        this.timerLaunched='0';
+        this.timerLaunched = '0';
+        membres = new ArrayList<ParticipeTache>();
+        projet = new Projet();
     }
 
     public Tache(String nom, String description) throws TacheException {
@@ -64,6 +83,8 @@ public class Tache implements Serializable {
         this.importance = ImportanceEnum.NORMALE;
         this.pourcentage = 0;
         this.revision = null;
+        membres = new ArrayList<ParticipeTache>();
+        projet = new Projet();
     }
 
     public Tache(String nom, String description, ImportanceEnum importance) throws TacheException {
@@ -83,7 +104,7 @@ public class Tache implements Serializable {
     /**
      * Set the value of pourcentage
      *
-     * @param pourcentage est le pourcentage  ex: 50% = 50
+     * @param pourcentage est le pourcentage ex: 50% = 50
      */
     public void setPourcentage(Byte pourcentage) throws TacheException {
         if (pourcentage < 0 || pourcentage > 100) {
@@ -160,11 +181,15 @@ public class Tache implements Serializable {
      * @param revision new value of revision
      */
     public void setSVNRevision(Long revision) throws TacheException {
+        if (revision != null && !this.isFinie()) {
+            throw new TacheException("La tache n'est pas finie");
+        }
         if (revision != null && revision < 1L) {
             throw new TacheException("Le numéro de révision doit être strictement positif");
         }
-        if (revision != null && !this.isFinie()) {
-            throw new TacheException("La tache n'est pas finie");
+        if (revision == null && this.isFinie()) {
+            throw new TacheException("On ne peut assigner null à une revision quand la tache est finie");
+
         }
         this.revision = revision;
     }
@@ -177,16 +202,16 @@ public class Tache implements Serializable {
     public String toString() {
         return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + "\n Description : " + this.description;
     }
-    
-    public boolean isTimerLaunched(){
-        return (timerLaunched=='1'?true:false);
+
+    public boolean isTimerLaunched() {
+        return (timerLaunched == '1' ? true : false);
     }
 
     /**
      * @param timerLaunched the timerLaunched to set
      */
     public void setTimerLaunched(boolean timerLaunched) {
-        this.timerLaunched = (timerLaunched?'1':'0');
+        this.timerLaunched = (timerLaunched ? '1' : '0');
         setDateDeb(new Date());
     }
 
@@ -216,5 +241,57 @@ public class Tache implements Serializable {
      */
     public void setTempsPasseSurTache(Date tempsPasseSurTache) {
         this.tempsPasseSurTache = tempsPasseSurTache;
+    }
+    
+    public void addMembre(Membre membre) {
+        if (membre == null)
+            throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
+
+        if (hasMembre(membre))
+            return;
+        
+        membres.add(new ParticipeTache(this, membre));
+        String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // FIXME
+        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // FIXME
+        corps += "<p>Pour accepter ou refuser, cliquez sur un des liens suivants :</p>";
+        corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=accepterTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Accepter</a></p>";
+        corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=refuserTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Refuser</a></p>";
+        corps += "<br/><br/>A bientôt !";
+        try {
+            Mailer.send(membre.getEmail(), "Invitation à rejoindre un tâche", corps);
+        } catch (MailException ex) {
+            Logger.getLogger(Tache.class.getName()).log(Level.SEVERE, null, ex); // FIXME
+        }
+    }
+    
+    public boolean hasMembre(Membre membre) {
+        return membres.contains(new ParticipeTache(this, membre));
+    }
+    
+    public int getNbMembres() {
+        return membres.size();
+    }
+    
+    public List<Membre> getMembres() {
+        List<Membre> ret = new ArrayList<Membre>();
+        for (ParticipeTache participant : membres) {
+            if (participant.isAccepte())
+                ret.add(participant.getMembre());
+        }
+        
+        return ret;
+    }
+    
+    public List<Membre> getAllMembres() {
+        List<Membre> ret = new ArrayList<Membre>();
+        for (ParticipeTache participant : membres)
+            ret.add(participant.getMembre());
+        
+        return ret;
+    }
+    
+    public Projet getProjet() {
+        return new Projet();
+//        return projet; // TODO
     }
 }
