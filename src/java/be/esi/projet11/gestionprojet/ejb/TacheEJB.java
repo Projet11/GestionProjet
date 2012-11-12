@@ -8,7 +8,7 @@ import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
-import be.esi.projet11.gestionprojet.servlet.FrontController;
+import be.esi.projet11.gestionprojet.controller.FrontController;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
