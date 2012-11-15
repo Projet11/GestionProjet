@@ -4,96 +4,83 @@
  */
 package be.esi.projet11.gestionprojet.ejb;
 
+import be.esi.projet11.gestionprojet.controller.FrontController;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
-import be.esi.projet11.gestionprojet.controller.FrontController;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.Stateless;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 
 /**
  *
  * @author g34840
  */
-@Stateless
-public class TacheEJB implements TacheEJBLocal {
+@ManagedBean(name="tacheEJB")
+@SessionScoped
+public class TacheEJB {
 
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
 
-    @Override
     public Tache creerTache(String nom, String description) throws TacheException {
         Tache uneTache = new Tache(nom, description);
         em.persist(uneTache);
         return uneTache;
     }
 
-    @Override
     public Tache creerTache(String nom, String description, ImportanceEnum importance) throws TacheException{
         Tache uneTache = new Tache(nom, description, importance);
         em.persist(uneTache);
         return uneTache;
     }
 
-    @Override
     public Tache getTache(String nom) {
         Query query = em.createNamedQuery("Tache.findByNom");
         query.setParameter("nom", nom);
         return (Tache) query.getSingleResult();
     }
 
-    @Override
     public Tache getTache(long id) {
         return em.find(Tache.class, id);
     }
 
-    @Override
     public Collection<Tache> getAllTache() {
         Query query = em.createNamedQuery("Tache.findAll");
         return query.getResultList();
 
     }
     
-    @Override
     public void startTimer(long id) {
         Tache tache=(Tache)em.find(Tache.class, id);
         tache.setTimerLaunched(true);
     }
     
-    @Override
     public void stopTimer(long id) {
         Tache tache=(Tache)em.find(Tache.class, id);
         tache.setTimerLaunched(true);
     }
 
-    @Override
     public Time getTimer(long id) {
         Tache tache=(Tache)em.find(Tache.class, id);
         Date currDate = new Date();
         return new Time(currDate.getTime() - tache.getDateDeb().getTime());
     }
 
-    @Override
     public boolean isTimerLaunched(long id) {
         Tache tache=(Tache)em.find(Tache.class, id);
         return tache.isTimerLaunched();
     }
     
-    @Override
     public String inscrireMembresATache(HttpServletRequest request) {
         Tache tache = null;
         String page = "";
