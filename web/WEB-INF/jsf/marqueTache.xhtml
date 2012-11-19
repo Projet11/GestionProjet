@@ -7,16 +7,51 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <div class="page-header">
-            <h3>Nom Tache</h3>
+        <div class="hero-unit">
+
+            <legend>#{marqueTacheBean.tache.nom}</legend>
+
+            <h:form class="form-horizontal">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="priorite">Importance</label>
+                        <div class="controls">
+                            <h:selectOneMenu  name="priorite" id="selectImp" value="#{marqueTacheBean.tache.importance}">
+                                <f:selectItem itemvalue="normale" itemLabel="Normale"/>
+                                <f:selectItem itemValue="importante" itemLabel="Importante"/>
+                                <f:selectItem itemValue="timportante" itemLabel="Très importante"/>
+                            </h:selectOneMenu > 
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="pourcentage">Pourcentage</label>
+                        <div class="controls">
+                            <div class="input-append">
+                                <h:inputText class="span3" name="pourcentage" id="pourcentage" value="#{marqueTacheBean.tache.pourcentage}'">
+                                    <f:validateLongRange maximum="100" minimum="0"/>
+                                </h:inputText>
+                                <span class="add-on">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="revision">Revision</label>
+                        <div class="controls">
+                            <h:inputText name="revision" id="revision" value="#{marqueTacheBean.tache.SVNRevision}">
+                                <f:validateLongRange maximum="1000" minimum="0"/>
+                            </h:inputText>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <h:commandButton class="btn btn-success" action ="#{marqueTacheBean.modificationTache()}" value="Valider"/>
+                    </div>
+                    <br/>
+                    <h:message for="pourcentage"/>
+                    <h:message for="revision"/>
+                </fieldset>
+            </h:form>
         </div>
-        <h:form action="#{bean.chgmtImportance()}">
-            <h:selectOneMenu  id="selectImp" value="#{bean.importance}">
-                <f:selectItem itemvalue="normale" itemLabel="Normale"/>
-                <f:selectItem itemValue="importante" itemLabel="Importante"/>
-                <f:selectItem itemValue="timportante" itemLabel="Très importante"/>
-            </h:selectOneMenu > 
-        </h:form>
+
     </h:body>
 </html>
 

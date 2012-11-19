@@ -4,7 +4,9 @@ package be.esi.projet11.gestionprojet.ejb;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
+import be.esi.projet11.gestionprojet.exception.TacheException;
 import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -15,29 +17,20 @@ import javax.persistence.PersistenceContext;
  *
  * @author g34840
  */
-@ManagedBean(name = "bean")
+@ManagedBean(name = "marqueTacheBean")
 @RequestScoped
 public class MarqueTacheBean {
 
-    private ImportanceEnum importance;
+    private Tache tache;
 
-    /**
-     * Get the value of importance
-     *
-     * @return the value of importance
-     */
-    public ImportanceEnum getImportance() {
-        return importance;
+    public Tache getTache() {
+        return tache;
     }
 
-    /**
-     * Set the value of importance
-     *
-     * @param importance new value of importance
-     */
-    public void setImportance(ImportanceEnum importance) {
-        this.importance = importance;
+    public void setTache(Tache tache) {
+        this.tache = tache;
     }
+
 
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
@@ -49,8 +42,11 @@ public class MarqueTacheBean {
      */
     public MarqueTacheBean() {
     }
-
-    public void chgmtImportance() {
-        
+    
+    public void modificationTache() throws TacheException {
+        tache.setPourcentage(tache.getPourcentage().intValue());
+        tache.setSVNRevision(tache.getSVNRevision());
+        tache.setImportance(tache.getImportance());
+        em.persist(tache);
     }
 }
