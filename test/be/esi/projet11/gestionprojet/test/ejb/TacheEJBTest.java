@@ -4,7 +4,8 @@ package be.esi.projet11.gestionprojet.test.ejb;
  * and open the template in the editor.
  */
 
-import be.esi.projet11.gestionprojet.ejb.TacheEJBLocal;
+//import be.esi.projet11.gestionprojet.ejb.TacheEJBLocal;
+import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class TacheEJBTest {
 
     private static EJBContainer container;
     private static HashMap<Object, Object> properties;
+    private TacheEJB instance;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -39,11 +41,12 @@ public class TacheEJBTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
         container.close();
-
     }
 
     @Before
     public void setUp() throws Exception {
+        if (instance == null)
+            instance = new TacheEJB();
     }
 
     @After
@@ -52,7 +55,6 @@ public class TacheEJBTest {
 
     @Test
     public void creerTacheReussi() throws NamingException, TacheException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         Tache uneTache = instance.creerTache("uneTache", "Lorem");
         Tache uneTache2 = new Tache("uneTache", "Lorem");
         assertEquals(uneTache, uneTache2);
@@ -60,7 +62,6 @@ public class TacheEJBTest {
 
     @Test
     public void creerTacheDifférent() throws NamingException, TacheException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         Tache uneTache = instance.creerTache("uneTache2", "");
         Tache uneTache2 = new Tache("uneAutreTache2", "Lorem");
         assertTrue(!uneTache.equals(uneTache2));
@@ -68,26 +69,22 @@ public class TacheEJBTest {
 
     @Test(expected = TacheException.class)
     public void creerTacheException() throws NamingException, TacheException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         instance.creerTache("", "");
     }
 
     @Test
     public void creerTacheSansDescription() throws NamingException, TacheException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         instance.creerTache("3", "");
     }
 
     @Test
     public void getTacheParIdReussi() throws NamingException, TacheException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         long id = instance.creerTache("4", "").getId();
         assertTrue(id == instance.getTache(id).getId());
     }
 
     @Test
     public void getTacheParNomReussi() throws NamingException, TacheException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         String nom = instance.creerTache("5", "").getNom();
         System.out.println(nom);
         assertEquals(nom, instance.getTache("5").getNom());
@@ -95,7 +92,6 @@ public class TacheEJBTest {
 
     @Test
     public void getTacheParNomDifferent() throws NamingException, TacheException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         String nom = instance.creerTache("6", "").getNom();
         String nom2 = instance.creerTache("7", "").getNom();
         assertTrue(!nom.equals(instance.getTache("7").getNom()));
@@ -103,7 +99,6 @@ public class TacheEJBTest {
 
     @Test
     public void getTacheParIdDifferent() throws NamingException, TacheException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         long id = instance.creerTache("8", "").getId();
         long id2 = instance.creerTache("9", "").getId();
         assertTrue(id != instance.getTache(id2).getId());
@@ -111,16 +106,15 @@ public class TacheEJBTest {
 
     @Test
     public void getAllTacheNombreDeTache() throws NamingException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
-        assertEquals(instance.getAllTache().size(),9);
+        assertEquals(9,instance.getAllTache().size());
     }
-        @Test
+
+    @Test
     public void getAllTacheNomDeLaDerniereTache() throws NamingException {
-        TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         List<Tache> taches = new ArrayList<Tache>();
-        Iterator<Tache> iterator  = instance.getAllTache().iterator();
-        while(iterator.hasNext()){
-        taches.add(iterator.next()); 
+        Iterator<Tache> iterator = instance.getAllTache().iterator();
+        while (iterator.hasNext()) {
+            taches.add(iterator.next());
         }
         assertTrue(taches.get(8).getNom().equals("9"));
     }
