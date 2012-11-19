@@ -13,15 +13,18 @@ import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.transaction.UserTransaction;
 
 /**
-*
-* @author g34840
-*/
+ *
+ * @author g34840
+ */
 @ManagedBean(name = "tacheEJB")
 @SessionScoped
 public class TacheEJB {
@@ -33,102 +36,107 @@ public class TacheEJB {
     private String creationNom;
     private String creationDescription;
     private ImportanceEnum creationImportance;
-    
     @Resource
     private javax.transaction.UserTransaction utx;
 
+    public TacheEJB() {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionProjetPU");
+            em = emf.createEntityManager();
+            InitialContext init=new InitialContext();
+            utx=(UserTransaction) init.lookup("UserTransaction");
+        } catch (NamingException ex) {
+            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
-* Get the value of creationImportance
-*
+     * Get the value of creationImportance
+     *     
 * @return the value of creationImportance
-*/
+     */
     public ImportanceEnum getCreationImportance() {
         return creationImportance;
     }
 
     /**
-* Set the value of creationImportance
-*
+     * Set the value of creationImportance
+     *     
 * @param creationImportance new value of creationImportance
-*/
+     */
     public void setCreationImportance(ImportanceEnum creationImportance) {
         this.creationImportance = creationImportance;
     }
 
     /**
-* Get the value of creationDescription
-*
+     * Get the value of creationDescription
+     *     
 * @return the value of creationDescription
-*/
+     */
     public String getCreationDescription() {
         return creationDescription;
     }
 
     /**
-* Set the value of creationDescription
-*
+     * Set the value of creationDescription
+     *     
 * @param creationDescription new value of creationDescription
-*/
+     */
     public void setCreationDescription(String creationDescription) {
         this.creationDescription = creationDescription;
     }
 
     /**
-* Get the value of creationNom
-*
+     * Get the value of creationNom
+     *     
 * @return the value of creationNom
-*/
+     */
     public String getCreationNom() {
         return creationNom;
     }
 
     /**
-* Set the value of creationNom
-*
+     * Set the value of creationNom
+     *     
 * @param creationNom new value of creationNom
-*/
+     */
     public void setCreationNom(String creationNom) {
         this.creationNom = creationNom;
     }
 
     /**
-* Get the value of membreBean
-*
+     * Get the value of membreBean
+     *     
 * @return the value of membreBean
-*/
+     */
     public MembreManage getMembreBean() {
         return membreBean;
     }
 
-    public TacheEJB() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionProjetPU");
-        em = emf.createEntityManager();
-    }
-
     /**
-* Set the value of membreBean
-*
+     * Set the value of membreBean
+     *     
 * @param membreBean new value of membreBean
-*/
+     */
     public void setMembreBean(MembreManage membreBean) {
         this.membreBean = membreBean;
     }
     private Tache tache;
 
     /**
-* Get the value of tache
-*
+     * Get the value of tache
+     *     
 * @return the value of tache
-*/
+     */
     public Tache getTache() {
         return tache;
     }
 
     /**
-* Set the value of tache
-*
+     * Set the value of tache
+     *     
 * @param tache new value of tache
-*/
+     */
     public void setTache(Tache tache) {
         this.tache = tache;
     }
@@ -217,7 +225,7 @@ public class TacheEJB {
         em.merge(tache);
         return "success";
     }
-    
+
     public void persist(Object object) {
         try {
             utx.begin();
