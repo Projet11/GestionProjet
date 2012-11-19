@@ -89,9 +89,9 @@ public class MembreManage {
 
     public Collection<Membre> getAllMembres() {
         Collection<Membre> membres = new ArrayList<Membre>();
-        membres.add(new Membre(1l, "Membre 1", "membre1@gmail.com"));
-        membres.add(new Membre(2l, "Membre 2", "membre2@yahoo.com"));
-        membres.add(new Membre(3l, "Membre 3", "membre3@gmail.com"));
+        membres.add(new Membre(1l,"","","", "Membre 1", "membre1@gmail.com"));
+        membres.add(new Membre(2l,"","","", "Membre 2", "membre2@yahoo.com"));
+        membres.add(new Membre(3l,"","","", "Membre 3", "membre3@gmail.com"));
         return membres;
     }
 }
