@@ -187,10 +187,6 @@ public class Tache implements Serializable {
         if (revision != null && revision < 1L) {
             throw new TacheException("Le numéro de révision doit être strictement positif");
         }
-        if (revision == null && this.isFinie()) {
-            throw new TacheException("On ne peut assigner null à une revision quand la tache est finie");
-
-        }
         this.revision = revision;
     }
 

@@ -11,8 +11,8 @@ package be.esi.projet11.gestionprojet.enumeration;
 public enum ImportanceEnum {
 
     NORMALE("Normale", 3),
-    IMPORTANT("Important", 2),
-    TRESIMPORTANT("Très important", 1);
+    IMPORTANT("Importante", 2),
+    TRESIMPORTANT("Très importante", 1);
     
     private String libelle;
     private int imp;

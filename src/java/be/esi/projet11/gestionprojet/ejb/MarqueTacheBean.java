@@ -11,7 +11,14 @@ import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 
 /**
  *
@@ -26,12 +33,33 @@ public class MarqueTacheBean {
     public Tache getTache() {
         return tache;
     }
+    private Long revision;
+    private Long pourcentage;
+    private ImportanceEnum importance;
 
-    public void setTache(Tache tache) {
-        this.tache = tache;
+    public Long getRevision() {
+        return revision;
     }
 
+    public void setRevision(Long revision) {
+        this.revision = revision;
+    }
 
+    public Long getPourcentage() {
+        return pourcentage;
+    }
+
+    public void setPourcentage(Long pourcentage) {
+        this.pourcentage = pourcentage;
+    }
+
+    public ImportanceEnum getImportance() {
+        return importance;
+    }
+
+    public void setImportance(ImportanceEnum importance) {
+        this.importance = importance;
+    }
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
     @Resource
@@ -40,13 +68,22 @@ public class MarqueTacheBean {
     /**
      * Creates a new instance of MarqueTacheBean
      */
-    public MarqueTacheBean() {
+    public MarqueTacheBean() throws TacheException {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionProjetPU");
+        em = emf.createEntityManager();
+        tache = new Tache("abc", "defghij", ImportanceEnum.TRESIMPORTANT);
+        this.setImportance(tache.getImportance());
+        this.setPourcentage(tache.getPourcentage().longValue());
+        this.setRevision(tache.getSVNRevision());
     }
-    
-    public void modificationTache() throws TacheException {
-        tache.setPourcentage(tache.getPourcentage().intValue());
-        tache.setSVNRevision(tache.getSVNRevision());
-        tache.setImportance(tache.getImportance());
-        em.persist(tache);
+
+    public void modificationTache() throws TacheException, NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+        utx.begin();
+        //tache.setImportance(importance);
+        Tache tache2 = em.merge(tache);
+        tache2.setPourcentage(pourcentage.intValue());
+        //tache2.setImportance(importance);
+        tache2.setSVNRevision(revision);
+        utx.commit();
     }
 }

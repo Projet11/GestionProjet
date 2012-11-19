@@ -16,10 +16,10 @@
                     <div class="control-group">
                         <label class="control-label" for="priorite">Importance</label>
                         <div class="controls">
-                            <h:selectOneMenu  name="priorite" id="selectImp" value="#{marqueTacheBean.tache.importance}">
-                                <f:selectItem itemvalue="normale" itemLabel="Normale"/>
-                                <f:selectItem itemValue="importante" itemLabel="Importante"/>
-                                <f:selectItem itemValue="timportante" itemLabel="Très importante"/>
+                            <h:selectOneMenu  name="priorite" id="selectImp" value="#{marqueTacheBean.importance}">
+                                <f:selectItem itemvalue="#{ImportanceEnum.NORMALE}" itemLabel="Normale"/>
+                                <f:selectItem itemValue="#{ImportanceEnum.IMPORTANTE}" itemLabel="Importante"/>
+                                <f:selectItem itemValue="#{ImportanceEnum.TRESIMPORTANTE}" itemLabel="Très importante"/>
                             </h:selectOneMenu > 
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                         <label class="control-label" for="pourcentage">Pourcentage</label>
                         <div class="controls">
                             <div class="input-append">
-                                <h:inputText class="span3" name="pourcentage" id="pourcentage" value="#{marqueTacheBean.tache.pourcentage}'">
+                                <h:inputText class="span3" name="pourcentage" id="pourcentage" value="#{marqueTacheBean.pourcentage}">
                                     <f:validateLongRange maximum="100" minimum="0"/>
                                 </h:inputText>
                                 <span class="add-on">%</span>
@@ -37,7 +37,7 @@
                     <div class="control-group">
                         <label class="control-label" for="revision">Revision</label>
                         <div class="controls">
-                            <h:inputText name="revision" id="revision" value="#{marqueTacheBean.tache.SVNRevision}">
+                            <h:inputText name="revision" id="revision" value="#{marqueTacheBean.revision}">
                                 <f:validateLongRange maximum="1000" minimum="0"/>
                             </h:inputText>
                         </div>

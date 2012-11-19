@@ -120,13 +120,6 @@ public class TacheTest {
     }
 
     @Test(expected = TacheException.class)
-    public void testSetSVNRevisionNull() throws TacheException {
-        Tache tache = new Tache("1", "a", ImportanceEnum.TRESIMPORTANT);
-        tache.setPourcentage(100);  
-        tache.setSVNRevision(null);
-    }
-
-    @Test(expected = TacheException.class)
     public void testSetSVNRevisionTacheNotFinish() throws TacheException {
         Tache tache = new Tache("1", "a", ImportanceEnum.TRESIMPORTANT);
         tache.setPourcentage(99);
