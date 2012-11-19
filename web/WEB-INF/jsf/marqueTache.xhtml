@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -16,13 +17,14 @@
                     <div class="control-group">
                         <label class="control-label" for="priorite">Importance</label>
                         <div class="controls">
-                            <h:selectOneMenu  name="priorite" id="selectImp" value="#{marqueTacheBean.importance}">
-                                <f:selectItem itemvalue="#{ImportanceEnum.NORMALE}" itemLabel="Normale"/>
-                                <f:selectItem itemValue="#{ImportanceEnum.IMPORTANTE}" itemLabel="Importante"/>
-                                <f:selectItem itemValue="#{ImportanceEnum.TRESIMPORTANTE}" itemLabel="Très importante"/>
-                            </h:selectOneMenu > 
+                            <h:selectOneMenu value="#{marqueTacheBean.importance}">
+                                <f:selectItem itemValue="#{ImportanceEnum.NORMALE}" itemLabel="Normale"/>
+                                <f:selectItem itemValue="#{ImportanceEnum.IMPORTANT}" itemLabel="Importante"/>
+                                <f:selectItem itemValue="#{ImportanceEnum.TRESIMPORTANT}" itemLabel="Très importante"/>
+                            </h:selectOneMenu>
                         </div>
                     </div>
+
                     <div class="control-group">
                         <label class="control-label" for="pourcentage">Pourcentage</label>
                         <div class="controls">

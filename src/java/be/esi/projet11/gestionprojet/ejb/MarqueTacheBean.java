@@ -10,10 +10,11 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -25,17 +26,17 @@ import javax.transaction.SystemException;
  * @author g34840
  */
 @ManagedBean(name = "marqueTacheBean")
-@RequestScoped
+@SessionScoped
 public class MarqueTacheBean {
 
     private Tache tache;
+    private Long revision;
+    private Long pourcentage;
+    private ImportanceEnum importance;
 
     public Tache getTache() {
         return tache;
     }
-    private Long revision;
-    private Long pourcentage;
-    private ImportanceEnum importance;
 
     public Long getRevision() {
         return revision;
@@ -59,8 +60,9 @@ public class MarqueTacheBean {
 
     public void setImportance(ImportanceEnum importance) {
         this.importance = importance;
+        
+        System.out.println("-------- CHANGEMENT IMPORTANCE " + importance);
     }
-    @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
     @Resource
     private javax.transaction.UserTransaction utx;
@@ -68,22 +70,39 @@ public class MarqueTacheBean {
     /**
      * Creates a new instance of MarqueTacheBean
      */
-    public MarqueTacheBean() throws TacheException {
+    public MarqueTacheBean() throws TacheException, NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException, HeuristicRollbackException {
+        System.out.println("---------MarqueTacheBean");
+        tache = new Tache();
+        tache.setNom("abc");
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionProjetPU");
         em = emf.createEntityManager();
-        tache = new Tache("abc", "defghij", ImportanceEnum.TRESIMPORTANT);
+        Query query = em.createNamedQuery("Tache.findByNom");
+        query.setParameter("nom", tache.getNom());
+        tache = (Tache) query.getSingleResult();
+        em.close();
+        System.out.println("DB " + tache.getImportance());
         this.setImportance(tache.getImportance());
         this.setPourcentage(tache.getPourcentage().longValue());
         this.setRevision(tache.getSVNRevision());
+        System.out.println("---------FIN - MarqueTacheBean");
     }
 
     public void modificationTache() throws TacheException, NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+        System.out.println("---------ModficicationTache");
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionProjetPU");
+        em = emf.createEntityManager();
         utx.begin();
-        //tache.setImportance(importance);
-        Tache tache2 = em.merge(tache);
-        tache2.setPourcentage(pourcentage.intValue());
-        //tache2.setImportance(importance);
-        tache2.setSVNRevision(revision);
+        Query query = em.createNamedQuery("Tache.findByNom");
+        query.setParameter("nom", tache.getNom());
+        tache = (Tache) query.getSingleResult();
+        tache.setPourcentage(pourcentage.intValue());
+        tache.setSVNRevision(revision);
+        System.out.println(importance);
+        tache.setImportance(importance);
         utx.commit();
+        em.close();
+        System.out.println("---------FIN - ModficicationTache");
+
     }
 }
