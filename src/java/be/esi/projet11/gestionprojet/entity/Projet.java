@@ -22,12 +22,4 @@ public class Projet implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     
-    public Set<Membre> getMembres() {
-        Set<Membre> membres = new HashSet<Membre>();
-        
-        membres.add(new Membre(1l, "Membre 1", "membre1@gmail.com"));
-        membres.add(new Membre(2l, "Membre 2", "membre2@yahoo.com"));
-        membres.add(new Membre(3l, "Membre 3", "membre3@gmail.com"));
-        return membres;
-    }
 }

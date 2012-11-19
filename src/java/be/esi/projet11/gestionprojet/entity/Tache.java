@@ -11,13 +11,13 @@ import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -242,14 +242,15 @@ public class Tache implements Serializable {
     public void setTempsPasseSurTache(Date tempsPasseSurTache) {
         this.tempsPasseSurTache = tempsPasseSurTache;
     }
-    
-    public void addMembre(Membre membre) {
-        if (membre == null)
-            throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
 
-        if (hasMembre(membre))
+    public void addMembre(Membre membre) {
+        if (membre == null) {
+            throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
+        }
+        if (hasMembre(membre)) {
             return;
-        
+        }
+
         membres.add(new ParticipeTache(this, membre));
         String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // FIXME
         String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // FIXME
@@ -258,38 +259,40 @@ public class Tache implements Serializable {
         corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=refuserTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Refuser</a></p>";
         corps += "<br/><br/>A bientôt !";
         try {
-            Mailer.send(membre.getEmail(), "Invitation à rejoindre un tâche", corps);
+            Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps);
         } catch (MailException ex) {
             Logger.getLogger(Tache.class.getName()).log(Level.SEVERE, null, ex); // FIXME
         }
     }
-    
+
     public boolean hasMembre(Membre membre) {
         return membres.contains(new ParticipeTache(this, membre));
     }
-    
+
     public int getNbMembres() {
         return membres.size();
     }
-    
+
     public List<Membre> getMembres() {
         List<Membre> ret = new ArrayList<Membre>();
         for (ParticipeTache participant : membres) {
-            if (participant.isAccepte())
+            if (participant.isAccepte()) {
                 ret.add(participant.getMembre());
+            }
         }
-        
+
         return ret;
     }
-    
+
     public List<Membre> getAllMembres() {
         List<Membre> ret = new ArrayList<Membre>();
-        for (ParticipeTache participant : membres)
+        for (ParticipeTache participant : membres) {
             ret.add(participant.getMembre());
-        
+        }
+
         return ret;
     }
-    
+
     public Projet getProjet() {
         return new Projet();
 //        return projet; // TODO

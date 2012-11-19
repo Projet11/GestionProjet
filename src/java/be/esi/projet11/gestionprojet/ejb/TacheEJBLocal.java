@@ -37,5 +37,5 @@ public interface TacheEJBLocal {
 
     public boolean isTimerLaunched(long id);
     
-    public String inscrireMembresATache(HttpServletRequest request);
+    //public String inscrireMembresATache(HttpServletRequest request);
 }

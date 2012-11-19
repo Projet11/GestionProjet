@@ -4,26 +4,16 @@
  */
 package be.esi.projet11.gestionprojet.ejb;
 
-import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
-import be.esi.projet11.gestionprojet.controller.FrontController;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 
 /**
  *
@@ -93,7 +83,7 @@ public class TacheEJB implements TacheEJBLocal {
         return tache.isTimerLaunched();
     }
     
-    @Override
+    /*@Override
     public String inscrireMembresATache(HttpServletRequest request) {
         Tache tache = null;
         String page = "";
@@ -101,7 +91,7 @@ public class TacheEJB implements TacheEJBLocal {
             int tacheId = Integer.parseInt(request.getParameter("tache"));
             try {
                 tache = em.find(Tache.class, 1l);
-            } catch (/*Tache*/Exception ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(FrontController.class.getName()).log(Level.SEVERE, null, ex); // FIXME
             }
             
@@ -136,5 +126,5 @@ public class TacheEJB implements TacheEJBLocal {
         
         System.out.println("returning " + page);
         return page;
-    }
+    }*/
 }
