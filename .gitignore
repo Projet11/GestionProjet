@@ -12,6 +12,7 @@
 *.sass-cache
 
 # OS or Editor folders
+build.xml
 .DS_Store
 ._*
 Thumbs.db
@@ -21,6 +22,12 @@ Thumbs.db
 .tmproj
 *.esproj
 nbproject
+lib/nblibraries.properties
+lib/CopyLibs
+lib/CopyLibs-*
+lib/javaee-endorsed-api-6.0-*
+lib/junit*
+!lib/junit_4
 *.sublime-project
 *.sublime-workspace
 
