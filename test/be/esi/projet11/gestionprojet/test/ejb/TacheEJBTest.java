@@ -27,13 +27,12 @@ import org.junit.Test;
  */
 public class TacheEJBTest {
 
-    private static TacheEJB instance;
     private static EJBContainer container;
     private static HashMap<Object, Object> properties;
+    private TacheEJB instance;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        instance = new TacheEJB();
         properties = new HashMap<Object, Object>();
         properties.put(EJBContainer.APP_NAME, "GestionProjet");
         container = javax.ejb.embeddable.EJBContainer.createEJBContainer(properties);
@@ -42,11 +41,12 @@ public class TacheEJBTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
         container.close();
-
     }
 
     @Before
     public void setUp() throws Exception {
+        if (instance == null)
+            instance = new TacheEJB();
     }
 
     @After
@@ -106,7 +106,7 @@ public class TacheEJBTest {
 
     @Test
     public void getAllTacheNombreDeTache() throws NamingException {
-        assertEquals(instance.getAllTache().size(), 9);
+        assertEquals(9,instance.getAllTache().size());
     }
 
     @Test
