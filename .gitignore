@@ -22,6 +22,9 @@ Thumbs.db
 .tmproj
 *.esproj
 nbproject
+nblibraries.properties
+CopyLibs
+CopyLibs-*
 *.sublime-project
 *.sublime-workspace
 
