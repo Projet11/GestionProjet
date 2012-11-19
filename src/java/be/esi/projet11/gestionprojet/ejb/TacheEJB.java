@@ -1,10 +1,5 @@
-/*
-* To change this template, choose Tools | Templates
-* and open the template in the editor.
-*/
 package be.esi.projet11.gestionprojet.ejb;
 
-import be.esi.projet11.gestionprojet.controller.FrontController;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
@@ -21,7 +16,6 @@ import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -34,6 +28,68 @@ public class TacheEJB {
 
     @ManagedProperty("#{MembreManage}")
     private MembreManage membreBean;
+    private EntityManager em;
+    // Attributs utilisés par le formulaire de création d'une tâche uniquement
+    private String creationNom;
+    private String creationDescription;
+    private ImportanceEnum creationImportance;
+    
+    @Resource
+    private javax.transaction.UserTransaction utx;
+
+    /**
+* Get the value of creationImportance
+*
+* @return the value of creationImportance
+*/
+    public ImportanceEnum getCreationImportance() {
+        return creationImportance;
+    }
+
+    /**
+* Set the value of creationImportance
+*
+* @param creationImportance new value of creationImportance
+*/
+    public void setCreationImportance(ImportanceEnum creationImportance) {
+        this.creationImportance = creationImportance;
+    }
+
+    /**
+* Get the value of creationDescription
+*
+* @return the value of creationDescription
+*/
+    public String getCreationDescription() {
+        return creationDescription;
+    }
+
+    /**
+* Set the value of creationDescription
+*
+* @param creationDescription new value of creationDescription
+*/
+    public void setCreationDescription(String creationDescription) {
+        this.creationDescription = creationDescription;
+    }
+
+    /**
+* Get the value of creationNom
+*
+* @return the value of creationNom
+*/
+    public String getCreationNom() {
+        return creationNom;
+    }
+
+    /**
+* Set the value of creationNom
+*
+* @param creationNom new value of creationNom
+*/
+    public void setCreationNom(String creationNom) {
+        this.creationNom = creationNom;
+    }
 
     /**
 * Get the value of membreBean
@@ -45,8 +101,8 @@ public class TacheEJB {
     }
 
     public TacheEJB() {
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("GestionProjetPU");
-        em=emf.createEntityManager();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionProjetPU");
+        em = emf.createEntityManager();
     }
 
     /**
@@ -76,22 +132,45 @@ public class TacheEJB {
     public void setTache(Tache tache) {
         this.tache = tache;
     }
-    private EntityManager em;
 
     public Tache creerTache(String nom, String description) throws TacheException {
-        Tache uneTache = new Tache(nom, description);
-        System.out.println("tache: "+uneTache);
-        System.out.println("em: "+em);
-        em.persist(uneTache);
-        tache = uneTache;
-        return uneTache;
+        try {
+            Tache uneTache = new Tache(nom, description);
+            tache = uneTache;
+            persist(tache);
+        } catch (SecurityException ex) {
+            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalStateException ex) {
+            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tache;
     }
 
     public Tache creerTache(String nom, String description, ImportanceEnum importance) throws TacheException {
-        Tache uneTache = new Tache(nom, description, importance);
-        em.persist(uneTache);
-        tache = uneTache;
-        return uneTache;
+        try {
+            Tache uneTache = new Tache(nom, description, importance);
+            tache = uneTache;
+            persist(tache);
+        } catch (SecurityException ex) {
+            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalStateException ex) {
+            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tache;
+    }
+
+    public String creerTache() {
+        try {
+            creerTache(creationNom, creationDescription, ImportanceEnum.IMPORTANT);
+        } catch (TacheException ex) {
+            return "failure";
+        }
+
+        return "success";
+    }
+
+    public String annulerCreation() {
+        return "failure"; // TODO: return annulation pour un comportement différent ?
     }
 
     public Tache getTache(String nom) {
@@ -137,5 +216,16 @@ public class TacheEJB {
         }
         em.merge(tache);
         return "success";
+    }
+    
+    public void persist(Object object) {
+        try {
+            utx.begin();
+            em.persist(object);
+            utx.commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
     }
 }
