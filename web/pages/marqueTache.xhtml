@@ -10,14 +10,14 @@
     <h:body>
         <div class="hero-unit">
 
-            <legend>#{marqueTacheBean.tache.nom}</legend>
+            <legend>#{tacheEJB.tache.nom}</legend>
 
             <h:form class="form-horizontal">
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="priorite">Importance</label>
                         <div class="controls">
-                            <h:selectOneMenu value="#{marqueTacheBean.importance}">
+                            <h:selectOneMenu value="#{tacheEJB.importance}">
                                 <f:selectItem itemValue="#{ImportanceEnum.NORMALE}" itemLabel="Normale"/>
                                 <f:selectItem itemValue="#{ImportanceEnum.IMPORTANT}" itemLabel="Importante"/>
                                 <f:selectItem itemValue="#{ImportanceEnum.TRESIMPORTANT}" itemLabel="Très importante"/>
@@ -29,7 +29,7 @@
                         <label class="control-label" for="pourcentage">Pourcentage</label>
                         <div class="controls">
                             <div class="input-append">
-                                <h:inputText class="span3" name="pourcentage" id="pourcentage" value="#{marqueTacheBean.pourcentage}">
+                                <h:inputText class="span3" name="pourcentage" id="pourcentage" value="#{tacheEJB.pourcentage}">
                                     <f:validateLongRange maximum="100" minimum="0"/>
                                 </h:inputText>
                                 <span class="add-on">%</span>
@@ -39,13 +39,13 @@
                     <div class="control-group">
                         <label class="control-label" for="revision">Revision</label>
                         <div class="controls">
-                            <h:inputText name="revision" id="revision" value="#{marqueTacheBean.revision}">
+                            <h:inputText name="revision" id="revision" value="#{tacheEJB.revision}">
                                 <f:validateLongRange maximum="1000" minimum="0"/>
                             </h:inputText>
                         </div>
                     </div>
                     <div class="controls">
-                        <h:commandButton class="btn btn-success" action ="#{marqueTacheBean.modificationTache()}" value="Valider"/>
+                        <h:commandButton class="btn btn-success" action ="#{tacheEJB.modificationTache()}" value="Valider"/>
                     </div>
                     <br/>
                     <h:message for="pourcentage"/>

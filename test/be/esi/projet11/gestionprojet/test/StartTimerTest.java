@@ -46,7 +46,7 @@ public class StartTimerTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws TacheException {
         if (instance == null) {
             instance = new TacheEJB();
         }
