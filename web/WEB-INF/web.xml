@@ -21,10 +21,4 @@
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
-    <ejb-local-ref>
-        <ejb-ref-name>TacheEJB</ejb-ref-name>
-        <ejb-ref-type>Session</ejb-ref-type>
-        <local>be.esi.projet11.gestionprojet.ejb.TacheEJBLocal</local>
-        <ejb-link>TacheEJB</ejb-link>
-    </ejb-local-ref>
 </web-app>

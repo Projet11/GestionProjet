@@ -4,6 +4,7 @@
  */
 package be.esi.projet11.gestionprojet.test;
 
+import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
@@ -54,69 +55,69 @@ public class StartTimerTest {
 
     @Test
     public void TestLancerTimer1() {
-//        try {
-//            TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
-//            Tache tache=instance.creerTache("tache1", "   ");
-//            instance.startTimer(tache.getId());
-//            assertTrue(instance.isTimerLaunched(tache.getId()));
-//        } catch (TacheException ex) {
-//            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (NamingException ex) {
-//            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            TacheEJB instance = new TacheEJB();
+            System.out.println(instance);
+            Tache tache=instance.creerTache("tache1", "   ");
+            instance.setTache(tache);
+            instance.startTimer();
+            assertTrue(instance.isTimerLaunched());
+        } catch (TacheException ex) {
+            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 
     @Test
     public void TestLancerTimer2() {
-//        try {
-//            TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
-//            assertFalse(instance.isTimerLaunched(instance.creerTache("tache2", "   ").getId()));
-//        } catch (TacheException ex) {
-//            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (NamingException ex) {
-//            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            
+            TacheEJB instance = new TacheEJB();
+            Tache tache=instance.creerTache("tache2", "   ");
+            instance.setTache(tache);
+            assertFalse(instance.isTimerLaunched());
+        } catch (TacheException ex) {
+            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Test
     public void TestLancerTimer3() {
-//        try {
-//            TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
-//            Tache tache=instance.creerTache("tache3", "   ");
-//            instance.startTimer(tache.getId());
-//            Date debutTimer = new Date();
-//            debutTimer.setTime(debutTimer.getTime()+5000l);
-//            Date curr = new Date();
-//            while(curr.compareTo(debutTimer)<0){
-//                curr=new Date();
-//            }
-//            Time t=instance.getTimer(tache.getId());
-//            assertTrue(instance.getTimer(tache.getId()).compareTo(new Time(4950l)) >= 0);
-//            assertTrue(instance.getTimer(tache.getId()).compareTo(new Time(5050l)) <= 0);
-//        } catch (TacheException ex) {
-//            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (NamingException ex) {
-//            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            TacheEJB instance = new TacheEJB();
+            
+            Tache tache=instance.creerTache("tache3", "   ");
+            instance.setTache(tache);
+            instance.startTimer();
+            Date debutTimer = new Date();
+            debutTimer.setTime(debutTimer.getTime()+5000l);
+            Date curr = new Date();
+            while(curr.compareTo(debutTimer)<0){
+                curr=new Date();
+            }
+            Time t=instance.getTimer();
+            assertTrue(instance.getTimer().compareTo(new Time(4950l)) >= 0);
+            assertTrue(instance.getTimer().compareTo(new Time(5050l)) <= 0);
+        } catch (TacheException ex) {
+            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Test
     public void TestLancerTimer4() {
-//        try {
-//            TacheEJBLocal instance = (TacheEJBLocal) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
-//            Tache tache=instance.creerTache("tache4", "   ");
-//            instance.startTimer(tache.getId());
-//            Date debutTimer = new Date();
-//            debutTimer.setTime(debutTimer.getTime()+3000l);
-//            Date curr = new Date();
-//            while(curr.compareTo(debutTimer)<0){
-//                curr=new Date();
-//            }
-//            assertFalse(instance.getTimer(tache.getId()).compareTo(new Time(5000l)) >= 0);
-//        } catch (TacheException ex) {
-//            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (NamingException ex) {
-//            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            TacheEJB instance = new TacheEJB();
+            Tache tache=instance.creerTache("tache4", "   ");
+            instance.setTache(tache);
+            instance.startTimer();
+            Date debutTimer = new Date();
+            debutTimer.setTime(debutTimer.getTime()+3000l);
+            Date curr = new Date();
+            while(curr.compareTo(debutTimer)<0){
+                curr=new Date();
+            }
+            assertFalse(instance.getTimer().compareTo(new Time(5000l)) >= 0);
+        } catch (TacheException ex) {
+            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

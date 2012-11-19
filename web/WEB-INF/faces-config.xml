@@ -11,4 +11,11 @@
         <managed-bean-class>be.esi.projet11.gestionprojet.ejb.MembreManage</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <navigation-rule>
+        <from-view-id>/pages/FormAttribMembre.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/Tache.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>
