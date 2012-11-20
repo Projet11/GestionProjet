@@ -250,16 +250,13 @@ public class Tache implements Serializable {
         if (hasMembre(membre)) {
             return;
         }
-
-        if (this.getId() == null)
-            
         
         membres.add(new ParticipeTache(this, membre));
-        String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // FIXME
-        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // FIXME
+        String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // TODO: Lorsque le projet sera implémenté
+        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // TODO: Lorsque le projet sera implémenté
         corps += "<p>Pour accepter ou refuser, cliquez sur un des liens suivants :</p>";
         corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=accepterTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Accepter</a></p>";
-        corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=refuserTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Refuser</a></p>";
+        corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=refuserTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Refuser</a></p>"; // TODO: Corriger les liens
         corps += "<br/><br/>A bientôt !";
         try {
             Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps);
@@ -272,6 +269,10 @@ public class Tache implements Serializable {
         if (this.getId() == null) // Si un tâche n'a pas encore été persistée, elle n'a pas de membres
             return false;
         return membres.contains(new ParticipeTache(this, membre));
+    }
+    
+    public Collection<ParticipeTache> getParticipations() {
+        return membres;
     }
 
     public int getNbMembres() {

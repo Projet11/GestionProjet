@@ -1,6 +1,7 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.entity.ParticipeTache;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
@@ -44,7 +45,7 @@ public class TacheEJB {
     /**
      * Get the value of creationImportance
      *     
-* @return the value of creationImportance
+     * @return the value of creationImportance
      */
     public ImportanceEnum getCreationImportance() {
         return creationImportance;
@@ -53,7 +54,7 @@ public class TacheEJB {
     /**
      * Set the value of creationImportance
      *     
-* @param creationImportance new value of creationImportance
+     * @param creationImportance new value of creationImportance
      */
     public void setCreationImportance(ImportanceEnum creationImportance) {
         this.creationImportance = creationImportance;
@@ -62,7 +63,7 @@ public class TacheEJB {
     /**
      * Get the value of creationDescription
      *     
-* @return the value of creationDescription
+     * @return the value of creationDescription
      */
     public String getCreationDescription() {
         return creationDescription;
@@ -71,7 +72,7 @@ public class TacheEJB {
     /**
      * Set the value of creationDescription
      *     
-* @param creationDescription new value of creationDescription
+     * @param creationDescription new value of creationDescription
      */
     public void setCreationDescription(String creationDescription) {
         this.creationDescription = creationDescription;
@@ -220,19 +221,19 @@ public class TacheEJB {
     }
 
     public String inscrireMembresATache() {
-        System.out.println("inscrireMembres " + tache.getId());
-        if (tache.getId() == null)
-            persist(tache);
-        
-        System.out.println("tache id " + tache.getId());
-
+        Tache tachePersistee = em.merge(tache);
         for (String id : membreBean.getMembreSel()) {
             Membre membre = membreEJB.getById(Long.parseLong(id));
             if (membre != null)
-                tache.addMembre(membre);
+                tachePersistee.addMembre(membre);
         }
         
         merge(tache);
+        
+        for (ParticipeTache participe : tache.getParticipations()) {
+            System.out.println(participe);
+            persist(participe);
+        }
         
         return "success";
     }

@@ -43,8 +43,6 @@ public class ParticipeTache implements Serializable {
     public ParticipeTache(Tache tache, Membre membre) {
         this.tache = tache;
         this.membre = membre;
-        System.out.println("tache " + tache.getId());
-        System.out.println("membre " + membre.getId());
         this.pk = new ParticipeTachePK(tache.getId(), membre.getId());
         setAccepte(false);
     }
@@ -91,7 +89,7 @@ public class ParticipeTache implements Serializable {
 
     @Override
     public String toString() {
-        return "ParticipeTache: Membre=" + membre + " - Tâche=" + getTache();
+        return "ParticipeTache - Tache: " + tache + " - Membre: " + membre;
     }
 
     /**
