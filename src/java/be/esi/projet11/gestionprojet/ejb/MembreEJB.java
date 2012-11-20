@@ -25,13 +25,15 @@ import javax.validation.ConstraintViolationException;
  */
 @Stateless
 public class MembreEJB {
+
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
 
     public void persist(Object object) {
         em.persist(object);
     }
-public Membre getUserByAuthentification(String login, String password) throws DBException {
+
+    public Membre getUserByAuthentification(String login, String password) throws DBException {
         try {
             Query qry = em.createNamedQuery("Membre.findByAuthentification");
             qry.setParameter("login", login);
@@ -42,11 +44,15 @@ public Membre getUserByAuthentification(String login, String password) throws DB
         }
     }
 
-    public Collection getAllUsers() throws DBException {
+    public Membre getById(long id) {
+        return em.find(be.esi.projet11.gestionprojet.entity.Membre.class, id);
+    }
+
+    public Collection<Membre> getAllUsers() throws DBException {
         try {
             return em.createNamedQuery("Membre.findAll").getResultList();
         } catch (Exception e) {
-            throw new DBException("Impossible de charger l'ensemble des clients !\n");
+            throw new DBException("Impossible de charger l'ensemble des membres !\n");
         }
     }
 
@@ -59,7 +65,7 @@ public Membre getUserByAuthentification(String login, String password) throws DB
              * car la transaction sera cloturée par em.flush(); Il ne sera donc 
              * plus possible d'accéder à la BD grâce à 
              * cette transaction !
-            */
+             */
             if (userExists(login)) {
                 erreur += "L'identifiant est déjà utilisé.\n";
             }

@@ -5,11 +5,13 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.exception.DBException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -20,17 +22,19 @@ import javax.persistence.PersistenceContext;
  *
  * @author g34754
  */
-@ManagedBean(name="MembreManage")
+@ManagedBean(name = "MembreManage")
 @SessionScoped
 public class MembreManage {
+    @EJB
+    private MembreEJB membreEJB;
 
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
     @Resource
     private javax.transaction.UserTransaction utx;
-    
     @ManagedProperty("#{ProjetManage}")
-        private ProjetManage projetBean;
+    private ProjetManage projetBean;
+    
 
     /**
      * Get the value of projetBean
@@ -49,15 +53,14 @@ public class MembreManage {
     public void setProjetBean(ProjetManage projetBean) {
         this.projetBean = projetBean;
     }
-
-    private Collection<Membre> membreSel;
+    private Collection<String> membreSel;
 
     /**
      * Get the value of membreSel
      *
      * @return the value of membreSel
      */
-    public Collection<Membre> getMembreSel() {
+    public Collection<String> getMembreSel() {
         return membreSel;
     }
 
@@ -66,7 +69,7 @@ public class MembreManage {
      *
      * @param membreSel new value of membreSel
      */
-    public void setMembreSel(Collection<Membre> membreSel) {
+    public void setMembreSel(Collection<String> membreSel) {
         this.membreSel = membreSel;
     }
 
@@ -88,10 +91,11 @@ public class MembreManage {
     }
 
     public Collection<Membre> getAllMembres() {
-        Collection<Membre> membres = new ArrayList<Membre>();
-        membres.add(new Membre(1l,"","","", "Membre 1", "membre1@gmail.com"));
-        membres.add(new Membre(2l,"","","", "Membre 2", "membre2@yahoo.com"));
-        membres.add(new Membre(3l,"","","", "Membre 3", "membre3@gmail.com"));
-        return membres;
+        try {
+            return membreEJB.getAllUsers();
+        } catch (DBException ex) {
+            System.err.println(ex.getMessage());
+            return null;
+        }
     }
 }

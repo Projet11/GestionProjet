@@ -60,13 +60,13 @@ public class Tache implements Serializable {
     private Date dateDeb;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date tempsPasseSurTache;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private Collection<ParticipeTache> membres;
     @Basic(optional = false)
     @Column(name = "PROJET")
     @ManyToOne
     private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
-
+    
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");
         this.timerLaunched = '0';
@@ -251,6 +251,9 @@ public class Tache implements Serializable {
             return;
         }
 
+        if (this.getId() == null)
+            
+        
         membres.add(new ParticipeTache(this, membre));
         String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // FIXME
         String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // FIXME
@@ -266,6 +269,8 @@ public class Tache implements Serializable {
     }
 
     public boolean hasMembre(Membre membre) {
+        if (this.getId() == null) // Si un tâche n'a pas encore été persistée, elle n'a pas de membres
+            return false;
         return membres.contains(new ParticipeTache(this, membre));
     }
 

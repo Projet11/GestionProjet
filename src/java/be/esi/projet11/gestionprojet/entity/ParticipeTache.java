@@ -8,30 +8,33 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author g35364
  */
 @Entity
-@IdClass(ParticipeTachePK.class)
+@Table(name = "PARTICIPETACHE")
+@XmlRootElement
 public class ParticipeTache implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    //@JoinColumn(name = "MEMBRE")
-    @OneToOne(cascade = CascadeType.ALL)
+    @EmbeddedId
+    protected ParticipeTachePK pk;
+    @JoinColumn(name = "MEMBRE", referencedColumnName = "ID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
     protected Membre membre;
-    @Id
-    @JoinColumn(name = "TACHE")
+    @JoinColumn(name = "TACHE", referencedColumnName = "ID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
     private Tache tache;
     @Basic(optional = false)
     @Column(name = "ACCEPTE")
-    protected char accepte;
+    private char accepte;
     
     public ParticipeTache() {
         
@@ -40,16 +43,18 @@ public class ParticipeTache implements Serializable {
     public ParticipeTache(Tache tache, Membre membre) {
         this.tache = tache;
         this.membre = membre;
+        System.out.println("tache " + tache.getId());
+        System.out.println("membre " + membre.getId());
+        this.pk = new ParticipeTachePK(tache.getId(), membre.getId());
         setAccepte(false);
     }
 
     public ParticipeTachePK getId() {
-        return new ParticipeTachePK(getTache(), membre);
+        return pk;
     }
 
     public void setId(ParticipeTachePK pk) {
-        this.tache = pk.getTache();
-        this.membre = pk.getMembre();
+        this.pk = pk;
     }
 
     @Override
@@ -114,12 +119,20 @@ public class ParticipeTache implements Serializable {
     public Membre getMembre() {
         return membre;
     }
+    
+    public void setMembre(Membre membre) {
+        this.membre = membre;
+    }
 
     /**
      * @return the tache
      */
     public Tache getTache() {
         return tache;
+    }
+    
+    public void setTache(Tache tache) {
+        this.tache = tache;
     }
     
 }
