@@ -5,12 +5,11 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Tache;
-import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import javax.ejb.Local;
-import javax.servlet.http.HttpServletRequest;
+import tache.ImportanceEnum;
 
 /**
  *
