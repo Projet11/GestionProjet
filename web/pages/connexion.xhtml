@@ -13,26 +13,38 @@
 		<div class="navbar navbar-fixed-top">
 			<!-- ui:include src="connexion.xhtml"/ -->
 			<div class="hero-unit">
-				<h:form>
+				<h:form id="formIdentification">
 					<fieldset>
 						<legend>Connexion</legend>
 						<div id="fieldNom" class="control-group">
 							<label class="control-label" for="txtNom">Nom</label>
-							<div class="controls">
-								<input id="nom" name="txtNom" type="text" onblur="clearErrors()"/>
+							<div id="controlNom" class="controls">
+								<h:inputText id="txtNom" required="true" onfocus="clearErrors()"/>
 							</div>
 						</div>
 
 						<div id="fieldMdp" class="control-group">
-							<label class="control-label" for="txtMail">Mot de passe</label>
-							<div class="controls">
-								<input id="mdp" name="txtPass" type="password" onblur="clearErrors()"/>
+							<label class="control-label" for="txtMdp">Mot de passe</label>
+							<div id="controlMdp" class="controls">
+								<h:inputSecret id="txtPass" required="true" onfocus="clearErrors()"/>
 							</div>
 						</div>
 
 						<div class="controls">
-							<input id="inscription" class="btn btn-large btn-success" type="button" onclick="on_submit()" value="Valider"/>
+							<!-- h:commandButton value="Identification" styleClass="btn btn-large btn-success"/ -->
+							<input id="btnIdentification"
+								type="button"
+								class="btn btn-large btn-success"
+								onclick="onSubmit()"
+								value="Identification"/>
+							<!--<input id="btnIdentification"
+								class="btn btn-large btn-success"
+								type="button"
+								onclick="onSubmit()"
+								value="Identification"/>-->
 						</div>
+						
+						<h:messages/>
 					</fieldset>
 				</h:form>
 			</div>
