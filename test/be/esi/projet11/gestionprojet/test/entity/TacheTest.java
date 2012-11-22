@@ -6,7 +6,6 @@ package be.esi.projet11.gestionprojet.test.entity;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
-import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +18,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import tache.ImportanceEnum;
 
 /**
  *

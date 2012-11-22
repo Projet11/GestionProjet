@@ -1,9 +1,8 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
-import be.esi.projet11.gestionprojet.entity.ParticipeTache;
+import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
-import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
@@ -20,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import tache.ImportanceEnum;
 
 /**
  *
@@ -40,7 +40,10 @@ public class TacheEJB {
     private ImportanceEnum creationImportance;
     @Resource
     private javax.transaction.UserTransaction utx;
-    
+    private String archive;
+    private Collection<Tache> taches;
+    @EJB
+    private ProjetEJB projetEJB;
 
     /**
      * Get the value of creationImportance
@@ -249,14 +252,68 @@ public class TacheEJB {
         }
     }
     
-    public void merge(Object object) {
-        try {
-            utx.begin();
-            em.merge(object);
-            utx.commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
+    public String getArchive() {
+        return archive;
+    }
+    
+    public void setArchive(String archive) {
+        this.archive = archive;
+    }
+    
+    public Collection<Tache> getTaches() {
+        return taches;
+    }
+
+
+    public void setTaches(Collection<Tache> taches) {
+        this.taches = taches;
+    }
+    
+    public Collection<Tache> getAllTaches() {
+        Query query = em.createNamedQuery("Tache.findAll");
+        return query.getResultList();
+    }
+
+    public Collection<Tache> getTaches(Boolean archive, Projet p) {
+        Query query;
+        if (archive == null) {
+            query = em.createNamedQuery("Tache.findTachesByProjet");
+        } else {
+            if (archive) {
+                query = em.createNamedQuery("Tache.findTachesArchiveesByProjet");
+            } else {
+                query = em.createNamedQuery("Tache.findTachesNonArchiveesByProjet");
+            }
         }
+        query.setParameter("projet", p);
+        return query.getResultList();
+    }
+
+    public void archiverTache() {
+        tache.setArchive(true);
+    }
+
+    public void desarchiverTache() {
+        tache.setArchive(false);
+    }
+
+    public void setCurrentTache(Tache tache) {
+        this.tache = tache;
+    }
+
+    public String affichageTaches() {
+        taches = null;
+        Projet projet = projetEJB.getProjet();
+        if (archive.equals("toutes")) {
+            taches = getTaches(null, projet);
+        } else {
+            if (archive.equals("archivees")) {
+                taches = getTaches(true, projet);
+            } else {
+                taches = getTaches(false, projet);
+            }
+        }
+        return "success";
+
     }
 }
