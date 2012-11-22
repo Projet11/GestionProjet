@@ -1,6 +1,7 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.entity.ParticipeTache;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.exception.TacheException;
@@ -231,7 +232,7 @@ public class TacheEJB {
                 tachePersistee.addMembre(membre);
         }
         
-        merge(tache);
+        em.merge(tache);
         
         for (ParticipeTache participe : tache.getParticipations()) {
             System.out.println(participe);
