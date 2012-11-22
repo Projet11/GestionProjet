@@ -19,11 +19,13 @@ public class ProjetEJB {
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
     
-    public Projet creerProjet(){
-        Projet unProjet = new Projet();
+    public Projet creerProjet(String nom, String description){
+        Projet unProjet = new Projet(0l,nom, description);
         em.persist(unProjet);
+        em.flush();
         return unProjet;        
     }
+    
     
     public Projet getProjetById(Long id){
         return em.find(Projet.class, id);
