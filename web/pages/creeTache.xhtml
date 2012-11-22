@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <script type ="text/javascript" src ="../js/verificationCreeTache.js"></script>
+        <script type ="text/javascript" src="../js/bootstrap.min.js"></script>
+        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <title>Création de tâche</title>
+    </h:head>
+    <h:body>
+        <div class="hero-unit">
+            <legend>Ajout de tache</legend>
+            <!-- Debut formulaire -->
+
+            <h:form name=" Ajouter une tâche" class="form-horizontal">
+                <fieldset>
+                    <!-- Nom -->
+                    <div class="control-group">
+                        <label class="control-label" for="nomDeTache">Nom</label>
+                        <div class="controls">
+                            <h:inputText type="text" id="Nom" label="Nom" value="#{tacheCtrl.creationNom}" required="true" onblur="valideNom(this)"/>  
+                            <span class="help-inline" id="nomError"></span>
+
+                            <!-- class="text-warning" -->
+                        </div>
+                    </div>
+
+                    <!-- Importance -->
+                    <div class="control-group">
+                        <label class="control-label" for="priorite">Importance</label>
+                        <div class="controls">
+                            <h:selectOneMenu value="#{tacheCtrl.creationImportance}">
+                                <f:selectItem itemValue="#{ImportanceEnum.NORMALE}" itemLabel="Normale"/>
+                                <f:selectItem itemValue="#{ImportanceEnum.IMPORTANT}" itemLabel="Importante"/>
+                                <f:selectItem itemValue="#{ImportanceEnum.TRESIMPORTANT}" itemLabel="Très importante"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="control-group">
+                        <label class="control-label" for="description">Description  </label>
+                        <div class="controls">
+                            <h:inputTextarea rows="3" id="description" cols="30" value="#{tacheCtrl.creationDescription}"></h:inputTextarea>
+                        </div>
+                    </div>
+
+                    <!-- Fin -->
+                    <div class="controls">
+                        <h:commandButton class="btn btn-success" action="#{tacheCtrl.creerTache()}" value="Créer"/> 
+                        <h:commandButton class="btn btn-danger" action="#{tacheCtrl.annulerCreation()}" value="Annuler"/>
+                    </div>
+                    <h:message for="Nom" />
+                </fieldset>
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

@@ -10,5 +10,5 @@
         <property name="URL" value="jdbc:derby://localhost:1527/GestionProjetDB"/>
         <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
     </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="Projet11" object-type="user" pool-name="derby_net_Projet11_appPool"/>
+    <jdbc-resource enabled="true" jndi-name="GestionProjetDB" object-type="user" pool-name="derby_net_Projet11_appPool"/>
 </resources>
