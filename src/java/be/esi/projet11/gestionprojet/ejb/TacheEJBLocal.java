@@ -6,36 +6,19 @@ package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
-import be.esi.projet11.gestionprojet.exception.TacheException;
-import java.sql.Time;
 import java.util.Collection;
 import javax.ejb.Local;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  *
- * @author g34840
+ * @author user0
  */
 @Local
 public interface TacheEJBLocal {
-
-    Tache creerTache(String nom, String description) throws TacheException;
-
-    Tache creerTache(String nom, String description, ImportanceEnum importance) throws TacheException;
-
-    Collection<Tache> getAllTache();
-
-    Tache getTache(String nom);
-
-    Tache getTache(long id);
-    
-    public void startTimer(long id) ;
-    
-    public void stopTimer(long id) ;
-
-    public Time getTimer(long id) ;
-
-    public boolean isTimerLaunched(long id);
-    
-    //public String inscrireMembresATache(HttpServletRequest request);
+    public Tache creerTache(String nom,String description);
+    public Tache creerTache(String nom,String description,ImportanceEnum imp);
+    public Tache getTache(String nom);
+    public Tache getTache(Long id);
+    public Collection<Tache> getAllTache();
+    public void modificationTache(Tache tache);
 }

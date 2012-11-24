@@ -3,23 +3,24 @@
  * and open the template in the editor.
  */
 package be.esi.projet11.gestionprojet.enumeration;
-
 /**
  *
  * @author j4un3
  */
 public enum ImportanceEnum {
 
-    NORMALE("Normale", 3),
-    IMPORTANT("Importante", 2),
-    TRESIMPORTANT("Très importante", 1);
+    NORMALE("Normale", 3,"info"),
+    IMPORTANT("Important", 2,"warning"),
+    TRESIMPORTANT("Très important", 1,"error");
     
     private String libelle;
     private int imp;
+    private String balise;
 
-    private ImportanceEnum(String libelle, int imp) {
+    private ImportanceEnum(String libelle, int imp, String balise) {
         this.libelle = libelle;
         this.imp = imp;
+        this.balise = balise;
     }
 
     public String getLibelle() {
@@ -28,5 +29,9 @@ public enum ImportanceEnum {
 
     public int getImp() {
         return imp;
+    }
+    
+    public String getBalise(){
+        return balise;
     }
 }
