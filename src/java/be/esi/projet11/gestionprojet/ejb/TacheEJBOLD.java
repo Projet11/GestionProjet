@@ -8,6 +8,7 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -217,6 +218,11 @@ public class TacheEJBOLD {
 
     public boolean isTimerLaunched() {
         return tache.isTimerLaunched();
+    }
+    
+    public List<Tache> getAllTimerLaunched(){
+        Query query=em.createNamedQuery("Tache.findTimerLaunched");
+        return query.getResultList();
     }
 
     public String inscrireMembresATache() {
