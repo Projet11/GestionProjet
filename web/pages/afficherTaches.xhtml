@@ -35,6 +35,7 @@
                         <td><h:outputText value="#{tache.pourcentage} %"/></td>
                         <td>
                             <h:commandButton class="btn" action="#{tacheEJB.modifierTache(tache)}" value="Modifier"/>
+                            <h:commandButton class="btn" action="#{tacheEJB.startTimer(tache)}" value="Démarrer le timer"/>
                         </td> </tr>    
             </c:forEach>  
         </table>

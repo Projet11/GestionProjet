@@ -66,7 +66,7 @@ public class StartTimerTest {
         try {
             Tache tache = instance.creerTache("tache1", "   ");
             instance.setTache(tache);
-            instance.startTimer();
+            instance.startTimer(tache);
             assertTrue(instance.isTimerLaunched());
         } catch (TacheException ex) {
             Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +89,7 @@ public class StartTimerTest {
         try {
             Tache tache = instance.creerTache("tache3", "   ");
             instance.setTache(tache);
-            instance.startTimer();
+            instance.startTimer(tache);
             Date debutTimer = new Date();
             debutTimer.setTime(debutTimer.getTime() + 5000l);
             Date curr = new Date();
@@ -109,7 +109,7 @@ public class StartTimerTest {
         try {
             Tache tache = instance.creerTache("tache4", "   ");
             instance.setTache(tache);
-            instance.startTimer();
+            instance.startTimer(tache);
             Date debutTimer = new Date();
             debutTimer.setTime(debutTimer.getTime() + 3000l);
             Date curr = new Date();
@@ -117,6 +117,50 @@ public class StartTimerTest {
                 curr = new Date();
             }
             assertFalse(instance.getTimer().compareTo(new Time(5000l)) >= 0);
+        } catch (TacheException ex) {
+            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void TestArretTimer1(){
+        try {
+            Tache tache = instance.creerTache("tache4", "   ");
+            instance.setTache(tache);
+            instance.startTimer(tache);
+            instance.stopTimer(tache);
+            assertTrue(instance.isTimerLaunched());
+        } catch (TacheException ex) {
+            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void TestArretTimer2(){
+        try {
+            Tache tache = instance.creerTache("tache4", "   ");
+            instance.setTache(tache);
+            instance.startTimer(tache);
+            assertFalse(instance.isTimerLaunched());
+        } catch (TacheException ex) {
+            Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void TestArretTimer3(){
+        try {
+            Tache tache = instance.creerTache("tache4", "   ");
+            instance.setTache(tache);
+            instance.startTimer(tache);
+            Date debutTimer = new Date();
+            debutTimer.setTime(debutTimer.getTime() + 4900l);
+            Date curr = new Date();
+            while (curr.compareTo(debutTimer) < 0) {
+                curr = new Date();
+            }
+            instance.stopTimer(tache);
+            assertTrue((instance.getCurrentTache().getTempsPasseSurTache()).compareTo(new Date(5000l)) <= 0);
         } catch (TacheException ex) {
             Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
         }

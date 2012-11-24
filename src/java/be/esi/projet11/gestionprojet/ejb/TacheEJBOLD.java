@@ -199,12 +199,15 @@ public class TacheEJBOLD {
 
     }
 
-    public void startTimer() {
+    public void startTimer(Tache tache) {
         tache.setTimerLaunched(true);
     }
 
-    public void stopTimer() {
-        tache.setTimerLaunched(true);
+    public void stopTimer(Tache tache) {
+        tache.setTimerLaunched(false);
+        tache.setTempsPasseSurTache(
+                new Date(tache.getTempsPasseSurTache().getTime()+
+                (new Date().getTime()-tache.getDateDeb().getTime())));
     }
 
     public Time getTimer() {
