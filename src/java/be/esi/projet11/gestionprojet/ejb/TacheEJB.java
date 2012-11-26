@@ -62,4 +62,8 @@ public class TacheEJB {
             em.merge(tache);
         }
     }
+
+    public void modificationTache(Tache tacheCourante) {
+        em.merge(tacheCourante);
+    }
 }

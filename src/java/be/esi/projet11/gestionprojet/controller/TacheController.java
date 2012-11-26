@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
 
 /**
  *
@@ -29,9 +30,11 @@ public class TacheController {
     @EJB
     private TacheEJB tacheEJB;
     // Attributs utilisés par le formulaire de création d'une tâche uniquement
-    private String creationNom;
-    private String creationDescription;
-    private ImportanceEnum creationImportance;
+    private String nomParam;
+    private String descriptionParam;
+    private ImportanceEnum importanceParam;
+    private Long revisionParam;
+    private Long pourcentageParam;
     private Collection<Membre> membresSel;
     //
     private Tache tacheCourante;
@@ -42,28 +45,44 @@ public class TacheController {
     public TacheController() {
     }
 
-    public String getCreationNom() {
-        return creationNom;
+    public String getNomParam() {
+        return nomParam;
     }
 
-    public void setCreationNom(String creationNom) {
-        this.creationNom = creationNom;
+    public void setNomParam(String nomParam) {
+        this.nomParam = nomParam;
     }
 
-    public String getCreationDescription() {
-        return creationDescription;
+    public String getDescriptionParam() {
+        return descriptionParam;
     }
 
-    public void setCreationDescription(String creationDescription) {
-        this.creationDescription = creationDescription;
+    public void setDescriptionParam(String descriptionParam) {
+        this.descriptionParam = descriptionParam;
     }
 
-    public ImportanceEnum getCreationImportance() {
-        return creationImportance;
+    public ImportanceEnum getImportanceParam() {
+        return importanceParam;
     }
 
-    public void setCreationImportance(ImportanceEnum creationImportance) {
-        this.creationImportance = creationImportance;
+    public void setImportanceParam(ImportanceEnum importanceParam) {
+        this.importanceParam = importanceParam;
+    }
+
+    public Long getRevisionParam() {
+        return revisionParam;
+    }
+
+    public void setRevisionParam(Long revisionParam) {
+        this.revisionParam = revisionParam;
+    }
+
+    public Long getPourcentageParam() {
+        return pourcentageParam;
+    }
+
+    public void setPourcentageParam(Long pourcentageParam) {
+        this.pourcentageParam = pourcentageParam;
     }
 
     public Tache getTacheCourante() {
@@ -89,9 +108,17 @@ public class TacheController {
         this.membresSel = membresSel;
     }
     
+  public SelectItem[] getImportanceValues() {
+    SelectItem[] items = new SelectItem[ImportanceEnum.values().length];
+    int i = 0;
+    for(ImportanceEnum g: ImportanceEnum.values()) {
+      items[i++] = new SelectItem(g, g.getLibelle());
+    }
+    return items;
+  }
     public String creerTache() {
         try {
-            tacheEJB.creerTache(creationNom, creationDescription, creationImportance);
+            tacheEJB.creerTache(nomParam, descriptionParam, importanceParam);
         } catch (TacheException ex) {
             return "failure";
         }
@@ -127,4 +154,10 @@ public class TacheController {
         return "success";
     }
 
+    public void modificationTache() throws TacheException {
+        tacheCourante.setPourcentage(pourcentageParam.intValue());
+        tacheCourante.setSVNRevision(revisionParam);
+        tacheCourante.setImportance(importanceParam);
+        tacheEJB.modificationTache(tacheCourante);
+    }
 }

@@ -24,7 +24,7 @@ public class MembreController {
 
     @EJB
     private MembreEJB membreEJB;
-    private Membre authenticatedUser;
+    private Membre membreCourant;
 
     /*
      * Creates a new instance of MembreManage
@@ -44,16 +44,16 @@ public class MembreController {
 
     public Membre authenticateUser(String login, String password) throws BusinessException {
         try {
-            authenticatedUser = membreEJB.getUserByAuthentification(login, password);
-            return authenticatedUser;
+            membreCourant = membreEJB.getUserByAuthentification(login, password);
+            return membreCourant;
         } catch (DBException e) {
-            authenticatedUser = null;
+            membreCourant = null;
             throw new BusinessException(e.getMessage());
         }
     }
     
     public boolean isAuthenticated() {
-        return authenticatedUser != null;
+        return membreCourant != null;
     }
 
 //    public Collection<Membre> getAllMembres() {
