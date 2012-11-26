@@ -2,18 +2,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:f="http://java.sun.com/jsf/core">
 	<h:head>
 		<script type="text/javascript" src="../js/jquery.js"></script>
         <script type="text/javascript" src="../js/connexion.js"></script>
 		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+		<style>
+			.separator
+			{
+				border: 0px;
+				height: 1px;
+				background-color: #E0E0E0;
+			}
+		</style>
 		<title>Connexion</title>
 	</h:head>
 	<h:body>
 		<div class="navbar navbar-fixed-top">
-			<!-- ui:include src="connexion.xhtml"/ -->
 			<div class="hero-unit">
-				<h:form id="formIdentification">
+				<h:form id="formIdentification" onsubmit="return onSubmit();">
 					<fieldset>
 						<legend>Connexion</legend>
 						<div id="fieldNom" class="control-group">
@@ -33,26 +42,22 @@
 						</div>
 
 						<div class="controls">
-							<input id="btnIdentification"
-								type="button"
-								class="btn btn-large btn-success"
-								onclick="onSubmit()"
-								value="Identification"/>
-							<h:commandButton value="Identification (TEST)" styleClass="btn btn-large"
+							<h:commandButton value="Identification"
+								styleClass="btn btn-large btn-success"
 								action="#{userSessionControleur.identifier}"/>
 						</div>
 						
+						<hr class="separator"/>
+
 						<p class="text-error">
-							<h:outputText rendered="#{userSessionControleur.identificationEchouee}">
-								Identifiant ou mot de passe invalide
-							</h:outputText>
-							<h:outputText value="#{userSessionControleur.identificationEchouee}"/>
+							<h:outputText
+								rendered="#{userSessionControleur.identificationEchouee}"
+								value="Identifiant ou mot de passe invalide"/>
 							<h:messages/>
 						</p>
 					</fieldset>
 				</h:form>
 			</div>
 		</div>
-
 	</h:body>
 </html>

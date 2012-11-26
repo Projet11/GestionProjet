@@ -1,7 +1,6 @@
 function onSubmit()
 {
-	if (validate())
-		$("#formIdentification").submit();
+	return validate();
 }
 
 function clearErrors()
