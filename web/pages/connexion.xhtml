@@ -29,7 +29,7 @@
 							<label class="control-label" for="txtNom">Nom</label>
 							<div id="controlNom" class="controls">
 								<h:inputText id="txtNom" required="true" onfocus="clearErrors()"
-									value="#{userSessionControleur.inputNom}"/>
+									value="#{userSessionController.inputNom}"/>
 							</div>
 						</div>
 
@@ -37,21 +37,21 @@
 							<label class="control-label" for="txtMdp">Mot de passe</label>
 							<div id="controlMdp" class="controls">
 								<h:inputSecret id="txtPass" required="true" onfocus="clearErrors()"
-									value="#{userSessionControleur.inputPassword}"/>
+									value="#{userSessionController.inputPassword}"/>
 							</div>
 						</div>
 
 						<div class="controls">
 							<h:commandButton value="Identification"
 								styleClass="btn btn-large btn-success"
-								action="#{userSessionControleur.identifier}"/>
+								action="#{userSessionController.identifier}"/>
 						</div>
 						
 						<hr class="separator"/>
 
 						<p class="text-error">
 							<h:outputText
-								rendered="#{userSessionControleur.identificationEchouee}"
+								rendered="#{userSessionController.identificationEchouee}"
 								value="Identifiant ou mot de passe invalide"/>
 							<h:messages/>
 						</p>
