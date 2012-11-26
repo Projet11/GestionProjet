@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Tache;
@@ -20,7 +16,7 @@ import javax.persistence.Query;
  * @author user0
  */
 @Stateless
-public class TacheEJB implements TacheEJBLocal {
+public class TacheEJB {
 
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
@@ -28,33 +24,23 @@ public class TacheEJB implements TacheEJBLocal {
     public TacheEJB() {
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    @Override
-    public Tache creerTache(String nom, String description) {
-        Tache tache = null;
-        try {
-            tache = new Tache(nom, description);
-            em.persist(tache);
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return tache;
+    public Tache creerTache(String nom, String description) throws TacheException {
+        return creerTache(nom, description, ImportanceEnum.IMPORTANT);
     }
 
-    @Override
-    public Tache creerTache(String nom, String description, ImportanceEnum imp) {
-        Tache tache = null;
+    public Tache creerTache(String nom, String description, ImportanceEnum importance) throws TacheException {
+        Tache uneTache = null;
         try {
-            tache = new Tache(nom, description, imp);
-            em.persist(tache);
-        } catch (TacheException ex) {
+            uneTache = new Tache(nom, description, importance);
+            em.persist(uneTache);
+        } catch (SecurityException ex) {
+            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalStateException ex) {
             Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return tache;
+        return uneTache;
     }
 
-    @Override
     public Tache getTache(String nom) {
         Query query = em.createNamedQuery("Tache.findByNom");
         query.setParameter("nom", nom);
@@ -62,26 +48,18 @@ public class TacheEJB implements TacheEJBLocal {
         return tache;
     }
 
-    @Override
-    public Tache getTache(Long id) {
+    public Tache getTache(long id) {
         return em.find(Tache.class, id);
     }
 
-    @Override
     public Collection<Tache> getAllTache() {
         Query query = em.createNamedQuery("Tache.findAll");
         return query.getResultList();
     }
 
-    @Override
-    public void modificationTache(Tache tache) {
-        try {
-            Tache newTache = em.find(Tache.class, tache.getId());
-            newTache.setImportance(tache.getImportance());
-            newTache.setPourcentage(tache.getPourcentage());
-            newTache.setSVNRevision(tache.getSVNRevision());
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+    public void saveTache(Tache tache) {
+        if (em.find(Tache.class, tache.getId()) != null) {
+            em.merge(tache);
         }
     }
 }
