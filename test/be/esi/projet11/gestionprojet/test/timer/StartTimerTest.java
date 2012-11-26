@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package be.esi.projet11.gestionprojet.test;
+package be.esi.projet11.gestionprojet.test.timer;
 
-import be.esi.projet11.gestionprojet.ejb.TacheEJB;
+import be.esi.projet11.gestionprojet.ejb.TacheEJBOLD;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
@@ -13,7 +13,11 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.embeddable.EJBContainer;
-import javax.naming.NamingException;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -29,6 +33,7 @@ public class StartTimerTest {
 
     private static EJBContainer container;
     private static HashMap<Object, Object> properties;
+    private TacheEJBOLD instance;
 
     public StartTimerTest() {
     }
@@ -46,7 +51,10 @@ public class StartTimerTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws TacheException, NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+        if (instance == null) {
+            instance = new TacheEJBOLD();
+        }
     }
 
     @After
@@ -56,23 +64,19 @@ public class StartTimerTest {
     @Test
     public void TestLancerTimer1() {
         try {
-            TacheEJB instance = new TacheEJB();
-            System.out.println(instance);
-            Tache tache=instance.creerTache("tache1", "   ");
+            Tache tache = instance.creerTache("tache1", "   ");
             instance.setTache(tache);
             instance.startTimer();
             assertTrue(instance.isTimerLaunched());
         } catch (TacheException ex) {
             Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 
     @Test
     public void TestLancerTimer2() {
         try {
-            
-            TacheEJB instance = new TacheEJB();
-            Tache tache=instance.creerTache("tache2", "   ");
+            Tache tache = instance.creerTache("tache2", "   ");
             instance.setTache(tache);
             assertFalse(instance.isTimerLaunched());
         } catch (TacheException ex) {
@@ -83,37 +87,34 @@ public class StartTimerTest {
     @Test
     public void TestLancerTimer3() {
         try {
-            TacheEJB instance = new TacheEJB();
-            
-            Tache tache=instance.creerTache("tache3", "   ");
+            Tache tache = instance.creerTache("tache3", "   ");
             instance.setTache(tache);
             instance.startTimer();
             Date debutTimer = new Date();
-            debutTimer.setTime(debutTimer.getTime()+5000l);
+            debutTimer.setTime(debutTimer.getTime() + 5000l);
             Date curr = new Date();
-            while(curr.compareTo(debutTimer)<0){
-                curr=new Date();
+            while (curr.compareTo(debutTimer) < 0) {
+                curr = new Date();
             }
-            Time t=instance.getTimer();
+            Time t = instance.getTimer();
             assertTrue(instance.getTimer().compareTo(new Time(4950l)) >= 0);
             assertTrue(instance.getTimer().compareTo(new Time(5050l)) <= 0);
         } catch (TacheException ex) {
             Logger.getLogger(StartTimerTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Test
     public void TestLancerTimer4() {
         try {
-            TacheEJB instance = new TacheEJB();
-            Tache tache=instance.creerTache("tache4", "   ");
+            Tache tache = instance.creerTache("tache4", "   ");
             instance.setTache(tache);
             instance.startTimer();
             Date debutTimer = new Date();
-            debutTimer.setTime(debutTimer.getTime()+3000l);
+            debutTimer.setTime(debutTimer.getTime() + 3000l);
             Date curr = new Date();
-            while(curr.compareTo(debutTimer)<0){
-                curr=new Date();
+            while (curr.compareTo(debutTimer) < 0) {
+                curr = new Date();
             }
             assertFalse(instance.getTimer().compareTo(new Time(5000l)) >= 0);
         } catch (TacheException ex) {

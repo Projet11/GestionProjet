@@ -11,17 +11,17 @@ import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -38,7 +38,12 @@ import javax.persistence.Temporal;
 @Table(name = "TACHE")
 @NamedQueries({
     @NamedQuery(name = "Tache.findByNom", query = "SELECT t FROM Tache t WHERE t.nom = :nom"),
-    @NamedQuery(name = "Tache.findAll", query = "SELECT t FROM Tache t")})
+    @NamedQuery(name = "Tache.findAll", query = "SELECT t FROM Tache t"),
+@NamedQuery(name = "Tache.findTachesArchivees", query = "SELECT t FROM Tache t WHERE t.archive = '1'"),             
+    @NamedQuery(name = "Tache.findTachesNonArchivees", query = "SELECT t FROM Tache t WHERE t.archive = '0'"),
+    @NamedQuery(name = "Tache.findTachesByProjet", query = "SELECT t FROM Tache t WHERE t.projet = :projet"),
+    @NamedQuery(name = "Tache.findTachesArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '1' AND t.projet = :projet"),             
+    @NamedQuery(name = "Tache.findTachesNonArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '0' AND t.projet = :projet")})
 public class Tache implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,9 +67,9 @@ public class Tache implements Serializable {
     private Date tempsPasseSurTache;
     @OneToMany(cascade = CascadeType.ALL)
     private Collection<ParticipeTache> membres;
-    @Basic(optional = false)
-    @Column(name = "PROJET")
-    @ManyToOne
+    private char archive;
+    @JoinColumn(name = "PROJET", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
     private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
 
     public Tache() throws TacheException {
@@ -78,6 +83,7 @@ public class Tache implements Serializable {
         if (nom == null || nom.equals("")) {
             throw new TacheException("Le nom d'une tâche ne peut pas être vide");
         }
+        this.id=0l;
         this.nom = nom;
         this.description = description;
         this.importance = ImportanceEnum.NORMALE;
@@ -99,6 +105,17 @@ public class Tache implements Serializable {
      */
     public Byte getPourcentage() {
         return pourcentage;
+    }
+    public boolean isArchive() {
+        return archive == '1';
+    }
+
+    public void setArchive(boolean archive) {
+        if (archive){
+        this.archive = '1';
+        }else{
+            this.archive = '0';
+        }
     }
 
     /**
@@ -242,14 +259,15 @@ public class Tache implements Serializable {
     public void setTempsPasseSurTache(Date tempsPasseSurTache) {
         this.tempsPasseSurTache = tempsPasseSurTache;
     }
-    
-    public void addMembre(Membre membre) {
-        if (membre == null)
-            throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
 
-        if (hasMembre(membre))
+    public void addMembre(Membre membre) {
+        if (membre == null) {
+            throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
+        }
+        if (hasMembre(membre)) {
             return;
-        
+        }
+
         membres.add(new ParticipeTache(this, membre));
         String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // FIXME
         String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // FIXME
@@ -258,38 +276,40 @@ public class Tache implements Serializable {
         corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=refuserTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Refuser</a></p>";
         corps += "<br/><br/>A bientôt !";
         try {
-            Mailer.send(membre.getEmail(), "Invitation à rejoindre un tâche", corps);
+            Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps);
         } catch (MailException ex) {
             Logger.getLogger(Tache.class.getName()).log(Level.SEVERE, null, ex); // FIXME
         }
     }
-    
+
     public boolean hasMembre(Membre membre) {
         return membres.contains(new ParticipeTache(this, membre));
     }
-    
+
     public int getNbMembres() {
         return membres.size();
     }
-    
+
     public List<Membre> getMembres() {
         List<Membre> ret = new ArrayList<Membre>();
         for (ParticipeTache participant : membres) {
-            if (participant.isAccepte())
+            if (participant.isAccepte()) {
                 ret.add(participant.getMembre());
+            }
         }
-        
+
         return ret;
     }
-    
+
     public List<Membre> getAllMembres() {
         List<Membre> ret = new ArrayList<Membre>();
-        for (ParticipeTache participant : membres)
+        for (ParticipeTache participant : membres) {
             ret.add(participant.getMembre());
-        
+        }
+
         return ret;
     }
-    
+
     public Projet getProjet() {
         return new Projet();
 //        return projet; // TODO
