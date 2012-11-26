@@ -19,32 +19,36 @@
 						<div id="fieldNom" class="control-group">
 							<label class="control-label" for="txtNom">Nom</label>
 							<div id="controlNom" class="controls">
-								<h:inputText id="txtNom" required="true" onfocus="clearErrors()"/>
+								<h:inputText id="txtNom" required="true" onfocus="clearErrors()"
+									value="#{userSessionControleur.inputNom}"/>
 							</div>
 						</div>
 
 						<div id="fieldMdp" class="control-group">
 							<label class="control-label" for="txtMdp">Mot de passe</label>
 							<div id="controlMdp" class="controls">
-								<h:inputSecret id="txtPass" required="true" onfocus="clearErrors()"/>
+								<h:inputSecret id="txtPass" required="true" onfocus="clearErrors()"
+									value="#{userSessionControleur.inputPassword}"/>
 							</div>
 						</div>
 
 						<div class="controls">
-							<!-- h:commandButton value="Identification" styleClass="btn btn-large btn-success"/ -->
 							<input id="btnIdentification"
 								type="button"
 								class="btn btn-large btn-success"
 								onclick="onSubmit()"
 								value="Identification"/>
-							<!--<input id="btnIdentification"
-								class="btn btn-large btn-success"
-								type="button"
-								onclick="onSubmit()"
-								value="Identification"/>-->
+							<h:commandButton value="Identification (TEST)" styleClass="btn btn-large"
+								action="#{userSessionControleur.identifier}"/>
 						</div>
 						
-						<h:messages/>
+						<p class="text-error">
+							<h:outputText rendered="#{userSessionControleur.identificationEchouee}">
+								Identifiant ou mot de passe invalide
+							</h:outputText>
+							<h:outputText value="#{userSessionControleur.identificationEchouee}"/>
+							<h:messages/>
+						</p>
 					</fieldset>
 				</h:form>
 			</div>
