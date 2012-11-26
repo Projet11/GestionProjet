@@ -32,5 +32,23 @@
             <from-outcome>failure</from-outcome>
             <to-view-id>/pages/creeTache.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>annuler</from-outcome>
+            <to-view-id>/accueil.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/pages/afficherTaches.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/afficherTaches.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/accueil.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>creeTache</from-outcome>
+            <to-view-id>/pages/creeTache.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
 </faces-config>

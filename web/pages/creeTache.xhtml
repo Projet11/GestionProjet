@@ -11,11 +11,12 @@
         <title>Création de tâche</title>
     </h:head>
     <h:body>
+
         <div class="hero-unit">
             <legend>Ajout de tache</legend>
             <!-- Debut formulaire -->
 
-            <h:form name=" Ajouter une tâche" class="form-horizontal">
+            <h:form name="Ajouter une tâche" class="form-horizontal">
                 <fieldset>
                     <!-- Nom -->
                     <div class="control-group">
@@ -23,8 +24,6 @@
                         <div class="controls">
                             <h:inputText type="text" id="Nom" label="Nom" value="#{tacheEJB.creationNom}" required="true" onblur="valideNom(this)"/>  
                             <span class="help-inline" id="nomError"></span>
-
-                            <!-- class="text-warning" -->
                         </div>
                     </div>
 
@@ -50,8 +49,13 @@
 
                     <!-- Fin -->
                     <div class="controls">
-                        <h:commandButton class="btn btn-success" action="#{tacheEJB.creerTache()}" value="Créer"/> 
-                        <h:commandButton class="btn btn-danger" action="#{tacheEJB.annulerCreation()}" value="Annuler"/>
+                        <div class="span1">
+                            <h:commandButton class="btn btn-success" action="#{tacheEJB.creerTache()}" value="Créer"/> 
+                        </div>
+
+                        <div class="span1">
+                            <h:commandButton class="btn btn-danger" action="#{tacheEJB.annulerCreation()}" value="Annuler" immediate="true"/>
+                        </div>
                     </div>
                     <h:message for="Nom" />
                 </fieldset>
