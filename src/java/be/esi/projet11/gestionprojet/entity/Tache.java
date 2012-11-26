@@ -84,6 +84,7 @@ public class Tache implements Serializable {
         if (nom == null || nom.equals("")) {
             throw new TacheException("Le nom d'une tâche ne peut pas être vide");
         }
+        this.id=0l;
         this.nom = nom;
         this.description = description;
         this.importance = ImportanceEnum.NORMALE;
