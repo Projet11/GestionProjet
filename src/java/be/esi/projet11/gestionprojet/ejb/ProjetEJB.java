@@ -44,7 +44,7 @@ public class ProjetEJB {
     public Projet creerProjet(String nom, String description) {
         Query query = em.createNamedQuery("Tache.findByNom");
         query.setParameter("nom", nom);
-        if (query.getSingleResult() == null) {
+        if (query.getResultList().isEmpty()) {
             Projet unProjet = new Projet(0l, nom, description);
             em.persist(unProjet);
             em.flush();

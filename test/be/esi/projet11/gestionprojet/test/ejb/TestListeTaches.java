@@ -70,6 +70,14 @@ public class TestListeTaches {
     
     @Test
     public void testGetTachesNonArchivees(){
+        id = instanceTacheEJB.getTache("5").getId();
+        instanceTacheEJB.desarchiverTache(id);
+        id = instanceTacheEJB.getTache("6").getId();
+        instanceTacheEJB.desarchiverTache(id);
+        id = instanceTacheEJB.getTache("7").getId();
+        instanceTacheEJB.desarchiverTache(id);
+        id = instanceTacheEJB.getTache("8").getId();
+        instanceTacheEJB.desarchiverTache(id);
         assertEquals(instanceTacheEJB.getTaches(false,p).size(), 4);
     }
     
