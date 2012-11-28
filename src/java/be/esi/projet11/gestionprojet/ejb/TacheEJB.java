@@ -66,4 +66,9 @@ public class TacheEJB {
     public void modificationTache(Tache tacheCourante) {
         em.merge(tacheCourante);
     }
+
+    public Collection<Tache> getAllTimerLaunched() {
+        Query query = em.createNamedQuery("Tache.findTimerLaunched");
+        return query.getResultList();
+    }
 }
