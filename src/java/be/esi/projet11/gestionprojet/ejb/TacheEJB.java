@@ -85,4 +85,31 @@ public class TacheEJB {
         Query query = em.createNamedQuery("Tache.findTimerLaunched");
         return query.getResultList();
     }
+    
+    public void archiverTache(Long id) {
+        Tache tache = em.find(Tache.class, id);
+        tache.setArchive(true);
+        em.merge(tache);
+    }
+
+    public void desarchiverTache(Long id) {
+        Tache tache = em.find(Tache.class, id);
+        tache.setArchive(false);
+        em.merge(tache);
+    }
+
+    public Collection<Tache> getTaches(Boolean archive, Projet p) {
+        Query query;
+        if (archive == null) {
+            query = em.createNamedQuery("Tache.findTachesByProjet");
+        } else {
+            if (archive) {
+                query = em.createNamedQuery("Tache.findTachesArchiveesByProjet");
+            } else {
+                query = em.createNamedQuery("Tache.findTachesNonArchiveesByProjet");
+            }
+        }
+        query.setParameter("projet", p);
+        return query.getResultList();
+    }
 }
