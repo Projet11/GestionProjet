@@ -17,6 +17,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -24,6 +26,8 @@ import javax.persistence.OneToMany;
  * @author g34771
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Projet.findAll", query = "SELECT p FROM Projet p")})
 public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -70,7 +74,6 @@ public class Projet implements Serializable {
     public void setParticipants(List<ParticipeProjet> participants) {
         this.participants = participants;
     }
-    
 
     @Override
     public boolean equals(Object object) {
@@ -145,7 +148,7 @@ public class Projet implements Serializable {
     public void ajouterMembre(Membre mbr) {
         if (!containsMembre(mbr)) {
             participants.add(new ParticipeProjet(mbr, this, false));
-            System.out.println("participants size="+participants.size());
+            System.out.println("participants size=" + participants.size());
             try {
                 String objet = "Ajout a un projet";
                 String corps = "<html>Vous etes invité a etre ajouter au projet " + nom + ". </br> ";
