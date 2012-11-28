@@ -69,6 +69,8 @@ public class Membre implements Serializable {
     private String prenom;
     @OneToMany(cascade= CascadeType.ALL, mappedBy="membre1")
     private Collection<ParticipeProjet> projets;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "membre")
+    private Collection<ParticipeTache> taches;
 
     public Membre() {
     }
@@ -88,6 +90,11 @@ public class Membre implements Serializable {
 
     public Membre(String mail) {
         this.mail = mail;
+    }
+    
+    // Ne sert que pour les tests
+    public void setId(Long id) {
+        this.id = id;
     }
     
     public Long getId() {
