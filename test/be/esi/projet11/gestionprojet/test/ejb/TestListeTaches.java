@@ -5,8 +5,10 @@
 package be.esi.projet11.gestionprojet.test.ejb;
 
 import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
+import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
+import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,11 +45,11 @@ public class TestListeTaches {
         instanceProjetEJB = (ProjetEJB) container.getContext().lookup("java:global/GestionProjet/classes/ProjetEJB");
         collection = new ArrayList<Tache>();
         p = instanceProjetEJB.creerProjet("Projet 1","description");
-        collection.add(instanceTacheEJB.creerTache("4", "",p));
-        collection.add(instanceTacheEJB.creerTache("5", "",p));
-        collection.add(instanceTacheEJB.creerTache("6", "",p));
-        collection.add(instanceTacheEJB.creerTache("7", "",p));
-        collection.add(instanceTacheEJB.creerTache("8", "",p));
+        collection.add(instanceTacheEJB.creerTache("4", "", ImportanceEnum.IMPORTANT,p));
+        collection.add(instanceTacheEJB.creerTache("5", "", ImportanceEnum.IMPORTANT,p));
+        collection.add(instanceTacheEJB.creerTache("6", "", ImportanceEnum.IMPORTANT,p));
+        collection.add(instanceTacheEJB.creerTache("7", "", ImportanceEnum.IMPORTANT,p));
+        collection.add(instanceTacheEJB.creerTache("8", "", ImportanceEnum.IMPORTANT,p));
         id = instanceTacheEJB.getTache("4").getId();
     }
 

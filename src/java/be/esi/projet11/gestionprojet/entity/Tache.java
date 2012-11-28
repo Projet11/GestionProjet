@@ -39,10 +39,10 @@ import javax.persistence.Temporal;
 @NamedQueries({
     @NamedQuery(name = "Tache.findByNom", query = "SELECT t FROM Tache t WHERE t.nom = :nom"),
     @NamedQuery(name = "Tache.findAll", query = "SELECT t FROM Tache t"),
-@NamedQuery(name = "Tache.findTachesArchivees", query = "SELECT t FROM Tache t WHERE t.archive = '1'"),             
+    @NamedQuery(name = "Tache.findTachesArchivees", query = "SELECT t FROM Tache t WHERE t.archive = '1'"),
     @NamedQuery(name = "Tache.findTachesNonArchivees", query = "SELECT t FROM Tache t WHERE t.archive = '0'"),
     @NamedQuery(name = "Tache.findTachesByProjet", query = "SELECT t FROM Tache t WHERE t.projet = :projet"),
-    @NamedQuery(name = "Tache.findTachesArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '1' AND t.projet = :projet"),             
+    @NamedQuery(name = "Tache.findTachesArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '1' AND t.projet = :projet"),
     @NamedQuery(name = "Tache.findTachesNonArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '0' AND t.projet = :projet")})
 public class Tache implements Serializable {
 
@@ -83,7 +83,7 @@ public class Tache implements Serializable {
         if (nom == null || nom.equals("")) {
             throw new TacheException("Le nom d'une tâche ne peut pas être vide");
         }
-        this.id=0l;
+        this.id = 0l;
         this.nom = nom;
         this.description = description;
         this.importance = ImportanceEnum.NORMALE;
@@ -98,6 +98,12 @@ public class Tache implements Serializable {
         this.importance = importance;
     }
 
+    public Tache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {
+        this(nom, description);
+        this.importance = importance;
+        this.projet = p;
+    }
+
     /**
      * Get the value of pourcentage
      *
@@ -106,14 +112,15 @@ public class Tache implements Serializable {
     public Byte getPourcentage() {
         return pourcentage;
     }
+
     public boolean isArchive() {
         return archive == '1';
     }
 
     public void setArchive(boolean archive) {
-        if (archive){
-        this.archive = '1';
-        }else{
+        if (archive) {
+            this.archive = '1';
+        } else {
             this.archive = '0';
         }
     }

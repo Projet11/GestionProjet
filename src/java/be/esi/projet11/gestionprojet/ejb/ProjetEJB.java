@@ -7,6 +7,7 @@ package be.esi.projet11.gestionprojet.ejb;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.ParticipeProjet;
 import be.esi.projet11.gestionprojet.entity.Projet;
+import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,21 +21,9 @@ public class ProjetEJB {
 
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
-    
-    public Projet creerProjet(String nom, String description){
-        Projet unProjet = new Projet(0l,nom, description);
-        em.persist(unProjet);
-        em.flush();
-        return unProjet;        
-    }
-    
-    
-    public Projet getProjetById(Long id){
-        return em.find(Projet.class, id);
-    }
-    
-    public Projet getProjet(){
-        return em.find(Projet.class, 1l);
+
+    public Projet getProjetById(long projetId) {
+        return em.find(Projet.class, projetId);
     }
 
     public Projet CreerProjet() {
@@ -47,5 +36,12 @@ public class ProjetEJB {
         projet.refuserParticipant(mbr);
         em.merge(projet);
         System.out.println("projet size" + projet.getAllParticipant().size());
+    }
+
+    public Projet creerProjet(String nom, String description){
+        Projet unProjet = new Projet(0l,nom, description);
+        em.persist(unProjet);
+        em.flush();
+        return unProjet;        
     }
 }
