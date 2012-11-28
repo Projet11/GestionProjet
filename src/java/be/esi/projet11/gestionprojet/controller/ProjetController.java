@@ -54,7 +54,7 @@ public class ProjetController {
 
     public Projet getProjetCourant() {
         if(projetCourant==null){
-            projetCourant= projetEJB.creerProjet("Projet 1","description");
+            projetCourant= projetEJB.CreerProjet();
         }
         return projetCourant;
     }
@@ -65,7 +65,7 @@ public class ProjetController {
 
     public String ajouterMembre(){
         membreEJB.ajoutMembreProjet(email, getProjetCourant());
-        membres = projetCourant.getListeMembres();
+        membres = projetCourant.getAllParticipant();
         return "ajouter";
     }
 }

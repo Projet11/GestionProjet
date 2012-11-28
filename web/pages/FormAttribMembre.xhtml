@@ -8,10 +8,10 @@
     </h:head>
     <h:body>
         <h:form>
-            <h:selectManyMenu value="#{membreManage.membreSel}">
-                <f:selectItems value="#{membreManage.allMembres}"/>
+            <h:selectManyMenu value="#{tacheCtrl.membresSel}">
+                <f:selectItems value="#{projetCtrl.projetCourant.allParticipant}"/>
             </h:selectManyMenu>
-            <h:commandButton action="#{tacheEJB.inscrireMembresATache}" />
+            <h:commandButton action="#{tacheCtrl.inscrireMembresATache}" />
         </h:form>
     </h:body>
 </html>

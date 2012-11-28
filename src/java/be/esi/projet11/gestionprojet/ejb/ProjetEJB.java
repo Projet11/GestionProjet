@@ -4,6 +4,8 @@
  */
 package be.esi.projet11.gestionprojet.ejb;
 
+import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.entity.ParticipeProjet;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -11,7 +13,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author g32460
+ * @author g34771
  */
 @Stateless
 public class ProjetEJB {
@@ -35,4 +37,15 @@ public class ProjetEJB {
         return em.find(Projet.class, 1l);
     }
 
+    public Projet CreerProjet() {
+        Projet p = new Projet();
+        em.persist(p);
+        return p;
+    }
+
+    public void removeParticipeProjet(Projet projet, Membre mbr) {
+        projet.refuserParticipant(mbr);
+        em.merge(projet);
+        System.out.println("projet size" + projet.getAllParticipant().size());
+    }
 }
