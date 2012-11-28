@@ -9,6 +9,7 @@ import be.esi.projet11.gestionprojet.exception.MailException;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -230,6 +231,11 @@ public class Tache implements Serializable {
     public void setTimerLaunched(boolean timerLaunched) {
         this.timerLaunched = (timerLaunched ? '1' : '0');
         setDateDeb(new Date());
+    }
+    
+    public Time getTimer() {
+        Date currDate = new Date();
+        return new Time(currDate.getTime() - getDateDeb().getTime());
     }
 
     /**
