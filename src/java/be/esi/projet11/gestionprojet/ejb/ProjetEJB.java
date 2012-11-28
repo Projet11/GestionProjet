@@ -6,9 +6,11 @@ package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -34,5 +36,10 @@ public class ProjetEJB {
         projet.refuserParticipant(mbr);
         em.merge(projet);
         System.out.println("projet size" + projet.getAllParticipant().size());
+    }
+
+    public List<Projet> getAllProjets() {
+        Query query=em.createNamedQuery("Projet.findAll");
+        return query.getResultList();
     }
 }

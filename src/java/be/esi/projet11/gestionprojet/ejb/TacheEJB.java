@@ -67,9 +67,10 @@ public class TacheEJB {
 
     public void modificationTache(Tache tacheCourante) {
     }
-    public void ajouterConversation(Tache tacheCourante,Membre membre, String commentaire){
-    tacheCourante.setConversation(new Conversation(membre, commentaire));
-    em.merge(tacheCourante);
+
+    public void ajouterConversation(Tache tacheCourante, Membre membre, String commentaire) {
+        tacheCourante.getConversation().add(new Conversation(membre, commentaire));
+        em.merge(tacheCourante);
     }
 
     public void modificationTache(Tache tacheCourante, int intValue, Long revisionParam, ImportanceEnum importanceParam) throws TacheException {
@@ -78,5 +79,10 @@ public class TacheEJB {
         tacheCourante.setSVNRevision(revisionParam);
         em.merge(tacheCourante);
 
+    }
+
+    public Collection<Tache> getAllTimerLaunched() {
+        Query query = em.createNamedQuery("Tache.findTimerLaunched");
+        return query.getResultList();
     }
 }

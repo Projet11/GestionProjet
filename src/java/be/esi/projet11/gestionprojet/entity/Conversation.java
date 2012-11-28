@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.TableGenerator;
 
 /**
@@ -24,15 +25,14 @@ public class Conversation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long idTache;
+    @JoinColumn(name = "TACHE", referencedColumnName = "ID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Tache tache;
+    @Column(nullable = false)
+    private Membre membre;
+    @Column(nullable = false)
+    private String commentaire;
 
-    public Long getIdTache() {
-        return idTache;
-    }
-
-    public void setIdTache(Long idTache) {
-        this.idTache = idTache;
-    }
 
     public Membre getMembre() {
         return membre;
@@ -41,10 +41,7 @@ public class Conversation implements Serializable {
     public void setMembre(Membre membre) {
         this.membre = membre;
     }
-    @Column(nullable = false)
-    private Membre membre;
-    @Column(nullable = false)
-    private String commentaire;
+
 
     public Conversation() {
     }

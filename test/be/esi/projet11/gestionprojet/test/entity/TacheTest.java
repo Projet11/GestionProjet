@@ -141,7 +141,7 @@ public class TacheTest {
         } catch (TacheException ex) {
             Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        tache.addMembre(new Membre(0l, "", "", "", "Membre 1", "Membre1@gmail.com"));
+        tache.addMembre(new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1"));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -163,8 +163,8 @@ public class TacheTest {
         } catch (TacheException ex) {
             Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Membre membre = new Membre(0l, "", "", "", "Membre 1", "Membre1@gmail.com");
-        Membre membrePasPresent = new Membre(0l, "", "", "", "Membre 2", "Membre2@yahoo.com");
+        Membre membre = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
+        Membre membrePasPresent = new Membre(1l, "Membre 2", "pass", "mail2@example.com", "Nom2", "Prenom2");
         tache.addMembre(membre);
 
         Assert.assertTrue(tache.hasMembre(membre));
@@ -179,7 +179,7 @@ public class TacheTest {
         } catch (TacheException ex) {
             Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Membre membre = new Membre(0l, "", "", "", "Membre 1", "Membre1@gmail.com");
+        Membre membre = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
 
         tache.addMembre(membre);
         tache.addMembre(membre);
@@ -195,13 +195,13 @@ public class TacheTest {
         } catch (TacheException ex) {
             Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Membre membre1 = new Membre(0l, "", "", "", "Membre 1", "Membre1@gmail.com");
-        Membre membre2 = new Membre(0l, "", "", "", "Membre 2", "Membre2@yahoo.com");
+        Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
+        Membre membre2 = new Membre(1l, "Membre 2", "pass", "mail2@example.com", "Nom2", "Prenom2");
 
         tache.addMembre(membre1);
         tache.addMembre(membre2);
 
-        Assert.assertEquals(tache.getNbMembres(), 2);
+        Assert.assertEquals(2, tache.getNbMembres());
     }
 
     @Test
@@ -226,8 +226,8 @@ public class TacheTest {
         } catch (TacheException ex) {
             Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Membre membre1 = new Membre(0l, "", "", "", "Membre 1", "Membre1@gmail.com");
-        Membre membre2 = new Membre(0l, "", "", "", "Membre 2", "Membre2@yahoo.com");
+        Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
+        Membre membre2 = new Membre(1l, "Membre 2", "pass", "mail2@example.com", "Nom2", "Prenom2");
 
         tache.addMembre(membre1);
         tache.addMembre(membre2);
@@ -248,8 +248,8 @@ public class TacheTest {
         } catch (TacheException ex) {
             Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Membre membre1 = new Membre(0l, "", "", "", "Membre 1", "Membre1@gmail.com");
-        Membre membre2 = new Membre(0l, "", "", "", "Membre 2", "Membre2@yahoo.com");
+        Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
+        Membre membre2 = new Membre(0l, "Membre 2", "pass", "mail2@example.com", "Nom2", "Prenom2");
         
         tache.addMembre(membre1);
         tache.addMembre(membre2);

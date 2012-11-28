@@ -4,15 +4,18 @@
  */
 package be.esi.projet11.gestionprojet.controller;
 
+import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Conversation;
 import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -151,10 +154,22 @@ public class TacheController {
 
     public void startTimer() {
         getTacheCourante().setTimerLaunched(true);
+        tacheEJB.saveTache(tacheCourante);
     }
 
     public void stopTimer() {
-        getTacheCourante().setTimerLaunched(true);
+        getTacheCourante().setTimerLaunched(false);
+        tacheEJB.saveTache(tacheCourante);
+    }
+    
+    public void startTimer(Tache tache) {
+        tache.setTimerLaunched(true);
+        tacheEJB.saveTache(tache);
+    }
+
+    public void stopTimer(Tache tache) {
+        tache.setTimerLaunched(false);
+        tacheEJB.saveTache(tache);
     }
 
     public Time getTimer() {
@@ -164,6 +179,10 @@ public class TacheController {
 
     public boolean isTimerLaunched() {
         return getTacheCourante().isTimerLaunched();
+    }
+    
+    public Collection<Tache> getAllTimerLaunched(){
+        return tacheEJB.getAllTimerLaunched();
     }
 
     public String inscrireMembresATache() {
