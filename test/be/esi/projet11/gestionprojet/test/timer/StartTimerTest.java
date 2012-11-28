@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package be.esi.projet11.gestionprojet.test;
+package be.esi.projet11.gestionprojet.test.timer;
 
-import be.esi.projet11.gestionprojet.ejb.TacheEJB;
+import be.esi.projet11.gestionprojet.ejb.TacheEJBOLD;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
@@ -13,6 +13,11 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.embeddable.EJBContainer;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -28,7 +33,7 @@ public class StartTimerTest {
 
     private static EJBContainer container;
     private static HashMap<Object, Object> properties;
-    private TacheEJB instance;
+    private TacheEJBOLD instance;
 
     public StartTimerTest() {
     }
@@ -46,9 +51,9 @@ public class StartTimerTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws TacheException, NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
         if (instance == null) {
-            instance = new TacheEJB();
+            instance = new TacheEJBOLD();
         }
     }
 

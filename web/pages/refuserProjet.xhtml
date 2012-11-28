@@ -4,14 +4,11 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Formulaire d'attribution de membres</title>
+        <title>Refusé l'ajout a un projet</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:selectManyMenu value="#{tacheCtrl.membresSel}">
-                <f:selectItems value="#{projetCtrl.projetCourant.allParticipant}"/>
-            </h:selectManyMenu>
-            <h:commandButton action="#{tacheCtrl.inscrireMembresATache}" />
-        </h:form>
+        <f:view beforePhase="#{mailCtrl.refusAjoutMembreProjet()}"/>
+        Vous avez refusé d'etre rajouté au projet: #{mailCtrl.projet.nom}
     </h:body>
 </html>
+

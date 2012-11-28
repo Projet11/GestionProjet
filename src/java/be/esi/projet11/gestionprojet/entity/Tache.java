@@ -4,6 +4,7 @@
  */
 package be.esi.projet11.gestionprojet.entity;
 
+import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.MailException;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
@@ -28,7 +29,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
-import tache.ImportanceEnum;
 
 /**
  *
@@ -83,6 +83,7 @@ public class Tache implements Serializable {
         if (nom == null || nom.equals("")) {
             throw new TacheException("Le nom d'une tâche ne peut pas être vide");
         }
+        this.id=0l;
         this.nom = nom;
         this.description = description;
         this.importance = ImportanceEnum.NORMALE;
