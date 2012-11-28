@@ -5,42 +5,46 @@
 package be.esi.projet11.gestionprojet.entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /**
  *
  * @author g35364
  */
-
+@Embeddable
 public class ParticipeTachePK implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+    @Basic(optional = false)
+    @Column(name = "MEMBRE")
     protected long membre;
+    @Basic(optional = false)
+    @Column(name = "TACHE")
     protected long tache;
 
     public ParticipeTachePK() {
     }
     
-    public ParticipeTachePK(Tache tache, Membre membre) {
-//        this.membre = membre;
-//        this.tache = tache;
+    public ParticipeTachePK(long tache, long membre) {
+        this.membre = membre;
+        this.tache = tache;
     }
 
-    public Membre getMembre() {
-//        return membre;
-        return null;
+    public long getMembre() {
+        return membre;
     }
 
-    public void setMembre(Membre membre) {
-//        this.membre = membre;
+    public void setMembre(long membre) {
+        this.membre = membre;
     }
 
-    public Tache getTache() {
-//        return tache;
-        return null;
+    public long getTache() {
+        return tache;
     }
 
-    public void setTache(Tache tache) {
-//        this.tache = tache;
+    public void setTache(long tache) {
+        this.tache = tache;
     }
 
     @Override

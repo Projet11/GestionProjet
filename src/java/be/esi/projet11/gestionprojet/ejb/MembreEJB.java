@@ -48,11 +48,15 @@ public class MembreEJB {
         }
     }
 
-    public Collection <Membre> getAllUsers() throws DBException {
+    public Membre getById(long id) {
+        return em.find(be.esi.projet11.gestionprojet.entity.Membre.class, id);
+    }
+
+    public Collection<Membre> getAllUsers() throws DBException {
         try {
             return em.createNamedQuery("Membre.findAll").getResultList();
         } catch (Exception e) {
-            throw new DBException("Impossible de charger l'ensemble des clients !\n");
+            throw new DBException("Impossible de charger l'ensemble des membres !\n");
         }
     }
 
