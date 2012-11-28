@@ -48,7 +48,7 @@ public class MembreEJB {
         }
     }
 
-    public Collection getAllUsers() throws DBException {
+    public Collection <Membre> getAllUsers() throws DBException {
         try {
             return em.createNamedQuery("Membre.findAll").getResultList();
         } catch (Exception e) {
@@ -143,7 +143,7 @@ public class MembreEJB {
 
     public Membre getMembreByEmail(String email) {
         Membre mbr = null;
-        Query q = em.createQuery("select m from Membre m where m.mail = :mail");
+        Query q = em.createNamedQuery("Membre.findByMail");
         q.setParameter("mail", email);
         try {
             mbr = (Membre) q.getSingleResult();
