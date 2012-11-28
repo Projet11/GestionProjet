@@ -21,7 +21,7 @@
                     <div class="control-group">
                         <label class="control-label" for="nomDeTache">Nom</label>
                         <div class="controls">
-                            <h:inputText type="text" id="Nom" label="Nom" value="#{tacheEJB.creationNom}" required="true" onblur="valideNom(this)"/>  
+                            <h:inputText type="text" id="Nom" label="Nom" value="#{tacheCtrl.creationNom}" required="true" onblur="valideNom(this)"/>  
                             <span class="help-inline" id="nomError"></span>
 
                             <!-- class="text-warning" -->
@@ -32,7 +32,7 @@
                     <div class="control-group">
                         <label class="control-label" for="priorite">Importance</label>
                         <div class="controls">
-                            <h:selectOneMenu value="#{tacheEJB.creationImportance}">
+                            <h:selectOneMenu value="#{tacheCtrl.creationImportance}">
                                 <f:selectItem itemValue="#{ImportanceEnum.NORMALE}" itemLabel="Normale"/>
                                 <f:selectItem itemValue="#{ImportanceEnum.IMPORTANT}" itemLabel="Importante"/>
                                 <f:selectItem itemValue="#{ImportanceEnum.TRESIMPORTANT}" itemLabel="Très importante"/>
@@ -44,14 +44,14 @@
                     <div class="control-group">
                         <label class="control-label" for="description">Description  </label>
                         <div class="controls">
-                            <h:inputTextarea rows="3" id="description" cols="30" value="#{tacheEJB.creationDescription}"></h:inputTextarea>
+                            <h:inputTextarea rows="3" id="description" cols="30" value="#{tacheCtrl.creationDescription}"></h:inputTextarea>
                         </div>
                     </div>
 
                     <!-- Fin -->
                     <div class="controls">
-                        <h:commandButton class="btn btn-success" action="#{tacheEJB.creerTache()}" value="Créer"/> 
-                        <h:commandButton class="btn btn-danger" action="#{tacheEJB.annulerCreation()}" value="Annuler"/>
+                        <h:commandButton class="btn btn-success" action="#{tacheCtrl.creerTache()}" value="Créer"/> 
+                        <h:commandButton class="btn btn-danger" action="#{tacheCtrl.annulerCreation()}" value="Annuler"/>
                     </div>
                     <h:message for="Nom" />
                 </fieldset>

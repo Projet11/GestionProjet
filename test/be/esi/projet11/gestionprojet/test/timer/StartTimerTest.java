@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package be.esi.projet11.gestionprojet.test;
+package be.esi.projet11.gestionprojet.test.timer;
 
 import be.esi.projet11.gestionprojet.ejb.TacheEJBOLD;
 import be.esi.projet11.gestionprojet.entity.Tache;
