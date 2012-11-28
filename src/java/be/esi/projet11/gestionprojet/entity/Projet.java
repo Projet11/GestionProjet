@@ -19,6 +19,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
@@ -27,6 +29,8 @@ import javax.persistence.Temporal;
  * @author g34771
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Projet.findByNom", query = "SELECT p FROM Projet p WHERE p.nom = :nom")})
 public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;

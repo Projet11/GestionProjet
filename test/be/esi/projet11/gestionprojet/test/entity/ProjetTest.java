@@ -6,6 +6,7 @@ package be.esi.projet11.gestionprojet.test.entity;
 
 import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.entity.Projet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import javax.ejb.EJBException;
 import javax.ejb.embeddable.EJBContainer;

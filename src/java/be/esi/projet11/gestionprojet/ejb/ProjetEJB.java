@@ -7,10 +7,13 @@ package be.esi.projet11.gestionprojet.ejb;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.ParticipeProjet;
 import be.esi.projet11.gestionprojet.entity.Projet;
+import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -38,10 +41,16 @@ public class ProjetEJB {
         System.out.println("projet size" + projet.getAllParticipant().size());
     }
 
-    public Projet creerProjet(String nom, String description){
-        Projet unProjet = new Projet(0l,nom, description);
-        em.persist(unProjet);
-        em.flush();
-        return unProjet;        
+    public Projet creerProjet(String nom, String description) {
+        Query query = em.createNamedQuery("Tache.findByNom");
+        query.setParameter("nom", nom);
+        if (query.getSingleResult() == null) {
+            Projet unProjet = new Projet(0l, nom, description);
+            em.persist(unProjet);
+            em.flush();
+            return unProjet;
+        } else {
+            throw new EJBException("Le projet est déjà existant");
+        }
     }
 }
