@@ -92,6 +92,11 @@ public class Membre implements Serializable {
         this.mail = mail;
     }
     
+    // Ne sert que pour les tests
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public Long getId() {
         return id;
     }
