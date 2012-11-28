@@ -70,7 +70,7 @@ public class Tache implements Serializable {
     private char archive;
     @JoinColumn(name = "PROJET", referencedColumnName = "ID")
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
+    private Projet projet;
     
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");

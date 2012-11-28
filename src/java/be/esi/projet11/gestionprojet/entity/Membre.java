@@ -69,6 +69,8 @@ public class Membre implements Serializable {
     private String prenom;
     @OneToMany(cascade= CascadeType.ALL, mappedBy="membre1")
     private Collection<ParticipeProjet> projets;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "membre")
+    private Collection<ParticipeTache> taches;
 
     public Membre() {
     }
