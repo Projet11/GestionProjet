@@ -25,7 +25,7 @@ nbproject
 lib/nblibraries.properties
 lib/CopyLibs
 lib/CopyLibs-*
-lib/javaee-endorsed-api-6.0-*
+lib/javaee-endorsed-api-6.0*
 lib/junit*
 !lib/junit_4
 *.sublime-project
