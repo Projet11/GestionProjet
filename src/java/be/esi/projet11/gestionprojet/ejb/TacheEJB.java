@@ -1,5 +1,7 @@
 package be.esi.projet11.gestionprojet.ejb;
 
+import be.esi.projet11.gestionprojet.entity.Conversation;
+import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
@@ -64,6 +66,17 @@ public class TacheEJB {
     }
 
     public void modificationTache(Tache tacheCourante) {
+    }
+    public void ajouterConversation(Tache tacheCourante,Membre membre, String commentaire){
+    tacheCourante.setConversation(new Conversation(membre, commentaire));
+    em.merge(tacheCourante);
+    }
+
+    public void modificationTache(Tache tacheCourante, int intValue, Long revisionParam, ImportanceEnum importanceParam) throws TacheException {
+        tacheCourante.setImportance(importanceParam);
+        tacheCourante.setPourcentage(intValue);
+        tacheCourante.setSVNRevision(revisionParam);
         em.merge(tacheCourante);
+
     }
 }

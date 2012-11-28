@@ -5,7 +5,6 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
-import be.esi.projet11.gestionprojet.entity.ParticipeProjet;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

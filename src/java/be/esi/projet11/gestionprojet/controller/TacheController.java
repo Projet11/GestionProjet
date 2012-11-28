@@ -5,6 +5,7 @@
 package be.esi.projet11.gestionprojet.controller;
 
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
+import be.esi.projet11.gestionprojet.entity.Conversation;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
@@ -36,9 +37,27 @@ public class TacheController {
     private Long revisionParam;
     private Long pourcentageParam;
     private Collection<Membre> membresSel;
+    private Membre membreCourantParam;
+    private String commentaireParam;
+
+    public Membre getMembreCourantParam() {
+        return membreCourantParam;
+    }
+
+    public void setMembreCourantParam(Membre membreCourantParam) {
+        this.membreCourantParam = membreCourantParam;
+    }
+
+    public String getCommentaireParam() {
+        return commentaireParam;
+    }
+
+    public void setCommentaireParam(String commentaireParam) {
+        this.commentaireParam = commentaireParam;
+    }
     //
     private Tache tacheCourante;
-    
+
     /**
      * Creates a new instance of TacheController
      */
@@ -86,7 +105,7 @@ public class TacheController {
     }
 
     public Tache getTacheCourante() {
-        if (tacheCourante == null){
+        if (tacheCourante == null) {
             try {
                 tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
             } catch (TacheException ex) {
@@ -107,15 +126,16 @@ public class TacheController {
     public void setMembresSel(Collection<Membre> membresSel) {
         this.membresSel = membresSel;
     }
-    
-  public SelectItem[] getImportanceValues() {
-    SelectItem[] items = new SelectItem[ImportanceEnum.values().length];
-    int i = 0;
-    for(ImportanceEnum g: ImportanceEnum.values()) {
-      items[i++] = new SelectItem(g, g.getLibelle());
+
+    public SelectItem[] getImportanceValues() {
+        SelectItem[] items = new SelectItem[ImportanceEnum.values().length];
+        int i = 0;
+        for (ImportanceEnum g : ImportanceEnum.values()) {
+            items[i++] = new SelectItem(g, g.getLibelle());
+        }
+        return items;
     }
-    return items;
-  }
+
     public String creerTache() {
         try {
             tacheEJB.creerTache(nomParam, descriptionParam, importanceParam);
@@ -128,7 +148,7 @@ public class TacheController {
     public String annulerCreation() {
         return "failure"; // TODO: return annulation pour un comportement différent ?
     }
-    
+
     public void startTimer() {
         getTacheCourante().setTimerLaunched(true);
     }
@@ -154,10 +174,20 @@ public class TacheController {
         return "success";
     }
 
-    public void modificationTache() throws TacheException {
-        tacheCourante.setPourcentage(pourcentageParam.intValue());
-        tacheCourante.setSVNRevision(revisionParam);
-        tacheCourante.setImportance(importanceParam);
-        tacheEJB.modificationTache(tacheCourante);
+    public void modificationTache() {
+        try {
+            tacheEJB.modificationTache(tacheCourante, pourcentageParam.intValue(), revisionParam, importanceParam);
+        } catch (TacheException ex) {
+            System.err.println("Il existe au moins une donnée entrés  dans les paramètres entrés");
+        }
+    }
+
+    public void ajouterConversation() {
+        if (tacheCourante != null && membreCourantParam != null
+                && commentaireParam != null && !commentaireParam.isEmpty()) {
+            tacheEJB.ajouterConversation(tacheCourante, membreCourantParam, commentaireParam);
+        } else {
+            System.err.println("la tache, le membre ou le commentaire ne peut être vide");
+        }
     }
 }
