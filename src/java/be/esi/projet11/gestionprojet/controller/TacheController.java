@@ -131,10 +131,22 @@ public class TacheController {
     
     public void startTimer() {
         getTacheCourante().setTimerLaunched(true);
+        tacheEJB.saveTache(tacheCourante);
     }
 
     public void stopTimer() {
-        getTacheCourante().setTimerLaunched(true);
+        getTacheCourante().setTimerLaunched(false);
+        tacheEJB.saveTache(tacheCourante);
+    }
+    
+    public void startTimer(Tache tache) {
+        tache.setTimerLaunched(true);
+        tacheEJB.saveTache(tache);
+    }
+
+    public void stopTimer(Tache tache) {
+        tache.setTimerLaunched(false);
+        tacheEJB.saveTache(tache);
     }
 
     public Time getTimer() {
@@ -144,6 +156,10 @@ public class TacheController {
 
     public boolean isTimerLaunched() {
         return getTacheCourante().isTimerLaunched();
+    }
+    
+    public Collection<Tache> getAllTimerLaunched(){
+        return tacheEJB.getAllTimerLaunched();
     }
 
     public String inscrireMembresATache() {
