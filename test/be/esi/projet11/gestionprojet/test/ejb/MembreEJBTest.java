@@ -6,7 +6,6 @@ package be.esi.projet11.gestionprojet.test.ejb;
 
 import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
-import be.esi.projet11.gestionprojet.exception.BusinessException;
 import be.esi.projet11.gestionprojet.exception.DBException;
 import java.util.HashMap;
 import javax.ejb.embeddable.EJBContainer;
@@ -102,7 +101,7 @@ public class MembreEJBTest {
 
     @AfterClass
     public static void tearDownClass() {
-        //container.close();
+        container.close();
     }
 
     @Before
