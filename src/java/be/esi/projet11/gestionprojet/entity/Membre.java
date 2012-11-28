@@ -5,7 +5,9 @@
 package be.esi.projet11.gestionprojet.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
@@ -44,31 +47,30 @@ public class Membre implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "Membre")
     @TableGenerator(name = "Membre", allocationSize = 1)
     private Long id;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
     @Size(min = 1, max = 40)
     @Column(name = "LOGIN", unique = true)
     private String login;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
     @Size(min = 1, max = 100)
     @Column(name = "PASSWORD")
     private String password;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "MAIL", unique = true)
     @Size(min = 1, max = 255)
     private String mail;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
     @Column(name = "NOM")
     @Size(min = 1, max = 100)
     private String nom;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
     @Column(name = "PRENOM")
     @Size(min = 1, max = 100)
     private String prenom;
+    @OneToMany(cascade= CascadeType.ALL, mappedBy="membre1")
+    private Collection<ParticipeProjet> projets;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "membre")
+    private Collection<ParticipeTache> taches;
 
     public Membre() {
     }
@@ -86,6 +88,15 @@ public class Membre implements Serializable {
         setPrenom(prenom);
     }
 
+    public Membre(String mail) {
+        this.mail = mail;
+    }
+    
+    // Ne sert que pour les tests
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public Long getId() {
         return id;
     }

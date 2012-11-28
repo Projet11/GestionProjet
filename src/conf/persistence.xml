@@ -2,9 +2,13 @@
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="GestionProjetPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>jdbc/__default</jta-data-source>
+    <jta-data-source>GestionProjetDB</jta-data-source>
     <class>be.esi.projet11.gestionprojet.entity.Tache</class>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <class>be.esi.projet11.gestionprojet.entity.Membre</class>
+    <class>be.esi.projet11.gestionprojet.entity.ParticipeTache</class>
+    <class>be.esi.projet11.gestionprojet.entity.Projet</class>
+    <class>be.esi.projet11.gestionprojet.entity.ParticipeProjet</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
     </properties>

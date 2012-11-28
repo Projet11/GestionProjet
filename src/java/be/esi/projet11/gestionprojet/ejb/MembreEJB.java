@@ -5,11 +5,13 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.exception.DBException;
 import be.esi.projet11.gestionprojet.exception.MailException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.util.Collection;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -25,13 +27,17 @@ import javax.validation.ConstraintViolationException;
  */
 @Stateless
 public class MembreEJB {
+
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
+    @EJB
+    private ProjetEJB projetEJB;
 
     public void persist(Object object) {
         em.persist(object);
     }
-public Membre getUserByAuthentification(String login, String password) throws DBException {
+
+    public Membre getUserByAuthentification(String login, String password) throws DBException {
         try {
             Query qry = em.createNamedQuery("Membre.findByAuthentification");
             qry.setParameter("login", login);
@@ -42,11 +48,15 @@ public Membre getUserByAuthentification(String login, String password) throws DB
         }
     }
 
-    public Collection getAllUsers() throws DBException {
+    public Membre getById(long id) {
+        return em.find(be.esi.projet11.gestionprojet.entity.Membre.class, id);
+    }
+
+    public Collection<Membre> getAllUsers() throws DBException {
         try {
             return em.createNamedQuery("Membre.findAll").getResultList();
         } catch (Exception e) {
-            throw new DBException("Impossible de charger l'ensemble des clients !\n");
+            throw new DBException("Impossible de charger l'ensemble des membres !\n");
         }
     }
 
@@ -59,7 +69,7 @@ public Membre getUserByAuthentification(String login, String password) throws DB
              * car la transaction sera cloturée par em.flush(); Il ne sera donc 
              * plus possible d'accéder à la BD grâce à 
              * cette transaction !
-            */
+             */
             if (userExists(login)) {
                 erreur += "L'identifiant est déjà utilisé.\n";
             }
@@ -116,5 +126,34 @@ public Membre getUserByAuthentification(String login, String password) throws DB
             exists = false;
         }
         return exists;
+    }
+
+    public Membre getMembreById(long mbrId) {
+        return em.find(Membre.class, mbrId);
+    }
+
+    public void ajoutMembreProjet(String email, Projet projet) {
+        if (email == null || email.equals("")) {
+            return;
+        }
+        Membre mbr = getMembreByEmail(email);
+        if (mbr == null) {
+            mbr = new Membre(email);
+            em.persist(mbr);
+        }
+        projet.ajouterMembre(mbr);
+        em.merge(projet);
+    }
+
+    public Membre getMembreByEmail(String email) {
+        Membre mbr = null;
+        Query q = em.createNamedQuery("Membre.findByMail");
+        q.setParameter("mail", email);
+        try {
+            mbr = (Membre) q.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+        return mbr;
     }
 }
