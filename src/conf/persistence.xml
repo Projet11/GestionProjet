@@ -8,9 +8,10 @@
     <class>be.esi.projet11.gestionprojet.entity.ParticipeTache</class>
     <class>be.esi.projet11.gestionprojet.entity.Projet</class>
     <class>be.esi.projet11.gestionprojet.entity.ParticipeProjet</class>
+    <class>be.esi.projet11.gestionprojet.entity.Tache</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
-      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
     </properties>
   </persistence-unit>
 </persistence>

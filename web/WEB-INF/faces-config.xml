@@ -26,7 +26,7 @@
         <from-view-id>/pages/creeTache.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
-            <to-view-id>/accueil.xhtml</to-view-id>
+            <to-view-id>/pages/accueil.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>failure</from-outcome>
@@ -34,7 +34,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>annuler</from-outcome>
-            <to-view-id>/accueil.xhtml</to-view-id>
+            <to-view-id>/pages/accueil.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -45,21 +45,21 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/accueil.xhtml</from-view-id>
+        <from-view-id>/pages/accueil.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>creeTache</from-outcome>
             <to-view-id>/pages/creeTache.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>success</from-outcome>
-            <to-view-id>/accueil.xhtml</to-view-id>
+            <to-view-id>/pages/accueil.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/pages/connexion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
-            <to-view-id>/accueil.xhtml</to-view-id>
+            <to-view-id>/pages/accueil.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>failure</from-outcome>
