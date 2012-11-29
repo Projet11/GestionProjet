@@ -27,7 +27,6 @@ lib/CopyLibs
 lib/CopyLibs-*
 lib/javaee-endorsed-api-6.0*
 lib/junit*
-!lib/junit_4
 *.sublime-project
 *.sublime-workspace
 
