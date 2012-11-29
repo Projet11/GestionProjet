@@ -6,16 +6,28 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>Facelet Title</title>
+        <script type="text/javascript" src="../js/jquery.js"></script>
+        <script type="text/javascript" src="../js/connexion.js"></script>
+        <script type="text/javascript" src="../js/inscription.js"></script>
+        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <style>
+            .separator
+            {
+                border: 0px;
+                height: 1px;
+                background-color: #E0E0E0;
+            }
+        </style>
     </h:head>
     <h:body>
         <f:view beforePhase="#{mailCtrl.ajoutMembreProjet()}"/>
         Vous allez etre ajouté au projet #{mailCtrl.projet.nom}
         <div id="connection">
-            <ui:include src=""/>
+            <ui:include src="connexion.xhtml"/>
         </div>
         OU
         <div id="inscription">
-            <ui:include src=""/>
+            <ui:include src="../inscription.xhtml"/>
         </div>
     </h:body>
 </html>

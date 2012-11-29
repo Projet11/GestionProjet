@@ -110,9 +110,6 @@ public class MailController {
         } catch (NumberFormatException nfe) {
             Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Impossible de convertir les identifiant en long", nfe);
         }
-//        } catch (Exception e) {
-//            Logger.getLogger(UserActivation.class.getName()).log(Level.SEVERE, "Erreur dans UserActivation.refusAjoutMembreProjet", e);
-//        }
     }
 
     /**

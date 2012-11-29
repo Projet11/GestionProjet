@@ -5,6 +5,7 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.entity.ParticipeProjet;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -33,8 +34,9 @@ public class ProjetEJB {
     }
 
     public void removeParticipeProjet(Projet projet, Membre mbr) {
-        projet.refuserParticipant(mbr);
+        ParticipeProjet pp = projet.refuserParticipant(mbr);
         em.merge(projet);
+        em.remove(pp);
         System.out.println("projet size" + projet.getAllParticipant().size());
     }
 
