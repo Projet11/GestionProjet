@@ -4,6 +4,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
+        <script type ="text/javascript" src="../js/jquery.js"></script>
+        <script type ="text/javascript" src="../js/bootstrap.js"></script>
+        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
         <title>Afficher Projet</title>
     </h:head>
     <h:body>
@@ -12,8 +15,8 @@
         </form>
         <h:dataTable value="#{projetCtrl.projets}" var="projet">
             <h:column>
-                <f:facet name="header">Noms des projets</f:facet>
-                #{projet.nom}
+                    <f:facet name="header">Noms des projets</f:facet>
+                    <a data-placement="top" rel="tooltip" href="#{projetCtrl.setProjetCourant(projet)}" title="#{projet.description}">#{projet.nom}</a>
             </h:column>
         </h:dataTable>
     </h:body>
