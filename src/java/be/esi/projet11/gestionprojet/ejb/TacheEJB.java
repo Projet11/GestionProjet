@@ -78,7 +78,6 @@ public class TacheEJB {
         tacheCourante.setPourcentage(intValue);
         tacheCourante.setSVNRevision(revisionParam);
         em.merge(tacheCourante);
-
     }
 
     public Collection<Tache> getAllTimerLaunched() {

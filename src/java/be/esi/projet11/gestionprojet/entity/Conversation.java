@@ -25,10 +25,10 @@ public class Conversation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @JoinColumn(name = "TACHE", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "TACHE", referencedColumnName = "ID", insertable = false, updatable = false,nullable = false)
     @ManyToOne(optional = false)
     private Tache tache;
-    @Column(nullable = false)
+    @JoinColumn(name = "MEMBRE", referencedColumnName = "ID", insertable = false, updatable = false ,nullable = false)
     private Membre membre;
     @Column(nullable = false)
     private String commentaire;

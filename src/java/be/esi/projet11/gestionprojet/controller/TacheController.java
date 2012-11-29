@@ -18,10 +18,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import org.primefaces.component.tabview.Tab;
 
 /**
  *
@@ -60,11 +62,20 @@ public class TacheController {
     }
     //
     private Tache tacheCourante;
-
-    /**
-     * Creates a new instance of TacheController
-     */
-    public TacheController() {
+    private void test(){
+        try {
+            tacheCourante = tacheEJB.creerTache("alouette", "blouette", ImportanceEnum.IMPORTANT);
+        } catch (TacheException ex) {
+            Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    @PostConstruct
+    private void init() {
+        test();
+        this.nomParam = tacheCourante.getNom();
+        this.importanceParam = tacheCourante.getImportance();
+        this.pourcentageParam = tacheCourante.getPourcentage().longValue();
+        this.revisionParam = tacheCourante.getSVNRevision();
     }
 
     public String getNomParam() {
@@ -161,7 +172,7 @@ public class TacheController {
         getTacheCourante().setTimerLaunched(false);
         tacheEJB.saveTache(tacheCourante);
     }
-    
+
     public void startTimer(Tache tache) {
         tache.setTimerLaunched(true);
         tacheEJB.saveTache(tache);
@@ -180,8 +191,8 @@ public class TacheController {
     public boolean isTimerLaunched() {
         return getTacheCourante().isTimerLaunched();
     }
-    
-    public Collection<Tache> getAllTimerLaunched(){
+
+    public Collection<Tache> getAllTimerLaunched() {
         return tacheEJB.getAllTimerLaunched();
     }
 
@@ -194,6 +205,7 @@ public class TacheController {
     }
 
     public void modificationTache() {
+        System.out.println("-----------------------------" + importanceParam);
         try {
             tacheEJB.modificationTache(tacheCourante, pourcentageParam.intValue(), revisionParam, importanceParam);
         } catch (TacheException ex) {
