@@ -1,5 +1,6 @@
 package be.esi.projet11.gestionprojet.ejb;
 
+import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
@@ -26,6 +27,19 @@ public class TacheEJB {
 
     public Tache creerTache(String nom, String description) throws TacheException {
         return creerTache(nom, description, ImportanceEnum.IMPORTANT);
+    }
+    
+    public Tache creerTache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {
+         Tache uneTache = null;
+        try {
+            uneTache = new Tache(nom, description, importance, p);
+            em.persist(uneTache);
+        } catch (SecurityException ex) {
+            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalStateException ex) {
+            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return uneTache;
     }
 
     public Tache creerTache(String nom, String description, ImportanceEnum importance) throws TacheException {
@@ -65,5 +79,37 @@ public class TacheEJB {
 
     public void modificationTache(Tache tacheCourante) {
         em.merge(tacheCourante);
+    }
+
+    public Collection<Tache> getAllTimerLaunched() {
+        Query query = em.createNamedQuery("Tache.findTimerLaunched");
+        return query.getResultList();
+    }
+    
+    public void archiverTache(Long id) {
+        Tache tache = em.find(Tache.class, id);
+        tache.setArchive(true);
+        em.merge(tache);
+    }
+
+    public void desarchiverTache(Long id) {
+        Tache tache = em.find(Tache.class, id);
+        tache.setArchive(false);
+        em.merge(tache);
+    }
+
+    public Collection<Tache> getTaches(Boolean archive, Projet p) {
+        Query query;
+        if (archive == null) {
+            query = em.createNamedQuery("Tache.findTachesByProjet");
+        } else {
+            if (archive) {
+                query = em.createNamedQuery("Tache.findTachesArchiveesByProjet");
+            } else {
+                query = em.createNamedQuery("Tache.findTachesNonArchiveesByProjet");
+            }
+        }
+        query.setParameter("projet", p);
+        return query.getResultList();
     }
 }

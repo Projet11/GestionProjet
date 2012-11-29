@@ -9,6 +9,7 @@ import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import java.util.Collection;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -28,7 +29,28 @@ public class ProjetController {
     private MembreEJB membreEJB;
     @EJB
     private ProjetEJB projetEJB;
-    
+        private List<Projet> projets;
+
+    /**
+     * Get the value of projets
+     *
+     * @return the value of projets
+     */
+    public List<Projet> getProjets() {
+        if(projets==null){
+            projets=projetEJB.getAllProjets();
+        }
+        return projets;
+    }
+
+    /**
+     * Set the value of projets
+     *
+     * @param projets new value of projets
+     */
+    public void setProjets(List<Projet> projets) {
+        this.projets = projets;
+    }
     
     /**
      * Creates a new instance of ProjetControl
@@ -54,7 +76,7 @@ public class ProjetController {
 
     public Projet getProjetCourant() {
         if(projetCourant==null){
-            projetCourant= projetEJB.CreerProjet();
+            projetCourant= projetEJB.creerProjet();
         }
         return projetCourant;
     }
