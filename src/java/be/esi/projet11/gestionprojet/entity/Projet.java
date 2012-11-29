@@ -30,7 +30,8 @@ import javax.persistence.Temporal;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Projet.findByNom", query = "SELECT p FROM Projet p WHERE p.nom = :nom")})
+    @NamedQuery(name = "Projet.findByNom", query = "SELECT p FROM Projet p WHERE p.nom = :nom"),
+    @NamedQuery(name = "Projet.findAll", query = "SELECT p FROM Projet p")})
 public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;

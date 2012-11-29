@@ -2,30 +2,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-        <link href="../../css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
-        <script type ="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-        <script type ="text/javascript" src="../../js/bootstrap.min.js"></script>
         <title>Afficher Projet</title>
     </h:head>
     <h:body>
         <form>
             <h:commandButton class="btn" value="Créer un projet"/>
         </form>
-        <table class="table"> 
-            <tr>
-                <td>Noms des Projets</td>
-            </tr>
-            <c:forEach var="projet" items="#{projetCtrl.projets}">
-                <tr>
-                    <td><h:outputText value="#{projet.nom}"/></td>
-                </tr>    
-            </c:forEach>  
-        </table>
-
+        <h:dataTable value="#{projetCtrl.projets}" var="projet">
+            <h:column>
+                <f:facet name="header">Noms des projets</f:facet>
+                #{projet.nom}
+            </h:column>
+        </h:dataTable>
     </h:body>
 </html>
 
