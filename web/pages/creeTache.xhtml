@@ -11,11 +11,12 @@
         <title>Création de tâche</title>
     </h:head>
     <h:body>
+
         <div class="hero-unit">
             <legend>Ajout de tache</legend>
             <!-- Debut formulaire -->
 
-            <h:form name=" Ajouter une tâche" class="form-horizontal">
+            <h:form name="Ajouter une tâche" class="form-horizontal">
                 <fieldset>
                     <!-- Nom -->
                     <div class="control-group">
@@ -23,8 +24,6 @@
                         <div class="controls">
                             <h:inputText type="text" id="Nom" label="Nom" value="#{tacheCtrl.creationNom}" required="true" onblur="valideNom(this)"/>  
                             <span class="help-inline" id="nomError"></span>
-
-                            <!-- class="text-warning" -->
                         </div>
                     </div>
 
@@ -32,11 +31,11 @@
                     <div class="control-group">
                         <label class="control-label" for="priorite">Importance</label>
                         <div class="controls">
+                           
                             <h:selectOneMenu value="#{tacheCtrl.creationImportance}">
-                                <f:selectItem itemValue="#{ImportanceEnum.NORMALE}" itemLabel="Normale"/>
-                                <f:selectItem itemValue="#{ImportanceEnum.IMPORTANT}" itemLabel="Importante"/>
-                                <f:selectItem itemValue="#{ImportanceEnum.TRESIMPORTANT}" itemLabel="Très importante"/>
+                                <f:selectItems value="#{tacheCtrl.importanceValues}"/>
                             </h:selectOneMenu>
+                            
                         </div>
                     </div>
 
@@ -50,8 +49,12 @@
 
                     <!-- Fin -->
                     <div class="controls">
-                        <h:commandButton class="btn btn-success" action="#{tacheCtrl.creerTache()}" value="Créer"/> 
-                        <h:commandButton class="btn btn-danger" action="#{tacheCtrl.annulerCreation()}" value="Annuler"/>
+                        <div class="span1">
+                            <h:commandButton class="btn btn-success" action="#{tacheCtrl.creerTache()}" value="Créer"/> 
+                        </div>
+                        <div class="span1">
+                            <h:commandButton class="btn btn-danger" action="#{tacheCtrl.annulerCreation()}" value="Annuler" immediate="true"/>
+                        </div>
                     </div>
                     <h:message for="Nom" />
                 </fieldset>

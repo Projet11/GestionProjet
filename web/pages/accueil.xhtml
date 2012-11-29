@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <script type ="text/javascript" src ="js/verificationCreeTache.js"></script>
+        <script type ="text/javascript" src="js/bootstrap.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <title>Gestion de projet</title>
+
+    </h:head>
+    <h:body>
+        <!--
+         <div class="container navbar-wrapper">
+             <div class="masthead">
+                 <ul class="nav nav-pills pull-right">
+                     <li class="active">
+                         <a>bouton1</a>
+                     </li>
+                 </ul>
+                 <h3 class="muted"> Projet name </h3>
+             </div>
+         </div>
+        -->        
+        <div class="navbar ">
+            <div class="navbar-inner">
+                <div class="container">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            Gestion Projet
+                        </div>
+                        <div class="span4">
+                            <h:form>
+                                <h:commandButton class="btn btn-danger" value="Deconnecter"/> 
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span5">
+                        <ui:include src="pages/afficherTaches.xhtml" />
+                    </div>
+                    <div class="span5">
+                        <ui:include src="pages/afficherTaches.xhtml" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+
