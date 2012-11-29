@@ -47,7 +47,7 @@ import javax.persistence.Temporal;
     @NamedQuery(name = "Tache.findTachesNonArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '0' AND t.projet = :projet"),
     @NamedQuery(name = "Tache.findTimerLaunched", query = "Select t FROM Tache t where t.timerLaunched = '1'")})
 public class Tache implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "Tache")
@@ -275,19 +275,18 @@ public class Tache implements Serializable {
     }
 
     public void addMembre(Membre membre) {
-        if (membre == null) {
+        if (membre == null)
             throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
-        }
-        if (hasMembre(membre)) {
+
+        if (hasMembre(membre))
             return;
-        }
         
         membres.add(new ParticipeTache(this, membre));
-        String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // TODO: Lorsque le projet sera implémenté
-        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // TODO: Lorsque le projet sera implémenté
+        String sujet = "[PROJET " + projet.getNom() + "] Invitation à rejoindre une tâche";
+        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche " + nom + " du projet " + projet.getNom() + "</h1>";
         corps += "<p>Pour accepter ou refuser, cliquez sur un des liens suivants :</p>";
-        corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=accepterTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Accepter</a></p>";
-        corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=refuserTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Refuser</a></p>"; // TODO: Corriger les liens
+        corps += "<p><a href='http://localhost:27583/GestionProjet/pages/accepterTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Accepter</a></p>";
+        corps += "<p><a href='http://localhost:27583/GestionProjet/pages/refuserTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Refuser</a></p>"; // TODO: Corriger les liens
         corps += "<br/><br/>A bientôt !";
         try {
             Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps);
@@ -331,7 +330,6 @@ public class Tache implements Serializable {
     }
 
     public Projet getProjet() {
-        return new Projet();
-//        return projet; // TODO
+        return projet; // TODO
     }
 }
