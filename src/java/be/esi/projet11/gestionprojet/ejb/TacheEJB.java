@@ -1,13 +1,15 @@
 package be.esi.projet11.gestionprojet.ejb;
 
-import be.esi.projet11.gestionprojet.entity.Conversation;
+import be.esi.projet11.gestionprojet.entity.Commentaire;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
+import java.lang.reflect.Member;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,6 +27,7 @@ public class TacheEJB {
 
     public TacheEJB() {
     }
+
 
     public Tache creerTache(String nom, String description) throws TacheException {
         return creerTache(nom, description, ImportanceEnum.IMPORTANT);
@@ -69,8 +72,18 @@ public class TacheEJB {
     }
 
     public void ajouterConversation(Tache tacheCourante, Membre membre, String commentaire) {
-        tacheCourante.getConversation().add(new Conversation(membre, commentaire));
-        em.merge(tacheCourante);
+        if (em.find(Tache.class, tacheCourante.getId()) != null) {
+            tacheCourante.getConversation().add(new Commentaire(tacheCourante,membre, commentaire));
+            em.merge(tacheCourante);
+                        System.out.println("_________________");
+
+                        for (Commentaire com:tacheCourante.getConversation() ){
+                System.out.println(com.toString());
+            }  
+        } else {
+            System.err.println("aaaaaaaaaaaaaaaaaaa");
+        }
+
     }
 
     public void modificationTache(Tache tacheCourante, int intValue, Long revisionParam, ImportanceEnum importanceParam) throws TacheException {

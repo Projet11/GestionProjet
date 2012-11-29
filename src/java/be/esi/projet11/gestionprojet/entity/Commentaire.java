@@ -12,14 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.TableGenerator;
 
 /**
  *
  * @author g34840
  */
 @Entity
-public class Conversation implements Serializable {
+public class Commentaire implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -33,6 +32,14 @@ public class Conversation implements Serializable {
     @Column(nullable = false)
     private String commentaire;
 
+    public Commentaire() {
+    }
+    
+    public Commentaire(Tache Tache,Membre name, String commentaire) {
+        this.tache = tache;
+        this.membre = membre;
+        this.commentaire = commentaire;
+    }
 
     public Membre getMembre() {
         return membre;
@@ -42,9 +49,6 @@ public class Conversation implements Serializable {
         this.membre = membre;
     }
 
-
-    public Conversation() {
-    }
 
     public Membre getName() {
         return membre;
@@ -59,11 +63,6 @@ public class Conversation implements Serializable {
     }
 
     public void setCommentaire(String commentaire) {
-        this.commentaire = commentaire;
-    }
-
-    public Conversation(Membre name, String commentaire) {
-        this.membre = membre;
         this.commentaire = commentaire;
     }
 
@@ -85,10 +84,10 @@ public class Conversation implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Conversation)) {
+        if (!(object instanceof Commentaire)) {
             return false;
         }
-        Conversation other = (Conversation) object;
+        Commentaire other = (Commentaire) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -97,6 +96,6 @@ public class Conversation implements Serializable {
 
     @Override
     public String toString() {
-        return "be.esi.projet11.gestionprojet.entity.Conversation[ id=" + id + " ]";
+        return "id : "+ this.id + " membre : " + this.membre + " Tache : " +this.tache; 
     }
 }

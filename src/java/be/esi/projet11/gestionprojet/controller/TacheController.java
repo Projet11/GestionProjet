@@ -4,18 +4,14 @@
  */
 package be.esi.projet11.gestionprojet.controller;
 
-import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
-import be.esi.projet11.gestionprojet.entity.Conversation;
 import be.esi.projet11.gestionprojet.entity.Membre;
-import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -23,7 +19,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
-import org.primefaces.component.tabview.Tab;
 
 /**
  *
@@ -64,7 +59,7 @@ public class TacheController {
     private Tache tacheCourante;
     private void test(){
         try {
-            tacheCourante = tacheEJB.creerTache("alouette", "blouette", ImportanceEnum.IMPORTANT);
+            tacheCourante = tacheEJB.creerTache("alouetteeeee", "blouette", ImportanceEnum.IMPORTANT);
         } catch (TacheException ex) {
             Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -76,6 +71,9 @@ public class TacheController {
         this.importanceParam = tacheCourante.getImportance();
         this.pourcentageParam = tacheCourante.getPourcentage().longValue();
         this.revisionParam = tacheCourante.getSVNRevision();
+        membreCourantParam = new Membre("alouette@gmail.com");
+        commentaireParam = "youhouuuuu";
+        this.ajouterConversation();
     }
 
     public String getNomParam() {
@@ -205,7 +203,6 @@ public class TacheController {
     }
 
     public void modificationTache() {
-        System.out.println("-----------------------------" + importanceParam);
         try {
             tacheEJB.modificationTache(tacheCourante, pourcentageParam.intValue(), revisionParam, importanceParam);
         } catch (TacheException ex) {

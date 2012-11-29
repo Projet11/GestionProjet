@@ -43,15 +43,14 @@ import javax.persistence.Temporal;
     @NamedQuery(name = "Tache.findTachesArchivees", query = "SELECT t FROM Tache t WHERE t.archive = '1'"),
     @NamedQuery(name = "Tache.findTachesNonArchivees", query = "SELECT t FROM Tache t WHERE t.archive = '0'"),
     @NamedQuery(name = "Tache.findTachesByProjet", query = "SELECT t FROM Tache t WHERE t.projet = :projet"),
-    @NamedQuery(name = "Tache.findTachesArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '1' AND t.projet = :projet"),             
+    @NamedQuery(name = "Tache.findTachesArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '1' AND t.projet = :projet"),
     @NamedQuery(name = "Tache.findTachesNonArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '0' AND t.projet = :projet"),
     @NamedQuery(name = "Tache.findTimerLaunched", query = "Select t FROM Tache t where t.timerLaunched = '1'")})
 public class Tache implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Tache")
-    @TableGenerator(name = "Tache", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true, nullable = false)
     private String nom;
@@ -71,26 +70,25 @@ public class Tache implements Serializable {
     private Collection<ParticipeTache> membres;
     private char archive;
     @JoinColumn(name = "PROJET", referencedColumnName = "ID")
-    @ManyToOne(cascade = CascadeType.ALL,optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="tache")
-    private Collection<Conversation> conversation;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
+    private Collection<Commentaire> conversation;
 
-    public Collection<Conversation> getConversation() {
+    public Collection<Commentaire> getConversation() {
         return conversation;
     }
 
-    public void setConversation(Collection<Conversation> conversation) {
+    public void setConversation(Collection<Commentaire> conversation) {
         this.conversation = conversation;
     }
-
-
 
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");
         this.timerLaunched = '0';
         membres = new ArrayList<ParticipeTache>();
         projet = new Projet();
+        conversation = new ArrayList<Commentaire>();
     }
 
     public Tache(String nom, String description) throws TacheException {
@@ -103,6 +101,7 @@ public class Tache implements Serializable {
         this.importance = ImportanceEnum.NORMALE;
         this.pourcentage = 0;
         this.revision = null;
+        conversation = new ArrayList<Commentaire>();
         membres = new ArrayList<ParticipeTache>();
         projet = new Projet();
     }
@@ -242,7 +241,7 @@ public class Tache implements Serializable {
         this.timerLaunched = (timerLaunched ? '1' : '0');
         setDateDeb(new Date());
     }
-    
+
     public Time getTimer() {
         Date currDate = new Date();
         return new Time(currDate.getTime() - getDateDeb().getTime());
@@ -283,7 +282,7 @@ public class Tache implements Serializable {
         if (hasMembre(membre)) {
             return;
         }
-        
+
         membres.add(new ParticipeTache(this, membre));
         String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // TODO: Lorsque le projet sera implémenté
         String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // TODO: Lorsque le projet sera implémenté
@@ -297,13 +296,15 @@ public class Tache implements Serializable {
             Logger.getLogger(Tache.class.getName()).log(Level.SEVERE, null, ex); // FIXME
         }
     }
-
+    
     public boolean hasMembre(Membre membre) {
         if (this.getId() == null) // Si un tâche n'a pas encore été persistée, elle n'a pas de membres
+        {
             return false;
+        }
         return membres.contains(new ParticipeTache(this, membre));
     }
-    
+
     public Collection<ParticipeTache> getParticipations() {
         return membres;
     }
@@ -330,6 +331,15 @@ public class Tache implements Serializable {
         }
 
         return ret;
+    }
+
+    public List<Commentaire> getAllCommentaires(Tache tache) {
+        List<Commentaire> ret = new ArrayList<Commentaire>();
+        for (Commentaire c : conversation) {
+            ret.add(c);
+        }
+        return ret;
+
     }
 
     public Projet getProjet() {
