@@ -25,6 +25,11 @@ public class Mailer {
     final static String password = "a1z2e3r4!";
 
     public static void send(String destinataires, String sujet, String corp) throws MailException {
+        send(destinataires, sujet, corp, false);
+
+    }
+
+    public static void send(String destinataires, String sujet, String corp, boolean html) throws MailException {
 
         if (sujet == null || corp == null || destinataires == null || sujet.equals("") || corp.equals("") || destinataires.equals("")) {
             throw new MailException("Le sujet, le corpt et le destinataire ne peuvent pas etre vide ou null");
@@ -48,7 +53,11 @@ public class Mailer {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(destinataires));
             message.setSubject(sujet);
-            message.setText(corp);
+            if (html) {
+                message.setContent(corp, "text/html");
+            } else {
+                message.setText(corp);
+            }
 
             Transport.send(message);
         } catch (AddressException e) {

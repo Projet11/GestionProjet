@@ -2,8 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tache;
-
+package be.esi.projet11.gestionprojet.enumeration;
 /**
  *
  * @author j4un3
