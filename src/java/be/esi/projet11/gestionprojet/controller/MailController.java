@@ -87,6 +87,7 @@ public class MailController {
     }
 
     public void ajoutMembreProjet() {
+        //TODO verifier si le membre est deja connecte
         try {
             long projectlong = Long.parseLong(idProjet);
             long membrelong = Long.parseLong(idMembre);
