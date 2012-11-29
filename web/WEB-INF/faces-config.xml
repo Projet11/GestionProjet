@@ -29,12 +29,12 @@
             <to-view-id>/pages/accueil.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
-            <from-outcome>failure</from-outcome>
-            <to-view-id>/pages/creeTache.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>annuler</from-outcome>
             <to-view-id>/pages/accueil.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/pages/creeTache.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>

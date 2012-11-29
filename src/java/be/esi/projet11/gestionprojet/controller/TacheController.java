@@ -171,7 +171,7 @@ public class TacheController {
     }
 
     public String annulerCreation() {
-        return "failure"; // TODO: return annulation pour un comportement différent ?
+        return "annuler";
     }
 
     public void startTimer() {
