@@ -6,6 +6,7 @@ package be.esi.projet11.gestionprojet.controller;
 
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
@@ -222,6 +223,12 @@ public class TacheController {
         tacheEJB.modificationTache(tacheCourante);
     }
 
+    public String modifierTache(Tache tache) {
+        tacheEJB.modificationTache(tache);
+        // TODO navigation vers modification page
+        return null;
+    }
+    
     public String getArchive() {
         return archive;
     }
