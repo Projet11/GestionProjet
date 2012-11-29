@@ -18,7 +18,7 @@ import javax.faces.bean.SessionScoped;
  *
  * @author g34754
  */
-@ManagedBean(name = "MembreCtrl")
+@ManagedBean(name = "membreCtrl")
 @SessionScoped
 public class MembreController {
 

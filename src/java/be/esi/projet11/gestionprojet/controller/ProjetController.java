@@ -54,7 +54,7 @@ public class ProjetController {
 
     public Projet getProjetCourant() {
         if(projetCourant==null){
-            projetCourant= projetEJB.CreerProjet();
+            projetCourant= projetEJB.getProjetById(1l);
         }
         return projetCourant;
     }

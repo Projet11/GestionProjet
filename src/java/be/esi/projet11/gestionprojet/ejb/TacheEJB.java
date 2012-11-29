@@ -1,5 +1,6 @@
 package be.esi.projet11.gestionprojet.ejb;
 
+import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
@@ -31,6 +32,7 @@ public class TacheEJB {
     public Tache creerTache(String nom, String description, ImportanceEnum importance) throws TacheException {
         Tache uneTache = null;
         try {
+            System.out.println("Importance : " + importance);
             uneTache = new Tache(nom, description, importance);
             em.persist(uneTache);
         } catch (SecurityException ex) {
@@ -65,5 +67,25 @@ public class TacheEJB {
 
     public void modificationTache(Tache tacheCourante) {
         em.merge(tacheCourante);
+    }
+
+    public Collection<Tache> getAllTaches() {
+        Query query = em.createNamedQuery("Tache.findAll");
+        return query.getResultList();
+    }
+
+    public Collection<Tache> getTaches(Boolean archive, Projet p) {
+        Query query;
+        if (archive == null) {
+            query = em.createNamedQuery("Tache.findAll");
+        } else {
+            if (archive) {
+                query = em.createNamedQuery("Tache.findTachesArchiveesByProjet");
+            } else {
+                query = em.createNamedQuery("Tache.findTachesNonArchiveesByProjet");
+            }
+            query.setParameter("projet", p);
+        }
+        return query.getResultList();
     }
 }
