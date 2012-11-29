@@ -37,4 +37,15 @@
         <converter-for-class>java.lang.Enum</converter-for-class>
         <converter-class>javax.faces.convert.EnumConverter</converter-class>
     </converter>
+    <navigation-rule>
+        <from-view-id>/pages/connexion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/accueil.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/pages/connexion.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

@@ -48,11 +48,15 @@ public class MembreEJB {
         }
     }
 
-    public Collection getAllUsers() throws DBException {
+    public Membre getById(long id) {
+        return em.find(be.esi.projet11.gestionprojet.entity.Membre.class, id);
+    }
+
+    public Collection<Membre> getAllUsers() throws DBException {
         try {
             return em.createNamedQuery("Membre.findAll").getResultList();
         } catch (Exception e) {
-            throw new DBException("Impossible de charger l'ensemble des clients !\n");
+            throw new DBException("Impossible de charger l'ensemble des membres !\n");
         }
     }
 
@@ -143,7 +147,7 @@ public class MembreEJB {
 
     public Membre getMembreByEmail(String email) {
         Membre mbr = null;
-        Query q = em.createQuery("select m from Membre m where m.mail = :mail");
+        Query q = em.createNamedQuery("Membre.findByMail");
         q.setParameter("mail", email);
         try {
             mbr = (Membre) q.getSingleResult();

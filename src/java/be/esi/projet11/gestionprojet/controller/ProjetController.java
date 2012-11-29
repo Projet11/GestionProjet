@@ -76,7 +76,7 @@ public class ProjetController {
 
     public Projet getProjetCourant() {
         if(projetCourant==null){
-            projetCourant= projetEJB.CreerProjet();
+            projetCourant= projetEJB.creerProjet();
         }
         return projetCourant;
     }

@@ -8,6 +8,8 @@ import be.esi.projet11.gestionprojet.exception.MailException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -27,7 +30,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Projet.findAll", query = "SELECT p FROM Projet p")})
+    @NamedQuery(name = "Projet.findByNom", query = "SELECT p FROM Projet p WHERE p.nom = :nom")})
 public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,12 +39,33 @@ public class Projet implements Serializable {
     private Long id;
     @Basic(optional = false)
     private String nom;
+    private String description;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projet1")
     private List<ParticipeProjet> participants;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "projet")
+    Collection<Tache> listeTaches;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateDeb;
 
-    public Projet() {
+
+    public Projet(){
+        this(0l,"Projet sans nom","");
+    }
+    
+    public Projet(Long id,String nom){
+        this(id,nom,"");
+    }
+    
+    public Projet(Long id,String nom, String description){
+        if (nom == null || nom.isEmpty()){
+            throw new IllegalArgumentException("Le nom est obligatoire");
+        }
+        this.id = id;
+        this.nom = nom;
+        this.description = description;
+        listeTaches = new ArrayList<Tache>();
         participants = new ArrayList<ParticipeProjet>();
-        nom = "nom du projet";
+        dateDeb = new Date();
     }
 
     public String getNom() {
@@ -59,7 +83,7 @@ public class Projet implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -75,6 +99,31 @@ public class Projet implements Serializable {
         this.participants = participants;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Collection<Tache> getListeTaches() {
+        return listeTaches;
+    }
+
+    public void setListeTaches(Collection<Tache> listeTaches) {
+        this.listeTaches = listeTaches;
+    }
+
+    public Date getDateDeb() {
+        return dateDeb;
+    }
+
+    public void setDateDeb(Date dateDeb) {
+        this.dateDeb = dateDeb;
+    }
+    
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -148,7 +197,7 @@ public class Projet implements Serializable {
     public void ajouterMembre(Membre mbr) {
         if (!containsMembre(mbr)) {
             participants.add(new ParticipeProjet(mbr, this, false));
-            System.out.println("participants size=" + participants.size());
+            System.out.println("participants size="+participants.size());
             try {
                 String objet = "Ajout a un projet";
                 String corps = "<html>Vous etes invité a etre ajouter au projet " + nom + ". </br> ";

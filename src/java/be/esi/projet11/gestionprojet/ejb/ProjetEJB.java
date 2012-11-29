@@ -26,7 +26,7 @@ public class ProjetEJB {
         return em.find(Projet.class, projetId);
     }
 
-    public Projet CreerProjet() {
+    public Projet creerProjet() {
         Projet p = new Projet();
         em.persist(p);
         return p;
@@ -42,4 +42,13 @@ public class ProjetEJB {
         Query query=em.createNamedQuery("Projet.findAll");
         return query.getResultList();
     }
+    
+    public Projet creerProjet(String nom, String description){
+        Projet unProjet = new Projet(0l,nom, description);
+        em.persist(unProjet);
+        em.flush();
+        return unProjet;        
+    }
+    
+    
 }
