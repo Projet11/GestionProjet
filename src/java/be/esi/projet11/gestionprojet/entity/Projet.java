@@ -13,8 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,7 +37,7 @@ public class Projet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Basic(optional = false)
+    @Column(nullable = false, unique = true)
     private String nom;
     private String description;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projet1")
