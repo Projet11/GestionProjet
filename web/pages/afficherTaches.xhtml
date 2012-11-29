@@ -6,50 +6,51 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-        <link href="../../css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
+        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
         <script type ="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-        <script type ="text/javascript" src="../../js/bootstrap.min.js"></script>
+        <script type ="text/javascript" src="../js/bootstrap.min.js"></script>
         <title>Afficher Taches</title>
     </h:head>
     <h:body>
-       <h:form>
-             <div class="form-inline">
+        <h:form>
+            <div class="form-inline">
                 <div class="span8">
-                    <h:selectOneRadio value="{tacheCtrl.archive}" id="selection">
+                    <h:selectOneRadio value="#{tacheCtrl.archive}">
                         <f:selectItem itemValue="toutes" itemLabel="Toutes" /> 
                         <f:selectItem itemValue="archivees" itemLabel="Archivées"/>
-                        <f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>      
-                        <!--<f:ajax event="change" listener="{tacheCtrl.affichageTaches()}" execute="selection"/>  render="resultat"-->
+                        <f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>             
                     </h:selectOneRadio>
                 </div>
-               <!-- <div class="span2">
-                    <h:commandButton class="btn" action="{tacheCtrl.affichageTaches()}" value="Choisir"/> 
-                </div>-->
                 <div class="span2">
-                    <h:commandButton class="btn" action="#{tacheCtrl.creerTache()}" value="Crée"/> 
+                    <h:commandButton class="btn" action="#{tacheCtrl.affichageTaches()}" value="Choisir"/> 
                 </div>
-             </div>
-                <table class="table"> 
-                    <tr>
-                        <td>Archivée</td>
-                        <td>Nom</td>
-                        <td>Pourcentage</td>
-                        <td>Action</td>
-                    </tr>
-                    <!--<c:forEach var="tache" items="{tacheCtrl.taches}">
-                        <tr class="{tache.importance.balise}">
-                            <td>
-                                <h:selectBooleanCheckbox disabled="true" value="#{tache.archive}"/> </td>
-                            <td><h:outputText value="#{tache.nom}"/></td>
-                            <td><h:outputText value="#{tache.pourcentage} %"/></td>
-                            <td>
-                                <h:commandButton class="btn" action="{tacheCtrl.modifierTache(tache)}" value="Modifier"/>
-                            </td> 
-                        </tr>    
-                    </c:forEach>-->
-                </table>
-
+                <div class="span2">
+                    <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
+                </div>
+            </div>
         </h:form>     
+
+        <table class="table"> 
+            <tr>
+                <td>Archivée</td>
+                <td>Nom</td>
+                <td>Pourcentage</td>
+                <td>Action</td>
+            </tr>
+            <c:forEach var="tache" items="#{tacheCtrl.taches}">
+                <h:form>
+                    <tr class="#{tache.importance.balise}">
+                        <td>
+                            <h:selectBooleanCheckbox disabled="true" value="#{tache.archive}"/> </td>
+                        <td><h:outputText value="#{tache.nom}"/></td>
+                        <td><h:outputText value="#{tache.pourcentage} %"/></td>
+                        <td>
+                            <h:commandButton class="btn" action="#{tacheEJB.modifierTache(tache)}" value="Modifier"/>
+                            <h:commandButton class="btn" action="#{tacheEJB.startTimer(tache)}" value="Démarrer le timer"/>
+                        </td> </tr>    
+                </h:form>
+            </c:forEach>  
+        </table>
     </h:body>
 </html>
 
