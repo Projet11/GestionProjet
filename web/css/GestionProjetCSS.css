@@ -1,0 +1,19 @@
+/* 
+    Document   : GestionProjetCSS
+    Created on : 30-nov.-2012, 10:29:34
+    Author     : g35001
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.info {
+    background-color: #0099ff;
+}
+
+.warning {
+    background-color:#ffcc00
+}
+
+.error {
+    background-color: #ff0000;
+}

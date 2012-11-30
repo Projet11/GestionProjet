@@ -2,11 +2,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
+        <link href="../css/GestionProjetCSS.css" rel="stylesheet" media="screen"></link>
         <script type ="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
         <script type ="text/javascript" src="../js/bootstrap.min.js"></script>
         <title>Afficher Taches</title>
@@ -23,11 +23,11 @@
                     </h:selectOneRadio>
                 </div>
                 <div class="span2">
-                    <h:commandButton class="btn" action="{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
+                    <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
                 </div>
             </div>
             <br/>
-            <h:dataTable class="table" id="resultat" var="item" rowClasses="#{item.importance.balise}" value="#{tacheCtrl.taches}">
+            <h:dataTable class="table" id="resultat" var="item" value="#{tacheCtrl.taches}" rowClasses="#{item.importance.balise}">
                 <h:column>
                     <f:facet name="header">
                         <h:outputText value ="Archivée"/>
@@ -35,7 +35,7 @@
                     <h:selectBooleanCheckbox disabled="true" value="#{item.archive}"/>
                 </h:column>
                 <h:column>
-                    <f:facet name="header">
+                    <f:facet  name="header">
                         <h:outputText value ="Nom"/>
                     </f:facet>
                     <h:outputText value="#{item.nom}"/>
@@ -50,8 +50,8 @@
                     <f:facet name="header">
                         <h:outputText value ="Action"/>
                     </f:facet>
-                    <h:commandButton class="btn" action="{tacheCtrl.modifierTache(item)}" value="Modifier"/>
-                    <h:commandButton class="btn" action="{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
+                    <h:commandButton class="btn" action="#{tacheCtrl.modifierTache(item)}" value="Modifier"/>
+                    <h:commandButton class="btn" action="#{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
                 </h:column>
             </h:dataTable>
 
