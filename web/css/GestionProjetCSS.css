@@ -7,13 +7,16 @@
 */
 
 .info {
-    background-color: #0099ff;
+    background-color: #0099ff !important;
+    background-color: #66ccff
 }
 
 .warning {
-    background-color:#ffcc00
+    background-color:#ffcc00 !important;
 }
 
 .error {
-    background-color: #ff0000;
+    background-color: #ff0000 !important;
 }
+
+/* #{colorCtrl.computeColor(item.importance)} */
