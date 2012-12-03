@@ -229,4 +229,8 @@ public class Projet implements Serializable {
         }
         return null;
     }
+    
+    public String getInformations(){
+        return description+" \nCréé Le "+dateDeb.toString();
+    }
 }

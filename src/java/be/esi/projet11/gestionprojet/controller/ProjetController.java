@@ -81,8 +81,9 @@ public class ProjetController {
         return projetCourant;
     }
 
-    public void setProjetCourant(Projet projetCourant) {
+    public String setProjetCourant(Projet projetCourant) {
         this.projetCourant = projetCourant;
+        return null;
     }
 
     public String ajouterMembre(){
