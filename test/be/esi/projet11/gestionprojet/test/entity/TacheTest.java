@@ -280,7 +280,7 @@ public class TacheTest {
     public void testCompterMembresApresAcceptation() {
         Tache tache = null;
         try {
-            tache = new Tache("Tache 10", "Tâche de test 10");
+            tache = new Tache("Tache 11", "Tâche de test 11");
         }
         catch (TacheException ex) {
             Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -289,6 +289,44 @@ public class TacheTest {
         Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
         
         tache.addMembre(membre1);
+        tache.accepterMembre(membre1);
+        assertEquals(1, tache.getParticipantsAcceptes().size());
+    }
+    
+    @Test
+    public void testCompterMembresApresAcceptation2() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tache 12", "Tâche de test 12");
+        }
+        catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Membre membre1 = new Membre(1l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
+        Membre membre2 = new Membre(2l, "Membre 2", "pass", "mail2@example.com", "Nom2", "Prenom2");
+        
+        tache.addMembre(membre1);
+        tache.accepterMembre(membre1);
+        tache.addMembre(membre2);
+        tache.accepterMembre(membre2);
+        assertEquals(2, tache.getParticipantsAcceptes().size());
+    }
+    
+    @Test
+    public void testAccepterMemeMembreDeuxFois() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tache 13", "Tâche de test 13");
+        }
+        catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
+        
+        tache.addMembre(membre1);
+        tache.accepterMembre(membre1);
         tache.accepterMembre(membre1);
         assertEquals(1, tache.getParticipantsAcceptes().size());
     }
