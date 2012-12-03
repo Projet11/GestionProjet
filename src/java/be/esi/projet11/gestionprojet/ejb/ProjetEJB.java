@@ -35,7 +35,7 @@ public class ProjetEJB {
     public void removeParticipeProjet(Projet projet, Membre mbr) {
         projet.refuserParticipant(mbr);
         em.merge(projet);
-        System.out.println("projet size" + projet.getAllParticipant().size());
+        //System.out.println("projet size" + projet.getAllParticipant().size());
     }
 
     public List<Projet> getAllProjets() {

@@ -1,5 +1,6 @@
 package be.esi.projet11.gestionprojet.ejb;
 
+import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
@@ -111,5 +112,10 @@ public class TacheEJB {
         }
         query.setParameter("projet", p);
         return query.getResultList();
+    }
+
+    public void removeParticipeTache(Tache tache, Membre membre) {
+        tache.refuserParticipant(membre);
+        em.merge(tache);
     }
 }

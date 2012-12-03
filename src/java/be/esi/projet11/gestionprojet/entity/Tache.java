@@ -361,4 +361,22 @@ public class Tache implements Serializable {
     public Projet getProjet() {
         return projet; // TODO
     }
+
+    public void refuserParticipant(Membre membre) {
+        ParticipeTache pt = getParticipeTache(membre);
+        if (pt != null) {
+            membres.remove(pt);
+            List<Membre> membres = getParticipantsAcceptes();
+            String objet = "Refus d'ajout";
+            String corps = "Le membre " + membre.getMail() + " a refusé d'être ajouté à la tâche "
+                    + nom + ".";
+            for (Membre unMembre : membres) {
+                try {
+                    Mailer.send(unMembre.getMail(), objet, corps);
+                } catch (MailException ex) {
+                    Logger.getLogger(Projet.class.getName()).log(Level.WARNING, "Impossible d'envoyer un mail a " + unMembre.getMail(), ex);
+                }
+            }
+        }
+    }
 }
