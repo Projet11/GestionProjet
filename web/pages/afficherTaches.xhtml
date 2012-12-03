@@ -15,42 +15,65 @@
         <h:form>
             <div class="form-inline">
                 <div class="span8">
-                    <h:selectOneRadio value="#{tacheCtrl.archive}">
-                        <f:selectItem itemValue="toutes" itemLabel="Toutes" /> 
+                    <h:selectOneRadio value="#{tacheCtrl.archive}" id="selection">
+                        <f:selectItem itemValue="toutes" itemLabel="Toutes" />
                         <f:selectItem itemValue="archivees" itemLabel="Archivées"/>
-                        <f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>             
+                        <f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>
+                        <f:ajax event="change" listener="#{tacheCtrl.affichageTaches()}" execute="selection" render="resultat"/>
                     </h:selectOneRadio>
                 </div>
                 <div class="span2">
-                    <h:commandButton class="btn" action="#{tacheCtrl.affichageTaches()}" value="Choisir"/> 
-                </div>
-                <div class="span2">
-                    <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
+                    <h:commandButton class="btn" action="{tacheCtrl.fenetreCreeTache()}" value="Crée"/>
                 </div>
             </div>
-        </h:form>     
+            <br/>
+            <h:dataTable class="table" id="resultat" var="item" rowClasses="#{item.importance.balise}" value="#{tacheCtrl.taches}">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value ="Archivée"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox disabled="true" value="#{item.archive}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value ="Nom"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nom}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value ="Progression"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pourcentage} %"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value ="Action"/>
+                    </f:facet>
+                    <h:commandButton class="btn" action="#{tacheCtrl.modifierTache(item)}" value="Modifier"/>
+                    <h:commandButton class="btn" action="#{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
+                </h:column>
+            </h:dataTable>
 
-        <table class="table"> 
-            <tr>
-                <td>Archivée</td>
-                <td>Nom</td>
-                <td>Pourcentage</td>
-                <td>Action</td>
-            </tr>
-            <c:forEach var="tache" items="#{tacheCtrl.taches}">
-                <h:form>
-                    <tr class="#{tache.importance.balise}">
-                        <td>
-                            <h:selectBooleanCheckbox disabled="true" value="#{tache.archive}"/> </td>
-                        <td><h:outputText value="#{tache.nom}"/></td>
-                        <td><h:outputText value="#{tache.pourcentage} %"/></td>
-                        <td>
-                            <h:commandButton class="btn" action="#{tacheEJB.modifierTache(tache)}" value="Modifier"/>
-                            <h:commandButton class="btn" action="#{tacheCtrl.startTimer(tache)}" value="Démarrer le timer"/>
-                        </td> </tr>    
-                </h:form>
-            </c:forEach>  
-        </table>
+            <!--<table class="table" id="resultat">
+<tr>
+<td>Archivée</td>
+<td>Nom</td>
+<td>Pourcentage</td>
+<td>Action</td>
+</tr>
+<c:forEach var="tache" items="{tacheCtrl.taches}">
+<tr class="{tache.importance.balise}">
+<td>
+<h:selectBooleanCheckbox disabled="true" value="{tache.archive}"/> </td>
+<td><h:outputText value="{tache.nom}"/></td>
+<td><h:outputText value="{tache.pourcentage} %"/></td>
+<td>
+<h:commandButton class="btn" action="{tacheEJB.modifierTache(tache)}" value="Modifier"/>
+<h:commandButton class="btn" action="{tacheEJB.startTimer(tache)}" value="Démarrer le timer"/>
+</td> </tr>
+</c:forEach>
+</table>-->
+        </h:form>
     </h:body>
 </html>
-

@@ -12,16 +12,18 @@ import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author g34771
  */
-@ManagedBean(name="projetCtrl")
+@ManagedBean(name = "projetCtrl")
 @SessionScoped
 public class ProjetController {
     //Devra etre instancier lors de la selection d'un projet
+
     private Projet projetCourant;
     private String email;
     private Collection<Membre> membres;
@@ -29,16 +31,25 @@ public class ProjetController {
     private MembreEJB membreEJB;
     @EJB
     private ProjetEJB projetEJB;
-        private List<Projet> projets;
+    private List<Projet> projets;
+    @ManagedProperty("#{tacheCtrl}")
+    private TacheController tacheCtrl;
 
+    public TacheController getTacheCtrl() {
+        return tacheCtrl;
+    }
+
+    public void setTacheCtrl(TacheController tacheCtrl) {
+        this.tacheCtrl = tacheCtrl;
+    }
     /**
      * Get the value of projets
      *
      * @return the value of projets
      */
     public List<Projet> getProjets() {
-        if(projets==null){
-            projets=projetEJB.getAllProjets();
+        if (projets == null) {
+            projets = projetEJB.getAllProjets();
         }
         return projets;
     }
@@ -51,7 +62,7 @@ public class ProjetController {
     public void setProjets(List<Projet> projets) {
         this.projets = projets;
     }
-    
+
     /**
      * Creates a new instance of ProjetControl
      */
@@ -75,18 +86,19 @@ public class ProjetController {
     }
 
     public Projet getProjetCourant() {
-        if(projetCourant==null){
-            projetCourant= projetEJB.creerProjet();
+        if (projetCourant == null) {
+            projetCourant = projetEJB.creerProjet();
         }
         return projetCourant;
     }
 
     public String setProjetCourant(Projet projetCourant) {
         this.projetCourant = projetCourant;
+        tacheCtrl.affichageTaches(projetCourant);
         return null;
     }
 
-    public String ajouterMembre(){
+    public String ajouterMembre() {
         membreEJB.ajoutMembreProjet(email, getProjetCourant());
         membres = projetCourant.getAllParticipant();
         return "ajouter";

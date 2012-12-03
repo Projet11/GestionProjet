@@ -33,8 +33,8 @@ public class TacheController {
 
     @EJB
     private TacheEJB tacheEJB;
-    @ManagedProperty("#{projetCtrl}")
-    private ProjetController projetCtrl;
+//    @ManagedProperty("#{projetCtrl}")
+//    private ProjetController projetCtrl;
     // Attributs utilisés par le formulaire de création d'une tâche uniquement
     private String nomParam;
     private String descriptionParam;
@@ -49,6 +49,7 @@ public class TacheController {
     private String creationNom;
     private ImportanceEnum creationImportance;
     private String creationDescription;
+    private Projet projet;
 
     public String getCreationDescription() {
         return creationDescription;
@@ -85,13 +86,13 @@ public class TacheController {
         return nomParam;
     }
 
-    public ProjetController getProjetCtrl() {
-        return projetCtrl;
-    }
-
-    public void setProjetCtrl(ProjetController projetCtrl) {
-        this.projetCtrl = projetCtrl;
-    }
+//    public ProjetController getProjetCtrl() {
+//        return projetCtrl;
+//    }
+//
+//    public void setProjetCtrl(ProjetController projetCtrl) {
+//        this.projetCtrl = projetCtrl;
+//    }
 
     public void setNomParam(String nomParam) {
         this.nomParam = nomParam;
@@ -248,19 +249,28 @@ public class TacheController {
 
     public String affichageTaches() {
         taches = null;
-        Projet projet = projetCtrl.getProjetCourant();
         if (archive.equals("toutes")) {
-            System.out.println("TOUTES");
-            System.out.println(taches);
-            System.out.println(projet);
             taches = tacheEJB.getTaches(null, projet);
-            System.out.println(taches);
         } else {
             if (archive.equals("archivees")) {
-                System.out.println("archivees");
                 taches = tacheEJB.getTaches(true, projet);
             } else {
-                System.out.println("non archivees");
+                taches = tacheEJB.getTaches(false, projet);
+            }
+        }
+        //return "success";
+        return null;
+    }
+    
+    public String affichageTaches(Projet projet) {
+        taches = null;
+        this.projet=projet;
+        if (archive.equals("toutes")) {
+            taches = tacheEJB.getTaches(null, projet);
+        } else {
+            if (archive.equals("archivees")) {
+                taches = tacheEJB.getTaches(true, projet);
+            } else {
                 taches = tacheEJB.getTaches(false, projet);
             }
         }
