@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:c="http://java.sun.com/jsp/jstl/core"
-	  xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
 	<h:head>
 		<script type="text/javascript" src="../js/jquery.js"></script>
-        <script type="text/javascript" src="../js/connexion.js"></script>
+		<script type="text/javascript" src="../js/connexion.js"></script>
 		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
 		<style>
 			.separator
@@ -20,44 +20,40 @@
 		<title>Connexion</title>
 	</h:head>
 	<h:body>
-		<div class="navbar navbar-fixed-top">
-			<div class="hero-unit">
-				<h:form id="formIdentification" onsubmit="return onSubmit();">
-					<fieldset>
-						<legend>Connexion</legend>
-						<div id="fieldNom" class="control-group">
-							<label class="control-label" for="txtNom">Nom</label>
-							<div id="controlNom" class="controls">
-								<h:inputText id="txtNom" required="true" onfocus="clearErrors()"
-									value="#{membreCtrl.inputNom}"/>
-							</div>
-						</div>
+		<h:form id="formIdentification" onsubmit="return onSubmit();">
+			<fieldset>
+				<legend>Connexion</legend>
+				<div id="fieldNom" class="control-group">
+					<label class="control-label" for="txtNom">Nom</label>
+					<div id="controlNom" class="controls">
+						<h:inputText id="txtNom" required="true" onfocus="clearErrors()"
+									 value="#{membreCtrl.inputNom}"/>
+					</div>
+				</div>
 
-						<div id="fieldMdp" class="control-group">
-							<label class="control-label" for="txtMdp">Mot de passe</label>
-							<div id="controlMdp" class="controls">
-								<h:inputSecret id="txtPass" required="true" onfocus="clearErrors()"
-									value="#{membreCtrl.inputPassword}"/>
-							</div>
-						</div>
+				<div id="fieldMdp" class="control-group">
+					<label class="control-label" for="txtMdp">Mot de passe</label>
+					<div id="controlMdp" class="controls">
+						<h:inputSecret id="txtPass" required="true" onfocus="clearErrors()"
+									   value="#{membreCtrl.inputPassword}"/>
+					</div>
+				</div>
 
-						<div class="controls">
-							<h:commandButton value="Identification"
-								styleClass="btn btn-large btn-success"
-								action="#{membreCtrl.identifier}"/>
-						</div>
-						
-						<hr class="separator"/>
+				<div class="controls">
+					<h:commandButton value="Identification"
+									 styleClass="btn btn-large btn-success"
+									 action="#{membreCtrl.identifier}"/>
+				</div>
 
-						<p class="text-error">
-							<h:outputText
-								rendered="#{membreCtrl.identificationEchouee}"
-								value="Identifiant ou mot de passe invalide"/>
-							<h:messages/>
-						</p>
-					</fieldset>
-				</h:form>
-			</div>
-		</div>
+				<hr class="separator"/>
+
+				<p class="text-error">
+					<h:outputText
+						rendered="#{membreCtrl.identificationEchouee}"
+						value="Identifiant ou mot de passe invalide"/>
+					<h:messages/>
+				</p>
+			</fieldset>
+		</h:form>
 	</h:body>
 </html>
