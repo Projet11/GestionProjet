@@ -5,18 +5,16 @@
     Description:
         Purpose of the stylesheet follows.
 */
-
 .info {
-    background-color: #0099ff !important;
-    background-color: #66ccff
+    background-color: #0099ff;
 }
 
 .warning {
-    background-color:#ffcc00 !important;
+    background-color:#ffcc00;
 }
 
 .error {
-    background-color: #ff0000 !important;
+    background-color: #ff0000;
 }
 
 /* #{colorCtrl.computeColor(item.importance)} */
