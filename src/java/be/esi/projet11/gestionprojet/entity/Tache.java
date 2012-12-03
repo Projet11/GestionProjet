@@ -319,6 +319,35 @@ public class Tache implements Serializable {
 
         return ret;
     }
+    
+    public List<Membre> getParticipantsAcceptes() {
+        List<Membre> ret = new ArrayList<Membre>();
+        for (ParticipeTache pt : membres) {
+            if (pt.isAccepte()) {
+                ret.add(pt.getMembre());
+            }
+        }
+        return ret;
+    }
+    
+    public void accepterMembre(Membre mbr) {
+        if (mbr.getMail() == null || mbr.getMail().equals("")) {
+            return;
+        }
+        ParticipeTache pt = getParticipeTache(mbr);
+        if (pt != null) {
+            pt.setAccepte(true);
+        }
+    }
+    
+    private ParticipeTache getParticipeTache(Membre mbr) {
+        for (ParticipeTache pt : membres) {
+            if (pt.getMembre().equals(mbr)) {
+                return pt;
+            }
+        }
+        return null;
+    }
 
     public List<Membre> getAllMembres() {
         List<Membre> ret = new ArrayList<Membre>();

@@ -259,4 +259,37 @@ public class TacheTest {
 
         Assert.assertArrayEquals(membres.toArray(), attendu.toArray());
     }
+    
+    @Test
+    public void testCompterMembresAvantAcceptation() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tache 10", "Tâche de test 10");
+        }
+        catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
+        
+        tache.addMembre(membre1);
+        assertEquals(0, tache.getParticipantsAcceptes().size());
+    }
+    
+    @Test
+    public void testCompterMembresApresAcceptation() {
+        Tache tache = null;
+        try {
+            tache = new Tache("Tache 10", "Tâche de test 10");
+        }
+        catch (TacheException ex) {
+            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
+        
+        tache.addMembre(membre1);
+        tache.accepterMembre(membre1);
+        assertEquals(1, tache.getParticipantsAcceptes().size());
+    }
 }
