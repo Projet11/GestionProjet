@@ -90,7 +90,7 @@ public class CommentaireTest {
     @Test(expected = IllegalArgumentException.class)
     public void testSetCommentaireNull() {
         System.out.println("SetCommentaireNull");
-        comment.setCommentaire(null);
+        comment.setCorps(null);
     }
 
     /**
@@ -100,8 +100,8 @@ public class CommentaireTest {
     public void testSetCommentaire() {
         System.out.println("setCommentaireTrue");
         String newComment = "olleH";
-        comment.setCommentaire(newComment);
-        assertEquals(comment.getCommentaire(), newComment);
+        comment.setCorps(newComment);
+        assertEquals(comment.getCorps(), newComment);
     }
 
     @Test(expected = IllegalArgumentException.class)

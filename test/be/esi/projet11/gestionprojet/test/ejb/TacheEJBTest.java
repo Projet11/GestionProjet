@@ -5,17 +5,18 @@ package be.esi.projet11.gestionprojet.test.ejb;
  */
 
 //import be.esi.projet11.gestionprojet.ejb.TacheEJB;
+import be.esi.projet11.gestionprojet.ejb.MembreEJB;
+import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
+import be.esi.projet11.gestionprojet.entity.Commentaire;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
-import be.esi.projet11.gestionprojet.exception.TacheException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import javax.ejb.embeddable.EJBContainer;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -30,21 +31,27 @@ import org.junit.Test;
  */
 public class TacheEJBTest {
 
+    private static MembreEJB membreEJB;
+    private static ProjetEJB projetEJB;
+    private static TacheEJB tacheEJB ;
     private static EJBContainer container;
     private static HashMap<Object, Object> properties;
     private static Projet projet;
-    private static TacheEJB instance;
     private static Tache tache;
     private static Membre membre;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        membreEJB = lookupMembreEJBBean();
+        tacheEJB = lookupTacheEJBBean();
+        projetEJB = lookupProjetEJBBean();
         properties = new HashMap<Object, Object>();
         properties.put(EJBContainer.APP_NAME, "GestionProjet");
         container = javax.ejb.embeddable.EJBContainer.createEJBContainer(properties);
-        projet = new Projet(0l, "unProjet");
-        tache = new Tache("abc", "defght", ImportanceEnum.NORMALE, projet);
-        instance = (TacheEJB) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
+        projet = projetEJB.creerProjet("unProjet", "descriptionDunProjet");
+        tache = tacheEJB.creerTache("abc", "defght", ImportanceEnum.NORMALE, projet);
+        membre = membreEJB.addUser("login", "password", "mail@hotmail.com", "nom", "prenom");
+
     }
 
     @AfterClass
@@ -127,6 +134,40 @@ public class TacheEJBTest {
 //    }
     @Test
     public void ajouterCommentaire() {
-        instance.ajouterConversation(tache, membre, "HELLO");
+        System.out.println(tache);
+        tacheEJB.ajouterConversation(tache, membre, "HELLO");
+        Commentaire comment = tacheEJB.getConversation(tache).get(0);
+        assertEquals(comment.getCorps(),"HELLO");
+    }
+    @Test
+    public void Test(){
+        assertEquals(true,true);
+    }
+    private static TacheEJB lookupTacheEJBBean() {
+        try {
+            Context c = new InitialContext();
+            return (TacheEJB) c.lookup("java:global/GestionProjet/TacheEJB!be.esi.projet11.gestionprojet.ejb.TacheEJB");
+        } catch (NamingException ne) {
+
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private static ProjetEJB lookupProjetEJBBean() {
+        try {
+            Context c = new InitialContext();
+            return (ProjetEJB) c.lookup("java:global/GestionProjet/ProjetEJB!be.esi.projet11.gestionprojet.ejb.ProjetEJB");
+        } catch (NamingException ne) {
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private static MembreEJB lookupMembreEJBBean() {
+        try {
+            Context c = new InitialContext();
+            return (MembreEJB) c.lookup("java:global/GestionProjet/MembreEJB!be.esi.projet11.gestionprojet.ejb.MembreEJB");
+        } catch (NamingException ne) {
+            throw new RuntimeException(ne);
+        }
     }
 }

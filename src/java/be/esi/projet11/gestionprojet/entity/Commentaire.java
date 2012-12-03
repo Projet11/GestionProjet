@@ -50,7 +50,7 @@ public class Commentaire implements Serializable {
 
     public Commentaire(Tache tache, Membre membre, String corps,Date datePosted) {
         this.setTache(tache);
-        this.setCommentaire(corps);
+        this.setCorps(corps);
         this.setMembre(membre);
         this.setDate(datePosted);
     }
@@ -94,11 +94,11 @@ public class Commentaire implements Serializable {
         this.membre = membre;
     }
 
-    public String getCommentaire() {
+    public String getCorps() {
         return corps;
     }
 
-    public void setCommentaire(String corps) {
+    public void setCorps(String corps) {
         if (corps == null) {
             throw new IllegalArgumentException("Le corps ne peut pas être nulle");
         }
