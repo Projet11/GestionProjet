@@ -45,7 +45,9 @@ public class TacheController {
     private Collection<Membre> membresSel;
     private Membre membreCourantParam;
     private String commentaireParam;
-
+    private Tache tacheCourante;
+    private String archive;
+    private Collection<Tache> taches;
     public Membre getMembreCourantParam() {
         return membreCourantParam;
     }
@@ -62,7 +64,6 @@ public class TacheController {
         this.commentaireParam = commentaireParam;
     }
     //
-    private Tache tacheCourante;
 
     private void test() {
         try {
@@ -216,9 +217,6 @@ public class TacheController {
         return tacheEJB.getAllTimerLaunched();
     }
 
-    public Collection<Tache> getAllTimerLaunched() {
-        return tacheEJB.getAllTimerLaunched();
-    }
 
     public String inscrireMembresATache() {
         for (Membre membre : membresSel) {

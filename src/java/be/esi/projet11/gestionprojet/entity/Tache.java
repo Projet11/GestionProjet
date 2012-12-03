@@ -28,7 +28,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
 /**
@@ -73,13 +72,13 @@ public class Tache implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
-    private Collection<Commentaire> conversation;
+    private List<Commentaire> conversation;
 
-    public Collection<Commentaire> getConversation() {
+    public List<Commentaire> getConversation() {
         return conversation;
     }
 
-    public void setConversation(Collection<Commentaire> conversation) {
+    public void setConversation(List<Commentaire> conversation) {
         this.conversation = conversation;
     }
 
@@ -253,10 +252,7 @@ public class Tache implements Serializable {
         return new Time(currDate.getTime() - getDateDeb().getTime());
     }
     
-    public Time getTimer() {
-        Date currDate = new Date();
-        return new Time(currDate.getTime() - getDateDeb().getTime());
-    }
+
 
     /**
      * @return the dateDeb
@@ -319,10 +315,7 @@ public class Tache implements Serializable {
     public Collection<ParticipeTache> getParticipations() {
         return membres;
     }
-    
-    public Collection<ParticipeTache> getParticipations() {
-        return membres;
-    }
+
 
     public int getNbMembres() {
         return membres.size();
@@ -346,15 +339,6 @@ public class Tache implements Serializable {
         }
 
         return ret;
-    }
-
-    public List<Commentaire> getAllCommentaires(Tache tache) {
-        List<Commentaire> ret = new ArrayList<Commentaire>();
-        for (Commentaire c : conversation) {
-            ret.add(c);
-        }
-        return ret;
-
     }
 
     public Projet getProjet() {
