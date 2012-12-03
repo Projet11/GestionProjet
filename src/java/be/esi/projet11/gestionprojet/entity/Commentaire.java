@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -28,6 +29,7 @@ public class Commentaire implements Serializable {
     @ManyToOne(optional = false)
     private Tache tache;
     @JoinColumn(name = "MEMBRE", referencedColumnName = "ID", insertable = false, updatable = false ,nullable = false)
+    @OneToOne
     private Membre membre;
     @Column(nullable = false)
     private String commentaire;
@@ -35,7 +37,7 @@ public class Commentaire implements Serializable {
     public Commentaire() {
     }
     
-    public Commentaire(Tache Tache,Membre name, String commentaire) {
+    public Commentaire(Tache tache,Membre membre, String commentaire) {
         this.tache = tache;
         this.membre = membre;
         this.commentaire = commentaire;
@@ -96,6 +98,6 @@ public class Commentaire implements Serializable {
 
     @Override
     public String toString() {
-        return "id : "+ this.id + " membre : " + this.membre + " Tache : " +this.tache; 
+        return "id : "+ this.id + " membre : " + this.membre + " Tache : " +this.tache + " Commentaire : " + this.commentaire;
     }
 }

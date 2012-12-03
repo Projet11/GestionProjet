@@ -57,13 +57,16 @@ public class TacheController {
     }
     //
     private Tache tacheCourante;
-    private void test(){
+
+    private void test() {
         try {
             tacheCourante = tacheEJB.creerTache("alouetteeeee", "blouette", ImportanceEnum.IMPORTANT);
         } catch (TacheException ex) {
+            System.out.println("---------------------------------------------");
             Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @PostConstruct
     private void init() {
         test();
@@ -74,6 +77,10 @@ public class TacheController {
         membreCourantParam = new Membre("alouette@gmail.com");
         commentaireParam = "youhouuuuu";
         this.ajouterConversation();
+        commentaireParam = "youhouuuuuuu222222222";
+        membreCourantParam = new Membre("abcdef@hotmail.com");
+        this.ajouterConversation();
+
     }
 
     public String getNomParam() {
