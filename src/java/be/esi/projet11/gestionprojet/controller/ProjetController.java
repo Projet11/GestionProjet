@@ -76,7 +76,8 @@ public class ProjetController {
 
     public Projet getProjetCourant() {
         if(projetCourant==null){
-            projetCourant= projetEJB.creerProjet();
+            //projetCourant= projetEJB.creerProjet();
+            projetCourant = projetEJB.getProjetById(1l); // TODO: En attendant que le projet soit implémenté
         }
         return projetCourant;
     }

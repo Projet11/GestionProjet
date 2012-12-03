@@ -9,9 +9,9 @@
     <h:body>
         <h:form>
             <h:selectManyMenu value="#{tacheCtrl.membresSel}">
-                <f:selectItems value="#{projetCtrl.projetCourant.allParticipant}"/>
+                <f:selectItems var="membre" itemLabel="#{membre.toString()}" itemValue="#{membre.id}" value="#{projetCtrl.projetCourant.allParticipant}"/>
             </h:selectManyMenu>
-            <h:commandButton action="#{tacheCtrl.inscrireMembresATache}" />
+            <h:commandButton action="#{tacheCtrl.inscrireMembresATache}" value="Ajouter"/>
         </h:form>
     </h:body>
 </html>

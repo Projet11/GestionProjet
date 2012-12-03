@@ -4,6 +4,7 @@
  */
 package be.esi.projet11.gestionprojet.controller;
 
+import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
@@ -33,6 +34,8 @@ public class TacheController {
 
     @EJB
     private TacheEJB tacheEJB;
+    @EJB
+    private MembreEJB membreEJB;
     @ManagedProperty("#{projetCtrl}")
     private ProjetController projetCtrl;
     // Attributs utilisés par le formulaire de création d'une tâche uniquement
@@ -41,7 +44,7 @@ public class TacheController {
     private ImportanceEnum importanceParam;
     private Long revisionParam;
     private Long pourcentageParam;
-    private Collection<Membre> membresSel;
+    private Collection<String> membresSel;
     private String archive;
     private Collection<Tache> taches;
     //
@@ -131,11 +134,12 @@ public class TacheController {
 
     public Tache getTacheCourante() {
         if (tacheCourante == null) {
-            try {
-                tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
-            } catch (TacheException ex) {
-                Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            //try {
+                //tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique"); // TODO: Remettre cette ligne quand on pourra sélectionner une tâche
+                tacheCourante = tacheEJB.getTache(1l);
+//            } catch (TacheException ex) {
+//                Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
         return tacheCourante;
     }
@@ -144,11 +148,11 @@ public class TacheController {
         this.tacheCourante = tacheCourante;
     }
 
-    public Collection<Membre> getMembresSel() {
+    public Collection<String> getMembresSel() {
         return membresSel;
     }
 
-    public void setMembresSel(Collection<Membre> membresSel) {
+    public void setMembresSel(Collection<String> membresSel) {
         this.membresSel = membresSel;
     }
 
@@ -208,7 +212,8 @@ public class TacheController {
     }
 
     public String inscrireMembresATache() {
-        for (Membre membre : membresSel) {
+        for (String membreId : membresSel) {
+            Membre membre = membreEJB.getById(Long.parseLong(membreId));
             getTacheCourante().addMembre(membre);
         }
         tacheEJB.saveTache(getTacheCourante());

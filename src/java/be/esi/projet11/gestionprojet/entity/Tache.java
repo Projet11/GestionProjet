@@ -289,7 +289,7 @@ public class Tache implements Serializable {
         corps += "<p><a href='http://localhost:27583/GestionProjet/pages/refuserTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Refuser</a></p>"; // TODO: Corriger les liens
         corps += "<br/><br/>A bientôt !";
         try {
-            Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps);
+            Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps, true);
         } catch (MailException ex) {
             Logger.getLogger(Tache.class.getName()).log(Level.SEVERE, null, ex); // FIXME
         }
