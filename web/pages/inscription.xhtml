@@ -1,16 +1,19 @@
-<html>
-    <head>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Inscription</title>
-        <script type="text/javascript" src="js/jquery.js"></script>
-        <script type="text/javascript" src="js/inscription.js"></script>
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    </head>
-    <body>
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <div class="hero-unit">
-            <fieldset>
+        <script type="text/javascript" src="../js/jquery.js"></script>
+        <script type="text/javascript" src="../js/inscription.js"></script>
+        <link rel="stylesheet" media="screen" href="css/bootstrap.min.css"/>
+    </h:head>
+    <h:body>
+        <fieldset>
             <legend>Inscription</legend>
             <form name="formInscription" method="POST" class="form-horizontal">
                 <div id="errorNom" class="control-group">
@@ -54,20 +57,19 @@
                         <input id="mdpconfirm" name="txtPass2" type="password" onblur="clearErrors()"/>
                     </div>
                 </div>
-                
+
                 <div class="controls">
                     <input id="inscription" class="btn btn-large btn-success" type="button" onclick="on_submit()" value="Valider"/>
                 </div>
-                
+
                 <td colspan="2"><hr/></td>
-                
+
                 <td class="help-inline"></td>
-                
+
                 <td colspan="2">
                     <div id="div-status"></div>
                 </td>
             </form>
-            </fieldset>
-        </div>
-    </body>
+        </fieldset>
+    </h:body>
 </html>
