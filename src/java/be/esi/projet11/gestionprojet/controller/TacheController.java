@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -42,43 +43,50 @@ public class TacheController {
     private Long revisionParam;
     private Long pourcentageParam;
     private Collection<Membre> membresSel;
-    private String archive;
-    private Collection<Tache> taches;
+    private Membre membreCourantParam;
+    private String commentaireParam;
+
+    public Membre getMembreCourantParam() {
+        return membreCourantParam;
+    }
+
+    public void setMembreCourantParam(Membre membreCourantParam) {
+        this.membreCourantParam = membreCourantParam;
+    }
+
+    public String getCommentaireParam() {
+        return commentaireParam;
+    }
+
+    public void setCommentaireParam(String commentaireParam) {
+        this.commentaireParam = commentaireParam;
+    }
     //
     private Tache tacheCourante;
-    private String creationNom;
-    private ImportanceEnum creationImportance;
-    private String creationDescription;
 
-    public String getCreationDescription() {
-        return creationDescription;
+    private void test() {
+        try {
+            tacheCourante = tacheEJB.creerTache("alouetteeeee", "blouette", ImportanceEnum.IMPORTANT);
+        } catch (TacheException ex) {
+            System.out.println("---------------------------------------------");
+            Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void setCreationDescription(String creationDescription) {
-        this.creationDescription = creationDescription;
-    }
+    @PostConstruct
+    private void init() {
+        test();
+        this.nomParam = tacheCourante.getNom();
+        this.importanceParam = tacheCourante.getImportance();
+        this.pourcentageParam = tacheCourante.getPourcentage().longValue();
+        this.revisionParam = tacheCourante.getSVNRevision();
+        membreCourantParam = new Membre("alouette@gmail.com");
+        commentaireParam = "youhouuuuu";
+        this.ajouterConversation();
+        commentaireParam = "youhouuuuuuu222222222";
+        membreCourantParam = new Membre("abcdef@hotmail.com");
+        this.ajouterConversation();
 
-    public String getCreationNom() {
-        return creationNom;
-    }
-
-    public void setCreationNom(String creationNom) {
-        this.creationNom = creationNom;
-    }
-
-    public ImportanceEnum getCreationImportance() {
-        return creationImportance;
-    }
-
-    public void setCreationImportance(ImportanceEnum creationImportance) {
-        this.creationImportance = creationImportance;
-    }
-
-    /**
-     * Creates a new instance of TacheController
-     */
-    public TacheController() {
-        archive = "toutes";
     }
 
     public String getNomParam() {
@@ -208,6 +216,10 @@ public class TacheController {
         return tacheEJB.getAllTimerLaunched();
     }
 
+    public Collection<Tache> getAllTimerLaunched() {
+        return tacheEJB.getAllTimerLaunched();
+    }
+
     public String inscrireMembresATache() {
         for (Membre membre : membresSel) {
             getTacheCourante().addMembre(membre);
@@ -216,11 +228,21 @@ public class TacheController {
         return "success";
     }
 
-    public void modificationTache() throws TacheException {
-        tacheCourante.setPourcentage(pourcentageParam.intValue());
-        tacheCourante.setSVNRevision(revisionParam);
-        tacheCourante.setImportance(importanceParam);
-        tacheEJB.modificationTache(tacheCourante);
+    public void modificationTache() {
+        try {
+            tacheEJB.modificationTache(tacheCourante, pourcentageParam.intValue(), revisionParam, importanceParam);
+        } catch (TacheException ex) {
+            System.err.println("Il existe au moins une donnée entrés  dans les paramètres entrés");
+        }
+    }
+
+    public void ajouterConversation() {
+        if (tacheCourante != null && membreCourantParam != null
+                && commentaireParam != null && !commentaireParam.isEmpty()) {
+            tacheEJB.ajouterConversation(tacheCourante, membreCourantParam, commentaireParam);
+        } else {
+            System.err.println("la tache, le membre ou le commentaire ne peut être vide");
+        }
     }
 
     public String modifierTache(Tache tache) {

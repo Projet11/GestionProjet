@@ -78,6 +78,24 @@ public class TacheEJB {
     }
 
     public void modificationTache(Tache tacheCourante) {
+    }
+
+    public void ajouterConversation(Tache tacheCourante, Membre membre, String commentaire) {
+        if (em.find(Tache.class, tacheCourante.getId()) != null) {
+            tacheCourante.getConversation().add(new Commentaire(tacheCourante, membre, commentaire));
+            for (Commentaire com : tacheCourante.getConversation()) {
+                System.out.println(com.toString());
+            }
+        } else {
+            System.err.println("aaaaaaaaaaaaaaaaaaa");
+        }
+
+    }
+
+    public void modificationTache(Tache tacheCourante, int intValue, Long revisionParam, ImportanceEnum importanceParam) throws TacheException {
+        tacheCourante.setImportance(importanceParam);
+        tacheCourante.setPourcentage(intValue);
+        tacheCourante.setSVNRevision(revisionParam);
         em.merge(tacheCourante);
     }
 
