@@ -15,13 +15,10 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -53,6 +50,30 @@ public class TacheController {
     private String creationNom;
     private ImportanceEnum creationImportance;
     private String creationDescription;
+
+    public String getCreationNom() {
+        return creationNom;
+    }
+
+    public void setCreationNom(String creationNom) {
+        this.creationNom = creationNom;
+    }
+
+    public ImportanceEnum getCreationImportance() {
+        return creationImportance;
+    }
+
+    public void setCreationImportance(ImportanceEnum creationImportance) {
+        this.creationImportance = creationImportance;
+    }
+
+    public String getCreationDescription() {
+        return creationDescription;
+    }
+
+    public void setCreationDescription(String creationDescription) {
+        this.creationDescription = creationDescription;
+    }
     private Projet projet;
 
     public Membre getMembreCourantParam() {
@@ -221,14 +242,14 @@ public class TacheController {
 
     public String modificationTache() {
         try {
-            if (pourcentageParam != null) {
+            if (nomParam!=null || pourcentageParam != null) {
                 tacheEJB.modificationTache(tacheCourante, pourcentageParam.intValue(), revisionParam, importanceParam);
             } else {
                 throw new TacheException();
             }
             return retourneAccueil();
         } catch (TacheException ex) {
-            System.err.println("Il existe au moins une donnée entrés  dans les paramètres entrés");
+            System.err.println("Il existe au moins une donnée entrés dans les paramètres qui est vide");
             return null;
         }
     }
@@ -294,7 +315,6 @@ public class TacheController {
                 taches = tacheEJB.getTaches(false, projet);
             }
         }
-        //return "success";
         return null;
     }
 

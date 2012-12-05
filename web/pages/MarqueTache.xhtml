@@ -5,6 +5,9 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
+        <script type="text/javascript" src="/GestionProjet/js/jquery.js"></script>
+        <script type ="text/javascript" src="/GestionProjet/js/verificationModificationTache.js"></script>
+
         <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
         <link href="/GestionProjet/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
         <title>Marquage d'une tache</title>
@@ -14,7 +17,7 @@
 
             <legend>#{tacheCtrl.nomParam}</legend>
 
-            <h:form class="form-horizontal">
+            <h:form class="form-horizontal" required="true" onsubmit="return validate();">
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="priorite">Importance</label>
@@ -28,7 +31,7 @@
                     <div class="control-group">
                         <label class="control-label" for="pourcentage">Pourcentage</label>
                         <div class="controls">
-                            <div class="input-append">
+                            <div class="input-append" id="divPourcentage">
                                 <h:inputText class="span3" name="pourcentage" id="pourcentage" value="#{tacheCtrl.pourcentageParam}">
                                     <f:validateLongRange maximum="100" minimum="0"/>
                                 </h:inputText>
@@ -38,7 +41,7 @@
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="revision">Revision</label>
-                        <div class="controls">
+                        <div class="controls" id="divSVN">
                             <h:inputText name="revision" id="revision" value="#{tacheCtrl.revisionParam}">
                                 <f:validateLongRange maximum="1000" minimum="0"/>
                             </h:inputText>
@@ -48,7 +51,7 @@
                         <h:commandButton class="btn btn-success" action ="#{tacheCtrl.modificationTache()}" value="Valider"/>
                         <h:commandLink class="btn btn-danger" action ="#{tacheCtrl.retourneAccueil()}" value="Retour"/>
                     </div>
-
+                    <span class="help-inline" id="Error"></span>
                     <br/>
                     <h:message for="pourcentage"/>
                     <h:message for="revision"/>
