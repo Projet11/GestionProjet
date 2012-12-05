@@ -10,66 +10,9 @@
         <title>Inscription</title>
         <script type="text/javascript" src="../js/jquery.js"></script>
         <script type="text/javascript" src="../js/inscription.js"></script>
-        <link rel="stylesheet" media="screen" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" media="screen" href="../css/bootstrap.min.css"/>
     </h:head>
     <h:body>
-        <fieldset>
-            <legend>Inscription</legend>
-            <form name="formInscription" method="POST" class="form-horizontal">
-                <div id="errorNom" class="control-group">
-                    <label class="control-label" for="txtNom">Nom</label>
-                    <div class="controls">
-                        <input id="nom" name="txtNom" type="text" onblur="clearErrors()"/>
-                    </div>
-                </div>
-
-                <div id="errorPrenom" class="control-group">
-                    <label class="control-label" for="txtPrenom">Pr&eacute;nom</label>
-                    <div class="controls">
-                        <input id="prenom" name="txtPrenom" type="text" onblur="clearErrors()"/>
-                    </div>
-                </div>
-
-                <div id="errorMail" class="control-group">
-                    <label class="control-label" for="txtMail">Adresse mail</label>
-                    <div class="controls">
-                        <input id="email" name="txtMail" type="text" onblur="clearErrors()"/>
-                    </div>
-                </div>
-
-                <div id="errorLogin" class="control-group">
-                    <label class="control-label" for="txtMail">Identifiant</label>
-                    <div class="controls">
-                        <input id="login" name="txtLogin" type="text" onblur="clearErrors()"/>
-                    </div>
-                </div>
-
-                <div id="errorPass1" class="control-group">
-                    <label class="control-label" for="txtMail">Mot de passe</label>
-                    <div class="controls">
-                        <input id="mdp" name="txtPass" type="password" onblur="clearErrors()"/>
-                    </div>
-                </div>
-
-                <div id="errorPass2" class="control-group">
-                    <label class="control-label" for="txtMail">Mot de passe (confirmation)</label>
-                    <div class="controls">
-                        <input id="mdpconfirm" name="txtPass2" type="password" onblur="clearErrors()"/>
-                    </div>
-                </div>
-
-                <div class="controls">
-                    <input id="inscription" class="btn btn-large btn-success" type="button" onclick="on_submit()" value="Valider"/>
-                </div>
-
-                <td colspan="2"><hr/></td>
-
-                <td class="help-inline"></td>
-
-                <td colspan="2">
-                    <div id="div-status"></div>
-                </td>
-            </form>
-        </fieldset>
+        <ui:include src="inscription-form.xhtml"/>
     </h:body>
 </html>

@@ -5,55 +5,35 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core">
-	<h:head>
+	<head>
 		<script type="text/javascript" src="../js/jquery.js"></script>
 		<script type="text/javascript" src="../js/connexion.js"></script>
 		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-		<style>
-			.separator
-			{
-				border: 0px;
-				height: 1px;
-				background-color: #E0E0E0;
-			}
-		</style>
+
+		<!-- Enable support for HTML5 elements in IE6-IE8 -->
+		<h:outputText escape="false" value='&lt;!--[if lt IE 9]&gt;&lt;script src="../js/html5shiv.js"&gt;&lt;/script&gt;&lt;![endif]--&gt;'/>
+		
 		<title>Connexion</title>
-	</h:head>
+	</head>
 	<h:body>
-		<h:form id="formIdentification" onsubmit="return onSubmit();">
-			<fieldset>
-				<legend>Connexion</legend>
-				<div id="fieldNom" class="control-group">
-					<label class="control-label" for="txtNom">Nom</label>
-					<div id="controlNom" class="controls">
-						<h:inputText id="txtNom" required="true" onfocus="clearErrors()"
-									 value="#{membreCtrl.inputNom}"/>
-					</div>
+		<!-- HEADER -->
+		<div class="navbar navbar-static-top navbar-inverse">
+			<div class="navbar-inner">
+				<a class="brand" href="#">GestionProjet</a>
+				<ul class="nav pull-right">
+					<li><a href="/GestionProjet">Accueil</a></li>
+					<li class="active"><a href="#">Connexion</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<div class="span6">
+					<!-- CONTENT -->
+					<ui:include src="connexion-form.xhtml"/>
 				</div>
-
-				<div id="fieldMdp" class="control-group">
-					<label class="control-label" for="txtMdp">Mot de passe</label>
-					<div id="controlMdp" class="controls">
-						<h:inputSecret id="txtPass" required="true" onfocus="clearErrors()"
-									   value="#{membreCtrl.inputPassword}"/>
-					</div>
-				</div>
-
-				<div class="controls">
-					<h:commandButton value="Identification"
-									 styleClass="btn btn-large btn-success"
-									 action="#{membreCtrl.identifier}"/>
-				</div>
-
-				<hr class="separator"/>
-
-				<p class="text-error">
-					<h:outputText
-						rendered="#{membreCtrl.identificationEchouee}"
-						value="Identifiant ou mot de passe invalide"/>
-					<h:messages/>
-				</p>
-			</fieldset>
-		</h:form>
+			</div>
+		</div>
 	</h:body>
 </html>
