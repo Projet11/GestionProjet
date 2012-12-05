@@ -69,7 +69,7 @@ public class MembreController {
         return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
     }
 
-    private Membre createUser(String login, String password, String mail,
+    public Membre createUser(String login, String password, String mail,
             String nom, String prenom) throws BusinessException {
         try {
             return membreEJB.addUser(login, password, mail, nom, prenom);
@@ -78,7 +78,7 @@ public class MembreController {
         }
     }
 
-    private Membre authenticateUser(String login, String password) throws BusinessException {
+    public Membre authenticateUser(String login, String password) throws BusinessException {
         try {
             membreCourant = membreEJB.getUserByAuthentification(login, password);
             return membreCourant;

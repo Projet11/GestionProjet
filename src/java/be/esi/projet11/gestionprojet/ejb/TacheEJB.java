@@ -79,19 +79,20 @@ public class TacheEJB {
     public void modificationTache(Tache tacheCourante) {
     }
 
-    public void ajouterConversation(Tache tacheCourante, Membre membre, String commentaire) {
+    public void ajouterCommentaire(Tache tacheCourante, Membre membre, String commentaire) {
         if (em.find(Tache.class, tacheCourante.getId()) != null) {
-            tacheCourante.getConversation().add(new Commentaire(tacheCourante, membre, commentaire,new Date()));
+            Commentaire comment = new Commentaire(tacheCourante, membre, commentaire,new Date());
+            em.persist(comment);
+            tacheCourante.getConversation().add(comment);
         } else {
             throw new IllegalArgumentException("La tache ne peut être null");
         }
-
     }
 
     public List<Commentaire> getConversation(Tache tacheCourante) {
          Query query = null;
         if (em.find(Tache.class, tacheCourante.getId()) != null) {
-            query = em.createNamedQuery("Commmentaire.findByTache");
+            query = em.createNamedQuery("Commentaire.findByTache");
             query.setParameter("tache", tacheCourante);
         }
         return query.getResultList();

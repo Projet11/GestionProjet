@@ -74,13 +74,6 @@ public class Tache implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private List<Commentaire> conversation;
 
-    public List<Commentaire> getConversation() {
-        return conversation;
-    }
-
-    public void setConversation(List<Commentaire> conversation) {
-        this.conversation = conversation;
-    }
 
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");
@@ -114,6 +107,14 @@ public class Tache implements Serializable {
         this(nom, description);
         this.importance = importance;
         this.projet = p;
+    }
+    
+    public List<Commentaire> getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(List<Commentaire> conversation) {
+        this.conversation = conversation;
     }
 
     /**

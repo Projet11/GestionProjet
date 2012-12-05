@@ -23,3 +23,12 @@ function validate(){
 function isEmpty(champ) {
     return (champ == null || champ == "");
 }
+function validateComment(){
+    if (isEmpty($('textarea').val())){
+        document.getElementById("ErrorComment").innerHTML = "Attention le commentaire ne peut être vide.!";
+        return false;
+    }else{
+        document.getElementById("ErrorComment").innerHTML = "";
+        return true;
+    }
+}

@@ -3,13 +3,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <script type="text/javascript" src="/GestionProjet/js/jquery.js"></script>
         <script type ="text/javascript" src="/GestionProjet/js/verificationModificationTache.js"></script>
-
         <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
         <link href="/GestionProjet/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <style>
+            .separator
+            {
+                border: 0px;
+                height: 1px;
+                background-color: #E0E0E0;
+            }
+        </style>
         <title>Marquage d'une tache</title>
     </h:head>
     <h:body>
@@ -17,7 +25,7 @@
 
             <legend>#{tacheCtrl.nomParam}</legend>
 
-            <h:form class="form-horizontal" required="true" onsubmit="return validate();">
+            <h:form class="form-horizontal" onsubmit="return validate();">
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="priorite">Importance</label>
@@ -32,7 +40,7 @@
                         <label class="control-label" for="pourcentage">Pourcentage</label>
                         <div class="controls">
                             <div class="input-append" id="divPourcentage">
-                                <h:inputText class="span3" name="pourcentage" id="pourcentage" value="#{tacheCtrl.pourcentageParam}">
+                                <h:inputText class="span3"  id="pourcentage" value="#{tacheCtrl.pourcentageParam}">
                                     <f:validateLongRange maximum="100" minimum="0"/>
                                 </h:inputText>
                                 <span class="add-on">%</span>
@@ -42,7 +50,7 @@
                     <div class="control-group">
                         <label class="control-label" for="revision">Revision</label>
                         <div class="controls" id="divSVN">
-                            <h:inputText name="revision" id="revision" value="#{tacheCtrl.revisionParam}">
+                            <h:inputText  id="revision" value="#{tacheCtrl.revisionParam}">
                                 <f:validateLongRange maximum="1000" minimum="0"/>
                             </h:inputText>
                         </div>
@@ -56,6 +64,30 @@
                     <h:message for="pourcentage"/>
                     <h:message for="revision"/>
                 </fieldset>
+            </h:form>
+            <hr class="separator"/>
+
+            <p:dataTable value="#{tacheCtrl.conversation}" var ="detailCommentaire">
+                <p:column headerText="Membre :">          
+                    <h:outputText value="#{detailCommentaire.membre}"/>
+                </p:column>
+                <p:column headerText="Commentaire :">          
+                    <h:outputText value="#{detailCommentaire.corps}"/>
+                </p:column>
+                <p:column headerText="Date :">          
+                    <h:outputText value="#{detailCommentaire.date}"/>
+                </p:column>
+            </p:dataTable>
+            <hr class="separator"/>
+            <h:form class="form-horizontal" onsubmit="return validateComment();">
+                <div class="controls" id="divComment" >
+                    <h:inputTextarea id="comment"  value="#{tacheCtrl.commentaireParam}" rows="3"/>
+                </div>
+                <br/>
+                <div class="controls">
+                    <h:commandButton class="btn btn-success" action ="#{tacheCtrl.ajouterCommentaire()}" value="Ajouter le commentaire"/>
+                </div>
+                <span class="help-inline" id="ErrorComment"></span>
             </h:form>
         </div>
 

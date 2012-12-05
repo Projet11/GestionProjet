@@ -5,6 +5,7 @@
 package be.esi.projet11.gestionprojet.controller;
 
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
+import be.esi.projet11.gestionprojet.entity.Commentaire;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
@@ -15,10 +16,14 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -33,6 +38,8 @@ public class TacheController {
 
     @EJB
     private TacheEJB tacheEJB;
+
+    
 //    @ManagedProperty("#{projetCtrl}")
 //    private ProjetController projetCtrl;
     // Attributs utilisés par le formulaire de création d'une tâche uniquement
@@ -50,7 +57,14 @@ public class TacheController {
     private String creationNom;
     private ImportanceEnum creationImportance;
     private String creationDescription;
+    
+    @ManagedProperty(value="#{membreCtrl}")
+    private MembreController membreCtrl;
 
+    public void setMembreCtrl(MembreController membreCtrl) {
+        this.membreCtrl = membreCtrl;
+    }
+    
     public String getCreationNom() {
         return creationNom;
     }
@@ -242,7 +256,7 @@ public class TacheController {
 
     public String modificationTache() {
         try {
-            if (nomParam!=null || pourcentageParam != null) {
+            if (nomParam != null || pourcentageParam != null) {
                 tacheEJB.modificationTache(tacheCourante, pourcentageParam.intValue(), revisionParam, importanceParam);
             } else {
                 throw new TacheException();
@@ -254,10 +268,10 @@ public class TacheController {
         }
     }
 
-    public void ajouterConversation() {
+    public void ajouterCommentaire() {
         if (tacheCourante != null && membreCourantParam != null
                 && commentaireParam != null && !commentaireParam.isEmpty()) {
-            tacheEJB.ajouterConversation(tacheCourante, membreCourantParam, commentaireParam);
+            tacheEJB.ajouterCommentaire(tacheCourante, membreCourantParam, commentaireParam);
         } else {
             System.err.println("la tache, le membre ou le commentaire ne peut être vide");
         }
@@ -265,13 +279,21 @@ public class TacheController {
 
     public String modifierTache(Tache tache) {
         if (tache != null) {
-            tacheCourante = tache;
-            nomParam = tache.getNom();
-            descriptionParam = tache.getDescription();
-            importanceParam = tache.getImportance();
-            revisionParam = tache.getSVNRevision();
-            pourcentageParam = tache.getPourcentage().longValue();
-            return "modificationTache";
+            try {
+                //A faire qu'une fois pour test;
+               // membreCourantParam = membreCtrl.createUser("fred", "fredo", "fred@gmail.com", "freddy","freud");
+                //A faire parl a suite pour test
+                membreCourantParam = membreCtrl.authenticateUser("fred", "fredo");
+                tacheCourante = tache;
+                nomParam = tache.getNom();
+                descriptionParam = tache.getDescription();
+                importanceParam = tache.getImportance();
+                revisionParam = tache.getSVNRevision();
+                pourcentageParam = tache.getPourcentage().longValue();
+                return "modificationTache";
+            } catch (BusinessException ex) {
+                Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }
@@ -331,6 +353,15 @@ public class TacheController {
             }
         }
         return null;
+    }
+
+    public List<Commentaire> getConversation() {
+        System.out.println("oooooooooo"+tacheCourante);
+        if (tacheCourante != null) {
+            return tacheEJB.getConversation(tacheCourante);
+        } else {
+            return null;
+        }
     }
 
     public String fenetreCreeTache() {

@@ -25,7 +25,6 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "COMMENTAIRE")
-
 @NamedQueries({
     @NamedQuery(name = "Commentaire.findByTache", query = "SELECT c FROM Commentaire c WHERE c.tache = :tache ORDER BY c.datePosted")})
 public class Commentaire implements Serializable {
@@ -34,10 +33,10 @@ public class Commentaire implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @JoinColumn(name = "TACHE", referencedColumnName = "ID", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "TACHE", referencedColumnName = "ID", insertable = true, updatable = false, nullable = false)
     @ManyToOne(optional = false)
     private Tache tache;
-    @JoinColumn(name = "MEMBRE", referencedColumnName = "ID", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "MEMBRE", referencedColumnName = "ID", insertable = true, updatable = false, nullable = false)
     @OneToOne
     private Membre membre;
     @Column(nullable = false)
@@ -48,7 +47,7 @@ public class Commentaire implements Serializable {
     public Commentaire() {
     }
 
-    public Commentaire(Tache tache, Membre membre, String corps,Date datePosted) {
+    public Commentaire(Tache tache, Membre membre, String corps, Date datePosted) {
         this.setTache(tache);
         this.setCorps(corps);
         this.setMembre(membre);
@@ -60,7 +59,7 @@ public class Commentaire implements Serializable {
     }
 
     public void setDate(Date datePosted) {
-        if (tache == null) {
+        if (datePosted == null) {
             throw new IllegalArgumentException("La datePosted ne peut pas être nulle");
         }
         this.datePosted = datePosted;
