@@ -10,27 +10,27 @@ import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
  * @author g34771
  */
 @ManagedBean(name="mailCtrl")
-@RequestScoped
+@SessionScoped
 public class MailController {
 
-    @ManagedProperty(value = "#{param.idProjet}")
-    private String idProjet;
-    @ManagedProperty(value = "#{param.idMembre}")
-    private String idMembre;
-    @ManagedProperty(value = "#{param.idTache}")
-    private String idTache;
+//    @ManagedProperty(value = "#{param.idProjet}")
+//    private String idProjet;
+//    @ManagedProperty(value = "#{param.idMembre}")
+//    private String idMembre;
     private Membre membre;
     private Projet projet;
     private Tache tache;
@@ -40,6 +40,9 @@ public class MailController {
     private MembreEJB membreEJB;
     @EJB
     private TacheEJB tacheEJB;
+    
+    @ManagedProperty("#{membreCtrl}")
+    private MembreController membreCtrl;
 
     /**
      * Get the value of projet
@@ -50,30 +53,40 @@ public class MailController {
         return projet;
     }
 
-    public String getIdMembre() {
-        return idMembre;
+//    public String getIdMembre() {
+//        return idMembre;
+//    }
+//
+//    public void setIdMembre(String idMembre) {
+//        this.idMembre = idMembre;
+//    }
+//
+//    public String getIdProjet() {
+//        return idProjet;
+//    }
+//
+//    public void setIdProjet(String idProjet) {
+//        this.idProjet = idProjet;
+//    }
+
+    public MembreController getMembreCtrl() {
+        return membreCtrl;
     }
 
-    public void setIdMembre(String idMembre) {
-        this.idMembre = idMembre;
+    public void setMembreCtrl(MembreController membreCtrl) {
+        this.membreCtrl = membreCtrl;
     }
 
-    public String getIdProjet() {
-        return idProjet;
+    public Tache getTache() {
+        return tache;
     }
 
-    public void setIdProjet(String idProjet) {
-        this.idProjet = idProjet;
+    public void setTache(Tache tache) {
+        this.tache = tache;
     }
+
     
-    public String getIdTache() {
-        return idTache;
-    }
-
-    public void setIdTache(String idTache) {
-        this.idTache = idTache;
-    }
-
+    
     /**
      * Set the value of projet
      *
@@ -101,58 +114,66 @@ public class MailController {
         this.membre = membre;
     }
 
-    public void ajoutMembreProjet() {
-        try {
-            long projectlong = Long.parseLong(idProjet);
-            long membrelong = Long.parseLong(idMembre);
-            projet = projetEJB.getProjetById(projectlong);
-            membre = membreEJB.getMembreById(membrelong);
-            projet.accepterParticipant(membre);
-        } catch (NumberFormatException nfe) {
-            Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Impossible de convertir les identifiant en long", nfe);
-        } catch (Exception e) {
-            Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Erreur dans UserActivation.ajoutMembreProjet", e);
-        }
-    }
-
-    public void refusAjoutMembreProjet() {
-        try {
-            long projectlong = Long.parseLong(idProjet);
-            long membrelong = Long.parseLong(idMembre);
-            projet = projetEJB.getProjetById(projectlong);
-            membre = membreEJB.getMembreById(membrelong);
-            projetEJB.removeParticipeProjet(projet, membre);
-        } catch (NumberFormatException nfe) {
-            Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Impossible de convertir les identifiant en long", nfe);
-        }
+//    public void ajoutMembreProjet() {
+//        try {
+//            long projectlong = Long.parseLong(idProjet);
+//            long membrelong = Long.parseLong(idMembre);
+//            projet = projetEJB.getProjetById(projectlong);
+//            membre = membreEJB.getMembreById(membrelong);
+//            projet.accepterParticipant(membre);
+//        } catch (NumberFormatException nfe) {
+//            Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Impossible de convertir les identifiant en long", nfe);
 //        } catch (Exception e) {
-//            Logger.getLogger(UserActivation.class.getName()).log(Level.SEVERE, "Erreur dans UserActivation.refusAjoutMembreProjet", e);
+//            Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Erreur dans UserActivation.ajoutMembreProjet", e);
 //        }
-    }
+//    }
+//
+//    public void refusAjoutMembreProjet() {
+//        try {
+//            long projectlong = Long.parseLong(idProjet);
+//            long membrelong = Long.parseLong(idMembre);
+//            projet = projetEJB.getProjetById(projectlong);
+//            membre = membreEJB.getMembreById(membrelong);
+//            projetEJB.removeParticipeProjet(projet, membre);
+//        } catch (NumberFormatException nfe) {
+//            Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Impossible de convertir les identifiant en long", nfe);
+//        }
+////        } catch (Exception e) {
+////            Logger.getLogger(UserActivation.class.getName()).log(Level.SEVERE, "Erreur dans UserActivation.refusAjoutMembreProjet", e);
+////        }
+//    }
     
     public void ajoutMembreTache() {
         try {
-            long tachelong = Long.parseLong(idTache);
-            long membrelong = Long.parseLong(idMembre);
+            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            long tachelong = Long.parseLong(map.get("idTache"));
+            long membrelong = Long.parseLong(map.get("idMembre"));
             tache = tacheEJB.getTache(tachelong);
-            membre = membreEJB.getMembreById(membrelong);
-            tache.accepterMembre(membre);
+            setMembre(membreEJB.getMembreById(membrelong));
         } catch (NumberFormatException nfe) {
             Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Impossible de convertir les identifiant en long", nfe);
         } catch (Exception e) {
             Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Erreur dans MailController.ajoutMembreTache", e);
         }
+        
+        if (membreCtrl.isAuthenticated()) {
+            tacheEJB.ajouterMembre(tache, getMembre());
+        }
     }
     
     public void refusAjoutMembreTache() {
         try {
-            long tachelong = Long.parseLong(idTache);
-            long membrelong = Long.parseLong(idMembre);
+            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            long tachelong = Long.parseLong(map.get("idTache"));
+            long membrelong = Long.parseLong(map.get("idMembre"));
             tache = tacheEJB.getTache(tachelong);
-            membre = membreEJB.getMembreById(membrelong);
-            tacheEJB.removeParticipeTache(tache, membre);
+            setMembre(membreEJB.getMembreById(membrelong));
         } catch (NumberFormatException nfe) {
             Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Impossible de convertir les identifiant en long", nfe);
+        }
+        
+        if (membreCtrl.isAuthenticated()) {
+            tacheEJB.supprimerMembre(tache, getMembre());
         }
     }
 

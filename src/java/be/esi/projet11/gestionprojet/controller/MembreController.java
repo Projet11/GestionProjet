@@ -57,7 +57,7 @@ public class MembreController {
 	}
     
     public boolean isAuthenticated() {
-        return membreCourant != null;
+        return getMembreCourant() != null;
     }
 	
 	public String identifier()
@@ -69,7 +69,7 @@ public class MembreController {
 		{
 			try
 			{
-				this.membreCourant = this.authenticateUser(this.inputNom, this.inputPassword);
+				this.setMembreCourant(this.authenticateUser(this.inputNom, this.inputPassword));
 				this.setIdentificationEchouee(!this.isAuthenticated());
 			}
 			catch (BusinessException ex)
@@ -93,11 +93,27 @@ public class MembreController {
 
     private Membre authenticateUser(String login, String password) throws BusinessException {
         try {
-            membreCourant = membreEJB.getUserByAuthentification(login, password);
-            return membreCourant;
+            setMembreCourant(membreEJB.getUserByAuthentification(login, password));
+            return getMembreCourant();
         } catch (DBException e) {
-            membreCourant = null;
+            setMembreCourant(null);
             throw new BusinessException(e.getMessage());
         }
     }
+
+    /**
+     * @return the membreCourant
+     */
+    public Membre getMembreCourant() {
+        return membreCourant;
+    }
+
+    /**
+     * @param membreCourant the membreCourant to set
+     */
+    public void setMembreCourant(Membre membreCourant) {
+        this.membreCourant = membreCourant;
+    }
+    
+    
 }

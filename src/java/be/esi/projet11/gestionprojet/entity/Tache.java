@@ -340,7 +340,7 @@ public class Tache implements Serializable {
         }
     }
     
-    private ParticipeTache getParticipeTache(Membre mbr) {
+    public ParticipeTache getParticipeTache(Membre mbr) {
         for (ParticipeTache pt : membres) {
             if (pt.getMembre().equals(mbr)) {
                 return pt;
