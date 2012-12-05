@@ -4,7 +4,6 @@
  */
 package be.esi.projet11.gestionprojet.controller;
 
-import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
@@ -14,13 +13,14 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -135,6 +135,7 @@ public class TacheController {
             try {
                 tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
             } catch (TacheException ex) {
+                // TODO Retourner null si null.! 
                 Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -166,6 +167,8 @@ public class TacheController {
         try {
             tacheEJB.creerTache(nomParam, descriptionParam, importanceParam);
         } catch (TacheException ex) {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>"+ex.getMessage(), ""));
             return "failure";
         }
         return "success";
@@ -176,13 +179,11 @@ public class TacheController {
     }
 
     public void startTimer() {
-        getTacheCourante().setTimerLaunched(true);
-        tacheEJB.saveTache(tacheCourante);
+        startTimer(getTacheCourante());
     }
 
     public void stopTimer() {
-        getTacheCourante().setTimerLaunched(false);
-        tacheEJB.saveTache(tacheCourante);
+        stopTimer(getTacheCourante());
     }
     
     public void startTimer(Tache tache) {
@@ -223,6 +224,12 @@ public class TacheController {
         tacheEJB.modificationTache(tacheCourante);
     }
 
+    public String modifierTache(Tache tache) {
+        tacheEJB.modificationTache(tache);
+        // TODO navigation vers modification page
+        return null;
+    }
+    
     public String getArchive() {
         return archive;
     }
