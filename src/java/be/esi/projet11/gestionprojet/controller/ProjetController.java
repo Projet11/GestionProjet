@@ -76,8 +76,8 @@ public class ProjetController {
 
     public Projet getProjetCourant() {
         if(projetCourant==null){
-            //projetCourant= projetEJB.creerProjet();
-            projetCourant = projetEJB.getProjetById(101l);
+            projetCourant= projetEJB.creerProjet();
+            //projetCourant = projetEJB.getProjetById(101l);
         }
         return projetCourant;
     }

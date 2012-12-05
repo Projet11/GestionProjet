@@ -44,6 +44,7 @@ public class ProjetEJBTest {
 
     @AfterClass
     public static void tearDownClass() {
+        container.close();
     }
 
     @Before
