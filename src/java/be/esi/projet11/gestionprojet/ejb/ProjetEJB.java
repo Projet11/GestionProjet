@@ -50,14 +50,16 @@ public class ProjetEJB {
     }
 
     public Projet creerProjet(String nom, String description) throws DBException {
+        Query query = em.createNamedQuery("Projet.findByNom");
+        query.setParameter("nom", nom);
         Projet unProjet = null;
         try {
+            unProjet = (Projet) query.getSingleResult();
+        } catch (Exception e) {
             unProjet = new Projet(0l, nom, description);
-        } catch (IllegalArgumentException ex) {
-            throw new DBException("Création du projet impossible : "+ex.getMessage());
+            em.persist(unProjet);
+            em.flush();
         }
-        em.persist(unProjet);
-        em.flush();
         return unProjet;
     }
 }

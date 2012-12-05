@@ -54,6 +54,12 @@
             <from-outcome>success</from-outcome>
             <to-view-id>/pages/accueil.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>modificationTache</from-outcome>
+            <to-view-id>/pages/MarqueTache.xhtml</to-view-id>
+                        <redirect/>
+
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/pages/connexion.xhtml</from-view-id>
@@ -70,4 +76,12 @@
         <converter-for-class>java.lang.Enum</converter-for-class>
         <converter-class>javax.faces.convert.EnumConverter</converter-class>
     </converter>
+    <navigation-rule>
+        <from-view-id>/pages/MarqueTache.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>retourneAccueil</from-outcome>
+            <to-view-id>/pages/accueil.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>
