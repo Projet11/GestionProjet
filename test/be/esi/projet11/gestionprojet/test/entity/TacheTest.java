@@ -10,8 +10,6 @@ import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -134,35 +132,29 @@ public class TacheTest {
     }
 
     @Test
-    public void testAjouterUnMembreOk() {
+    public void testAjouterUnMembreOk() throws TacheException {
         Tache tache = null;
-        try {
-            tache = new Tache("Tâche 1", "Tâche de test 1");
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        tache = new Tache("Tâche 1", "Tâche de test 1");
+
         tache.addMembre(new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1"));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAjouterUnMembreNull() {
+    public void testAjouterUnMembreNull() throws TacheException {
         Tache tache = null;
-        try {
-            tache = new Tache("Tâche 2", "Tâche de test 2");
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        tache = new Tache("Tâche 2", "Tâche de test 2");
+
         tache.addMembre(null);
     }
 
     @Test
-    public void testMembreEstSurTache() {
+    public void testMembreEstSurTache() throws TacheException {
         Tache tache = null;
-        try {
-            tache = new Tache("Tâche 3", "Tâche de test 3");
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        tache = new Tache("Tâche 3", "Tâche de test 3");
+
         Membre membre = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
         Membre membrePasPresent = new Membre(1l, "Membre 2", "pass", "mail2@example.com", "Nom2", "Prenom2");
         tache.addMembre(membre);
@@ -172,13 +164,11 @@ public class TacheTest {
     }
 
     @Test
-    public void testNbMembreEnAjoutantDeuxFoisLeMemeMembre() {
+    public void testNbMembreEnAjoutantDeuxFoisLeMemeMembre() throws TacheException {
         Tache tache = null;
-        try {
-            tache = new Tache("Tâche 5", "Tâche de test 5");
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        tache = new Tache("Tâche 5", "Tâche de test 5");
+
         Membre membre = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
 
         tache.addMembre(membre);
@@ -188,13 +178,11 @@ public class TacheTest {
     }
 
     @Test
-    public void testNbMembresAvecDeuxMembres() {
+    public void testNbMembresAvecDeuxMembres() throws TacheException {
         Tache tache = null;
-        try {
-            tache = new Tache("Tâche 6", "Tâche de test 6");
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        tache = new Tache("Tâche 6", "Tâche de test 6");
+
         Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
         Membre membre2 = new Membre(1l, "Membre 2", "pass", "mail2@example.com", "Nom2", "Prenom2");
 
@@ -205,13 +193,11 @@ public class TacheTest {
     }
 
     @Test
-    public void testRecupererListeMembresSansMembre() {
+    public void testRecupererListeMembresSansMembre() throws TacheException {
         Tache tache = null;
-        try {
-            tache = new Tache("Tâche 7", "Tâche de test 7");
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        tache = new Tache("Tâche 7", "Tâche de test 7");
+
         Collection<Membre> membres = tache.getMembres();
         Collection<Membre> listeVide = new ArrayList<Membre>();
 
@@ -219,13 +205,10 @@ public class TacheTest {
     }
 
     @Test
-    public void testRecupererListeMembresPlusieursMembres() {
+    public void testRecupererListeMembresPlusieursMembres() throws TacheException {
         Tache tache = null;
-        try {
-            tache = new Tache("Tâche 8", "Tâche de test 8");
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tache = new Tache("Tâche 8", "Tâche de test 8");
+
         Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
         Membre membre2 = new Membre(1l, "Membre 2", "pass", "mail2@example.com", "Nom2", "Prenom2");
 
@@ -241,16 +224,13 @@ public class TacheTest {
     }
 
     @Test
-    public void testRecupererListeMembresPlusieursMembresNonActifs() {
+    public void testRecupererListeMembresPlusieursMembresNonActifs() throws TacheException {
         Tache tache = null;
-        try {
-            tache = new Tache("Tâche 9", "Tâche de test 9");
-        } catch (TacheException ex) {
-            Logger.getLogger(TacheTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tache = new Tache("Tâche 9", "Tâche de test 9");
+
         Membre membre1 = new Membre(0l, "Membre 1", "pass", "mail@example.com", "Nom1", "Prenom1");
         Membre membre2 = new Membre(0l, "Membre 2", "pass", "mail2@example.com", "Nom2", "Prenom2");
-        
+
         tache.addMembre(membre1);
         tache.addMembre(membre2);
 
