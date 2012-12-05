@@ -34,9 +34,14 @@ public class ProjetEJB {
     }
 
     public void removeParticipeProjet(Projet projet, Membre mbr) {
+        System.out.println("projet size" + projet.getAllParticipant().size());
         ParticipeProjet pp = projet.refuserParticipant(mbr);
-        em.merge(projet);
-        em.remove(pp);
+        Query q = em.createQuery("delete from ParticipeProjet pp where pp.membre1.id = :idMembre and pp.projet1.id = :idProjet");
+        q.setParameter("idMembre", mbr.getId());
+        q.setParameter("idProjet", projet.getId());
+        q.executeUpdate();
+        //em.persist(pp);
+        //em.remove(pp);
         System.out.println("projet size" + projet.getAllParticipant().size());
     }
 
@@ -50,6 +55,11 @@ public class ProjetEJB {
         em.persist(unProjet);
         em.flush();
         return unProjet;        
+    }
+
+    public void accepterParticipant(Projet projet, Membre membre) {
+        projet.accepterParticipant(membre);
+        em.merge(projet);
     }
     
     
