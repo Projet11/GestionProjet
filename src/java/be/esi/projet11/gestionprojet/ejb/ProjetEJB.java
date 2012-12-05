@@ -26,12 +26,6 @@ public class ProjetEJB {
         return em.find(Projet.class, projetId);
     }
 
-    public Projet creerProjet() {
-        Projet p = new Projet();
-        em.persist(p);
-        return p;
-    }
-
     public void removeParticipeProjet(Projet projet, Membre mbr) {
         projet.refuserParticipant(mbr);
         em.merge(projet);
@@ -39,16 +33,21 @@ public class ProjetEJB {
     }
 
     public List<Projet> getAllProjets() {
-        Query query=em.createNamedQuery("Projet.findAll");
+        Query query = em.createNamedQuery("Projet.findAll");
         return query.getResultList();
     }
-    
-    public Projet creerProjet(String nom, String description){
-        Projet unProjet = new Projet(0l,nom, description);
-        em.persist(unProjet);
-        em.flush();
-        return unProjet;        
+
+    public Projet creerProjet(String nom, String description) {
+        Query query = em.createNamedQuery("Projet.findByNom");
+        query.setParameter("nom", nom);
+        Projet unProjet = null;
+        try {
+            unProjet = (Projet) query.getSingleResult();
+        } catch (Exception e) {
+            unProjet = new Projet(0l, nom, description);
+            em.persist(unProjet);
+            em.flush();
+        }
+        return unProjet;
     }
-    
-    
 }

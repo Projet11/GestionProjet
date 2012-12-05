@@ -47,17 +47,16 @@ public class Projet implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateDeb;
 
+    public Projet() {
+        this(0l, "Projet sans nom", "");
+    }
 
-    public Projet(){
-        this(0l,"Projet sans nom","");
+    public Projet(Long id, String nom) {
+        this(id, nom, "");
     }
-    
-    public Projet(Long id,String nom){
-        this(id,nom,"");
-    }
-    
-    public Projet(Long id,String nom, String description){
-        if (nom == null || nom.isEmpty()){
+
+    public Projet(Long id, String nom, String description) {
+        if (nom == null || nom.isEmpty()) {
             throw new IllegalArgumentException("Le nom est obligatoire");
         }
         this.id = id;
@@ -83,7 +82,7 @@ public class Projet implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -122,8 +121,7 @@ public class Projet implements Serializable {
     public void setDateDeb(Date dateDeb) {
         this.dateDeb = dateDeb;
     }
-    
-    
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

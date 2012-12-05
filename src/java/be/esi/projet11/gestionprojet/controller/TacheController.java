@@ -48,6 +48,7 @@ public class TacheController {
     private Tache tacheCourante;
     private String archive;
     private Collection<Tache> taches;
+
     public Membre getMembreCourantParam() {
         return membreCourantParam;
     }
@@ -63,31 +64,15 @@ public class TacheController {
     public void setCommentaireParam(String commentaireParam) {
         this.commentaireParam = commentaireParam;
     }
-    //
-
-    private void test() {
-        try {
-            tacheCourante = tacheEJB.creerTache("alouetteeeee", "blouette", ImportanceEnum.IMPORTANT);
-        } catch (TacheException ex) {
-            System.out.println("---------------------------------------------");
-            Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     @PostConstruct
     private void init() {
-        test();
-        this.nomParam = tacheCourante.getNom();
-        this.importanceParam = tacheCourante.getImportance();
-        this.pourcentageParam = tacheCourante.getPourcentage().longValue();
-        this.revisionParam = tacheCourante.getSVNRevision();
-        membreCourantParam = new Membre("alouette@gmail.com");
-        commentaireParam = "youhouuuuu";
-        this.ajouterConversation();
-        commentaireParam = "youhouuuuuuu222222222";
-        membreCourantParam = new Membre("abcdef@hotmail.com");
-        this.ajouterConversation();
-
+        if (tacheCourante != null) {
+            this.nomParam = tacheCourante.getNom();
+            this.importanceParam = tacheCourante.getImportance();
+            this.pourcentageParam = tacheCourante.getPourcentage().longValue();
+            this.revisionParam = tacheCourante.getSVNRevision();
+        }
     }
 
     public String getNomParam() {
@@ -176,7 +161,7 @@ public class TacheController {
             tacheEJB.creerTache(nomParam, descriptionParam, importanceParam);
         } catch (TacheException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
-            ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>"+ex.getMessage(), ""));
+            ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>" + ex.getMessage(), ""));
             return "failure";
         }
         return "success";
@@ -193,7 +178,7 @@ public class TacheController {
     public void stopTimer() {
         stopTimer(getTacheCourante());
     }
-    
+
     public void startTimer(Tache tache) {
         tache.setTimerLaunched(true);
         tacheEJB.saveTache(tache);
@@ -212,11 +197,10 @@ public class TacheController {
     public boolean isTimerLaunched() {
         return getTacheCourante().isTimerLaunched();
     }
-    
-    public Collection<Tache> getAllTimerLaunched(){
+
+    public Collection<Tache> getAllTimerLaunched() {
         return tacheEJB.getAllTimerLaunched();
     }
-
 
     public String inscrireMembresATache() {
         for (Membre membre : membresSel) {
@@ -244,11 +228,17 @@ public class TacheController {
     }
 
     public String modifierTache(Tache tache) {
-        tacheEJB.modificationTache(tache);
-        // TODO navigation vers modification page
+        if (tache != null) {
+            tacheCourante = tache;
+            return "modificationTache";
+        }
         return null;
     }
-    
+
+    public String retournAccueil() {
+        return "retournAccueil";
+    }
+
     public String getArchive() {
         return archive;
     }

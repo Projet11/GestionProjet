@@ -5,8 +5,8 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <script type ="text/javascript" src="../js/bootstrap.min.js"></script>
-        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <script type ="text/javascript" src="js/bootstrap.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen"/>
         <title>Marquage d'une tache</title>
     </h:head>
     <h:body>
@@ -46,7 +46,9 @@
                     </div>
                     <div class="controls">
                         <h:commandButton class="btn btn-success" action ="#{tacheCtrl.modificationTache()}" value="Valider"/>
+                        <h:commandLink class="btn btn-danger" action ="#{tacheCtrl.retournAccueil()}" value="Retour"/>
                     </div>
+
                     <br/>
                     <h:message for="pourcentage"/>
                     <h:message for="revision"/>
