@@ -3,10 +3,9 @@ package be.esi.projet11.gestionprojet.ejb;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
+import be.esi.projet11.gestionprojet.exception.DBException;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,32 +24,28 @@ public class TacheEJB {
     public TacheEJB() {
     }
 
-    public Tache creerTache(String nom, String description) throws TacheException {
+    public Tache creerTache(String nom, String description) throws DBException {
         return creerTache(nom, description, ImportanceEnum.IMPORTANT);
     }
     
-    public Tache creerTache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {
+    public Tache creerTache(String nom, String description, ImportanceEnum importance, Projet p) throws DBException {
          Tache uneTache = null;
         try {
             uneTache = new Tache(nom, description, importance, p);
             em.persist(uneTache);
-        } catch (SecurityException ex) {
-            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalStateException ex) {
-            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TacheException ex) {
+            throw new DBException("Création de tâche impossible : " + ex.getMessage());
         }
         return uneTache;
     }
 
-    public Tache creerTache(String nom, String description, ImportanceEnum importance) throws TacheException {
+    public Tache creerTache(String nom, String description, ImportanceEnum importance) throws DBException {
         Tache uneTache = null;
         try {
             uneTache = new Tache(nom, description, importance);
             em.persist(uneTache);
-        } catch (SecurityException ex) {
-            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalStateException ex) {
-            Logger.getLogger(TacheEJB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TacheException ex) {
+            throw new DBException("Création de tâche impossible : " + ex.getMessage());
         }
         return uneTache;
     }

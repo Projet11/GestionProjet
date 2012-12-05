@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -274,7 +272,7 @@ public class Tache implements Serializable {
         this.tempsPasseSurTache = tempsPasseSurTache;
     }
 
-    public void addMembre(Membre membre) {
+    public void addMembre(Membre membre) throws TacheException {
         if (membre == null) {
             throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
         }
@@ -292,7 +290,7 @@ public class Tache implements Serializable {
         try {
             Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps);
         } catch (MailException ex) {
-            Logger.getLogger(Tache.class.getName()).log(Level.SEVERE, null, ex); // FIXME
+            throw new TacheException("Impossible d'envoyer un mail à " + membre.getMail());
         }
     }
 

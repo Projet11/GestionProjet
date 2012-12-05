@@ -9,12 +9,12 @@ import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
+import be.esi.projet11.gestionprojet.exception.BusinessException;
+import be.esi.projet11.gestionprojet.exception.DBException;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -49,30 +49,6 @@ public class TacheController {
     private String creationNom;
     private ImportanceEnum creationImportance;
     private String creationDescription;
-
-    public String getCreationDescription() {
-        return creationDescription;
-    }
-
-    public void setCreationDescription(String creationDescription) {
-        this.creationDescription = creationDescription;
-    }
-
-    public String getCreationNom() {
-        return creationNom;
-    }
-
-    public void setCreationNom(String creationNom) {
-        this.creationNom = creationNom;
-    }
-
-    public ImportanceEnum getCreationImportance() {
-        return creationImportance;
-    }
-
-    public void setCreationImportance(ImportanceEnum creationImportance) {
-        this.creationImportance = creationImportance;
-    }
 
     /**
      * Creates a new instance of TacheController
@@ -129,13 +105,12 @@ public class TacheController {
         this.pourcentageParam = pourcentageParam;
     }
 
-    public Tache getTacheCourante() {
+    public Tache getTacheCourante() throws BusinessException {
         if (tacheCourante == null) {
             try {
                 tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
-            } catch (TacheException ex) {
-                // TODO Retourner null si null.! 
-                Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DBException ex) {
+                throw new BusinessException("Il n'y a pas de tache courante ! : "+ex.getMessage());
             }
         }
         return tacheCourante;
@@ -165,9 +140,9 @@ public class TacheController {
     public String creerTache() {
         try {
             tacheEJB.creerTache(nomParam, descriptionParam, importanceParam);
-        } catch (TacheException ex) {
+        } catch (DBException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
-            ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>"+ex.getMessage(), ""));
+            ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>" + ex.getMessage(), ""));
             return "failure";
         }
         return "success";
@@ -177,14 +152,14 @@ public class TacheController {
         return "annuler";
     }
 
-    public void startTimer() {
+    public void startTimer() throws BusinessException {
         startTimer(getTacheCourante());
     }
 
-    public void stopTimer() {
+    public void stopTimer() throws BusinessException {
         stopTimer(getTacheCourante());
     }
-    
+
     public void startTimer(Tache tache) {
         tache.setTimerLaunched(true);
         tacheEJB.saveTache(tache);
@@ -195,22 +170,26 @@ public class TacheController {
         tacheEJB.saveTache(tache);
     }
 
-    public Time getTimer() {
+    public Time getTimer() throws BusinessException {
         Date currDate = new Date();
         return new Time(currDate.getTime() - getTacheCourante().getDateDeb().getTime());
     }
 
-    public boolean isTimerLaunched() {
+    public boolean isTimerLaunched() throws BusinessException {
         return getTacheCourante().isTimerLaunched();
     }
-    
-    public Collection<Tache> getAllTimerLaunched(){
+
+    public Collection<Tache> getAllTimerLaunched() {
         return tacheEJB.getAllTimerLaunched();
     }
 
-    public String inscrireMembresATache() {
+    public String inscrireMembresATache() throws BusinessException {
         for (Membre membre : membresSel) {
-            getTacheCourante().addMembre(membre);
+            try {
+                getTacheCourante().addMembre(membre);
+            } catch (TacheException ex) {
+                throw new BusinessException("Impossible d'inscrire le membre à la tâche : "+ex.getMessage());
+            }
         }
         tacheEJB.saveTache(getTacheCourante());
         return "success";
@@ -228,7 +207,7 @@ public class TacheController {
         // TODO navigation vers modification page
         return null;
     }
-    
+
     public String getArchive() {
         return archive;
     }
@@ -243,6 +222,30 @@ public class TacheController {
 
     public void setTaches(Collection<Tache> taches) {
         this.taches = taches;
+    }
+
+    public String getCreationDescription() {
+        return creationDescription;
+    }
+
+    public void setCreationDescription(String creationDescription) {
+        this.creationDescription = creationDescription;
+    }
+
+    public String getCreationNom() {
+        return creationNom;
+    }
+
+    public void setCreationNom(String creationNom) {
+        this.creationNom = creationNom;
+    }
+
+    public ImportanceEnum getCreationImportance() {
+        return creationImportance;
+    }
+
+    public void setCreationImportance(ImportanceEnum creationImportance) {
+        this.creationImportance = creationImportance;
     }
 
     public void archiverTache() {
@@ -271,7 +274,6 @@ public class TacheController {
                 taches = tacheEJB.getTaches(false, projet);
             }
         }
-        //return "success";
         return null;
     }
 

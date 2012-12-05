@@ -8,6 +8,8 @@ import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
+import be.esi.projet11.gestionprojet.exception.BusinessException;
+import be.esi.projet11.gestionprojet.exception.DBException;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
@@ -18,10 +20,11 @@ import javax.faces.bean.SessionScoped;
  *
  * @author g34771
  */
-@ManagedBean(name="projetCtrl")
+@ManagedBean(name = "projetCtrl")
 @SessionScoped
 public class ProjetController {
     //Devra etre instancier lors de la selection d'un projet
+
     private Projet projetCourant;
     private String email;
     private Collection<Membre> membres;
@@ -29,7 +32,7 @@ public class ProjetController {
     private MembreEJB membreEJB;
     @EJB
     private ProjetEJB projetEJB;
-        private List<Projet> projets;
+    private List<Projet> projets;
 
     /**
      * Get the value of projets
@@ -37,8 +40,8 @@ public class ProjetController {
      * @return the value of projets
      */
     public List<Projet> getProjets() {
-        if(projets==null){
-            projets=projetEJB.getAllProjets();
+        if (projets == null) {
+            projets = projetEJB.getAllProjets();
         }
         return projets;
     }
@@ -51,7 +54,7 @@ public class ProjetController {
     public void setProjets(List<Projet> projets) {
         this.projets = projets;
     }
-    
+
     /**
      * Creates a new instance of ProjetControl
      */
@@ -75,8 +78,8 @@ public class ProjetController {
     }
 
     public Projet getProjetCourant() {
-        if(projetCourant==null){
-            projetCourant= projetEJB.creerProjet();
+        if (projetCourant == null) {
+            projetCourant = projetEJB.creerProjet();
         }
         return projetCourant;
     }
@@ -85,8 +88,12 @@ public class ProjetController {
         this.projetCourant = projetCourant;
     }
 
-    public String ajouterMembre(){
-        membreEJB.ajoutMembreProjet(email, getProjetCourant());
+    public String ajouterMembre() throws BusinessException {
+        try {
+            membreEJB.ajoutMembreProjet(email, getProjetCourant());
+        } catch (DBException ex) {
+            throw new BusinessException("Ajout du membre au projet impossible : "+ex.getMessage());
+        }
         membres = projetCourant.getAllParticipant();
         return "ajouter";
     }
