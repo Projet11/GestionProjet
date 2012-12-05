@@ -249,30 +249,6 @@ public class TacheController {
         this.taches = taches;
     }
 
-    public String getCreationDescription() {
-        return creationDescription;
-    }
-
-    public void setCreationDescription(String creationDescription) {
-        this.creationDescription = creationDescription;
-    }
-
-    public String getCreationNom() {
-        return creationNom;
-    }
-
-    public void setCreationNom(String creationNom) {
-        this.creationNom = creationNom;
-    }
-
-    public ImportanceEnum getCreationImportance() {
-        return creationImportance;
-    }
-
-    public void setCreationImportance(ImportanceEnum creationImportance) {
-        this.creationImportance = creationImportance;
-    }
-
     public void archiverTache() {
         tacheCourante.setArchive(true);
     }
