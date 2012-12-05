@@ -40,8 +40,6 @@ public class ProjetEJB {
         q.setParameter("idMembre", mbr.getId());
         q.setParameter("idProjet", projet.getId());
         q.executeUpdate();
-        //em.persist(pp);
-        //em.remove(pp);
         System.out.println("projet size" + projet.getAllParticipant().size());
     }
 
