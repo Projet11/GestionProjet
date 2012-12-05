@@ -198,7 +198,6 @@ public class Projet implements Serializable {
     public void ajouterMembre(Membre mbr) {
         if (!containsMembre(mbr)) {
             participants.add(new ParticipeProjet(mbr, this, false));
-            System.out.println("participants size="+participants.size());
             try {
                 String objet = "Ajout a un projet";
                 String corps = "<html>Vous etes invité a etre ajouter au projet " + nom + ". </br> ";

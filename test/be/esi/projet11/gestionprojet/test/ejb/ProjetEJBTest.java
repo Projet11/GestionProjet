@@ -61,11 +61,10 @@ public class ProjetEJBTest {
     @Test
     public void testRemoveParticipeProjet() throws Exception {
         Projet projet = projetEJB.creerProjet();
-        Membre mbr = membreEJB.addUser("null", "null", "null@null.null", "null", "null");
+        Membre mbr = membreEJB.getById(membreEJB.addUser("login", "passw<ord", "null@null.null", "nom", "prenom").getId());
         membreEJB.ajoutMembreProjet(mbr.getMail(), projet);
         projetEJB.removeParticipeProjet(projet, mbr);
-        Projet projetEnDB = projetEJB.getProjetById(projet.getId());
-        assertEquals(0, projetEnDB.getAllParticipant().size());
+        assertEquals(0, projet.getAllParticipant().size());
     }
 
     /**
@@ -73,8 +72,9 @@ public class ProjetEJBTest {
      */
     @Test
     public void testAccepterParticipant() throws Exception {
+        System.out.println("test2");
         Projet projet = projetEJB.creerProjet();
-        Membre mbr = membreEJB.addUser("null", "null", "null@null.null", "null", "null");
+        Membre mbr = membreEJB.addUser("null2", "null2", "nul2l@null.null", "null2", "null2");
         membreEJB.ajoutMembreProjet(mbr.getMail(), projet);
         projetEJB.accepterParticipant(projet, mbr);
         Projet projetEnDB = projetEJB.getProjetById(projet.getId());
