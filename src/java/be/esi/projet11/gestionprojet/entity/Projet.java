@@ -231,6 +231,6 @@ public class Projet implements Serializable {
     }
     
     public String getInformations(){
-        return description+" \nCréé Le "+dateDeb.toString();
+        return description+" <br/>Créé Le "+dateDeb.toString();
     }
 }
