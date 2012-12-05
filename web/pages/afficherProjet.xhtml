@@ -2,30 +2,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <script type ="text/javascript" src="../js/jquery.js"></script>
-        <script type ="text/javascript" src="../js/bootstrap.js"></script>
-        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
         <title>Afficher Projet</title>
     </h:head>
     <h:body>
-        <h:dataTable value="#{projetCtrl.projets}" var="projet" styleClass="table">
-            <h:column>
+        <h:form>
+            <h:commandButton class="btn" value="Créer un projet"/>
+        </h:form>
+        <br/>
+        <p:dataTable value="#{projetCtrl.projets}" var="projet" styleClass="table">
+            <p:column>
                 <f:facet name="header">Noms des projets</f:facet>
                 <h:form>
                     <h:commandLink rel="tooltip" action="#{projetCtrl.setProjetCourant(projet)}" title="#{projet.informations}" value="#{projet.nom}"/>
                 </h:form>
-            </h:column>
-        </h:dataTable>
+            </p:column>
+        </p:dataTable>
         <script>
             $(function(){
                 $('[rel=tooltip]').tooltip({placement: 'right', html: true})
             })
         </script>
-        <h:form>
-            <h:commandButton class="btn" value="Créer un projet"/>
-        </h:form>
     </h:body>
 </html>
 

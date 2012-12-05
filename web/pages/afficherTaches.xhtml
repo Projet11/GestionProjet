@@ -7,10 +7,7 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
-        <link href="../css/GestionProjetCSS.css" rel="stylesheet" media="screen"></link>
-        <script type ="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-        <script type ="text/javascript" src="../js/bootstrap.min.js"></script>
+        <link href="/GestionProjet/css/GestionProjetCSS.css" rel="stylesheet" media="screen"></link>
         <title>Afficher Taches</title>
     </h:head>
     <h:body>
@@ -29,7 +26,7 @@
                 </div>
             </div>
 
-           <p style="white-space:pre-wrap;width:0px"> </p> 
+            <p style="white-space:pre-wrap;width:0px"> </p> 
 
             <p:dataTable styleClass="table" id="resultat" var="item" value="#{tacheCtrl.taches}" rowStyleClass="#{item.importance.balise}">
                 <p:column>
@@ -54,8 +51,8 @@
                     <f:facet name="header">
                         <h:outputText value ="Action"/>
                     </f:facet>
-                    <p:commandButton action="#{tacheCtrl.modifierTache(item)}" value="Modifier"/>
-                    <p:commandButton action="#{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
+                        <h:commandButton styleClass="btn btn-info" action="#{tacheCtrl.modifierTache(item)}" value="Modifier"/>
+                        <h:commandButton styleClass="btn btn-success"  action="#{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
                 </p:column>
             </p:dataTable>
         </h:form>     
