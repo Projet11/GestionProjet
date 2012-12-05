@@ -7,6 +7,8 @@ package be.esi.projet11.gestionprojet.entity;
 import be.esi.projet11.gestionprojet.exception.MailException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -231,6 +233,7 @@ public class Projet implements Serializable {
     }
     
     public String getInformations(){
-        return description+" <br/>Créé Le "+dateDeb.toString();
+        DateFormat df=new SimpleDateFormat("dd MMM yyyy");
+        return description+" <br/>Créé Le "+df.format(dateDeb);
     }
 }
