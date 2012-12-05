@@ -10,6 +10,8 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -331,5 +333,10 @@ public class Tache implements Serializable {
     public Projet getProjet() {
         return new Projet();
 //        return projet; // TODO
+    }
+    
+    public String getDate(){
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(dateDeb);
     }
 }

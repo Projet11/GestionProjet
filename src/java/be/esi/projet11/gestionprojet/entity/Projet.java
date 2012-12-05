@@ -8,6 +8,8 @@ import be.esi.projet11.gestionprojet.exception.MailException;
 import be.esi.projet11.gestionprojet.exception.ProjetException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -29,7 +31,8 @@ import javax.persistence.Temporal;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Projet.findByNom", query = "SELECT p FROM Projet p WHERE p.nom = :nom")})
+    @NamedQuery(name = "Projet.findByNom", query = "SELECT p FROM Projet p WHERE p.nom = :nom"),
+    @NamedQuery(name = "Projet.findAll", query = "SELECT p FROM Projet p")})
 public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -224,5 +227,10 @@ public class Projet implements Serializable {
             }
         }
         return null;
+    }
+    
+    public String getInformations(){
+        DateFormat df=new SimpleDateFormat("dd MMM yyyy");
+        return description+" <br/>Créé Le "+df.format(dateDeb);
     }
 }

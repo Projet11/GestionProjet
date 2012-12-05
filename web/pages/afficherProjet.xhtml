@@ -3,29 +3,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-        <link href="../../css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
-        <script type ="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-        <script type ="text/javascript" src="../../js/bootstrap.min.js"></script>
         <title>Afficher Projet</title>
     </h:head>
     <h:body>
-        <form>
+        <h:form>
             <h:commandButton class="btn" value="Créer un projet"/>
-        </form>
-        <table class="table"> 
-            <tr>
-                <td>Noms des Projets</td>
-            </tr>
-            <c:forEach var="projet" items="#{projetCtrl.projets}">
-                <tr>
-                    <td><h:outputText value="#{projet.nom}"/></td>
-                </tr>    
-            </c:forEach>  
-        </table>
-
+        </h:form>
+        <br/>
+        <p:dataTable value="#{projetCtrl.projets}" var="projet" styleClass="table">
+            <p:column>
+                <f:facet name="header">Noms des projets</f:facet>
+                <h:form>
+                    <h:commandLink rel="tooltip" action="#{projetCtrl.setProjetCourant(projet)}" title="#{projet.informations}" value="#{projet.nom}"/>
+                </h:form>
+            </p:column>
+        </p:dataTable>
+        <script>
+            $(function(){
+                $('[rel=tooltip]').tooltip({placement: 'right', html: true})
+            })
+        </script>
     </h:body>
 </html>
 

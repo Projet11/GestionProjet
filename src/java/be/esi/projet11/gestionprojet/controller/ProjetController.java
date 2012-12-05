@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 /**
@@ -33,7 +34,16 @@ public class ProjetController {
     @EJB
     private ProjetEJB projetEJB;
     private List<Projet> projets;
+    @ManagedProperty("#{tacheCtrl}")
+    private TacheController tacheCtrl;
 
+    public TacheController getTacheCtrl() {
+        return tacheCtrl;
+    }
+
+    public void setTacheCtrl(TacheController tacheCtrl) {
+        this.tacheCtrl = tacheCtrl;
+    }
     /**
      * Get the value of projets
      *
@@ -84,8 +94,10 @@ public class ProjetController {
         return projetCourant;
     }
 
-    public void setProjetCourant(Projet projetCourant) {
+    public String setProjetCourant(Projet projetCourant) {
         this.projetCourant = projetCourant;
+        tacheCtrl.affichageTaches(projetCourant);
+        return null;
     }
 
     public String ajouterMembre() throws BusinessException {
