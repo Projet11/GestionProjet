@@ -4,7 +4,6 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>GestionProjet</jta-data-source>
     <class>be.esi.projet11.gestionprojet.entity.Membre</class>
-    <class>be.esi.projet11.gestionprojet.entity.ParticipeProjet</class>
     <class>be.esi.projet11.gestionprojet.entity.ParticipeTache</class>
     <class>be.esi.projet11.gestionprojet.entity.Projet</class>
     <class>be.esi.projet11.gestionprojet.entity.ParticipeProjet</class>
