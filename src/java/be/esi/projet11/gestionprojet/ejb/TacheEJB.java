@@ -34,7 +34,7 @@ public class TacheEJB {
         return creerTache(nom, description, ImportanceEnum.IMPORTANT);
     }
 
-    public Tache creerTache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {
+    public Tache creerTache(String nom, String description, ImportanceEnum importance, Projet p) throws DBException {
         Tache uneTache = null;
         try {
             uneTache = new Tache(nom, description, importance, p);
