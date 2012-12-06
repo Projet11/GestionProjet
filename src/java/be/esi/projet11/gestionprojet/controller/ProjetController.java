@@ -12,6 +12,8 @@ import be.esi.projet11.gestionprojet.exception.BusinessException;
 import be.esi.projet11.gestionprojet.exception.DBException;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -36,6 +38,7 @@ public class ProjetController {
     private List<Projet> projets;
     @ManagedProperty("#{tacheCtrl}")
     private TacheController tacheCtrl;
+
 
     public TacheController getTacheCtrl() {
         return tacheCtrl;
@@ -89,7 +92,11 @@ public class ProjetController {
 
     public Projet getProjetCourant() {
         if (projetCourant == null) {
-            projetCourant = projetEJB.creerProjet();
+            try {
+                projetCourant = projetEJB.creerProjet("nouveauProjet", "descriptionNewProjet");
+            } catch (DBException ex) {
+                Logger.getLogger(ProjetController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return projetCourant;
     }
