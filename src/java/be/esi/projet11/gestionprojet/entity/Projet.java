@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -152,7 +154,7 @@ public class Projet implements Serializable {
         }
     }
 
-    public void refuserParticipant(Membre mbr) throws ProjetException {
+    public ParticipeProjet refuserParticipant(Membre mbr) {
         ParticipeProjet pp = getParticipeProjet(mbr);
         if (pp != null) {
             participants.remove(pp);
@@ -164,10 +166,11 @@ public class Projet implements Serializable {
                 try {
                     Mailer.send(unMembre.getMail(), objet, corps);
                 } catch (MailException ex) {
-                    throw new ProjetException("Impossible d'envoyer un mail à " + unMembre.getMail());
+                    Logger.getLogger(Projet.class.getName()).log(Level.WARNING, null, ex);
                 }
             }
         }
+        return pp;
     }
 
     public List<Membre> getParticipantAcceptes() {
@@ -198,11 +201,11 @@ public class Projet implements Serializable {
         if (!containsMembre(mbr)) {
             participants.add(new ParticipeProjet(mbr, this, false));
             try {
-                String objet = "Ajout a un projet";
-                String corps = "<html>Vous etes invité a etre ajouter au projet " + nom + ". </br> ";
+                String objet = "Ajout à un projet";
+                String corps = "<html>Vous etes invité à etre ajouté au projet " + nom + ". </br> ";
 
-                corps += "<p><a href='http://localhost:8080/GestionProjet/faces/pages/accepterProjet.xhtml?idMembre=" + mbr.getId() + "&idProjet=" + id + "'>Accepter</a></p>";
-                corps += "<p><a href='http://localhost:8080/GestionProjet/faces/pages/refuserProjet.xhtml?idMembre=" + mbr.getId() + "&idProjet=" + id + "'>Refusser</a></p>";
+                corps += "<p><a href='http://localhost:8080/GestionProjet/pages/accepterProjet.xhtml?idMembre=" + mbr.getId() + "&idProjet=" + id + "'>Accepter</a></p>";
+                corps += "<p><a href='http://localhost:8080/GestionProjet/pages/refuserProjet.xhtml?idMembre=" + mbr.getId() + "&idProjet=" + id + "'>Refuser</a></p>";
                 Mailer.send(mbr.getMail(), objet, corps, true);
             } catch (MailException ex) {
                 throw new ProjetException("Impossible d'envoyer un mail à " + mbr.getMail());

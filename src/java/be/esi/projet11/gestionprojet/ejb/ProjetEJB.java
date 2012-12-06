@@ -5,6 +5,7 @@
 package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.entity.ParticipeProjet;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.exception.DBException;
 import be.esi.projet11.gestionprojet.exception.ProjetException;
@@ -34,14 +35,12 @@ public class ProjetEJB {
         return p;
     }
 
-    public void removeParticipeProjet(Projet projet, Membre mbr) throws DBException {
-        try {
-            projet.refuserParticipant(mbr);
-        } catch (ProjetException ex) {
-            throw new DBException("Retrait du membre de la liste des participants au projet impossible : "+ex.getMessage());
-        }
-        em.merge(projet);
-        System.out.println("projet size" + projet.getAllParticipant().size());
+    public void removeParticipeProjet(Projet projet, Membre mbr) {
+        ParticipeProjet pp = projet.refuserParticipant(mbr);
+        Query q = em.createQuery("delete from ParticipeProjet pp where pp.membre1.id = :idMembre and pp.projet1.id = :idProjet");
+        q.setParameter("idMembre", mbr.getId());
+        q.setParameter("idProjet", projet.getId());
+        q.executeUpdate();
     }
 
     public List<Projet> getAllProjets() {
@@ -55,6 +54,7 @@ public class ProjetEJB {
         Projet unProjet = null;
         try {
             unProjet = (Projet) query.getSingleResult();
+            throw new DBException("Il y a deja un projet ayant ce nom");
         } catch (Exception e) {
             unProjet = new Projet(0l, nom, description);
             em.persist(unProjet);
@@ -62,4 +62,11 @@ public class ProjetEJB {
         }
         return unProjet;
     }
+
+    public void accepterParticipant(Projet projet, Membre membre) {
+        projet.accepterParticipant(membre);
+        em.merge(projet);
+    }
+    
+    
 }

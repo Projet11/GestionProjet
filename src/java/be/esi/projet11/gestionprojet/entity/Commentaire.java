@@ -60,7 +60,7 @@ public class Commentaire implements Serializable {
     }
 
     public void setDate(Date datePosted) {
-        if (tache == null) {
+        if (datePosted == null) {
             throw new IllegalArgumentException("La datePosted ne peut pas être nulle");
         }
         this.datePosted = datePosted;
