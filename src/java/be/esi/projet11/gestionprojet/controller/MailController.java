@@ -8,9 +8,8 @@ import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
+import be.esi.projet11.gestionprojet.exception.BusinessException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -112,10 +111,9 @@ public class MailController {
             long membrelong = Long.parseLong(map.get("idMembre"));
             projet = projetEJB.getProjetById(projectlong);
             membre = membreEJB.getMembreById(membrelong);
-        } catch (NumberFormatException nfe) {
-            throw new BusinessException("Les identifiants du projet et/ou du membre sont incorrects");
         } catch (Exception e) {
-            throw new BusinessException("Impossible d'accepter l'ajout du membre au projet :" + e.getMessage());
+            //Pas de traitement en cas d'exception car ca veux juste dire
+            //que le projet et le membre sont bien initialise
         }
         if (membreCtrl.isAuthenticated()) {
             projetEJB.accepterParticipant(projet, membre);

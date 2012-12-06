@@ -54,6 +54,7 @@ public class ProjetEJB {
         Projet unProjet = null;
         try {
             unProjet = (Projet) query.getSingleResult();
+            throw new DBException("Il y a deja un projet ayant ce nom");
         } catch (Exception e) {
             unProjet = new Projet(0l, nom, description);
             em.persist(unProjet);
