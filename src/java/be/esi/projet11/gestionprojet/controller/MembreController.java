@@ -49,6 +49,14 @@ public class MembreController {
         this.identificationEchouee = identificationEchouee;
     }
 
+    public Membre getMembreCourant() {
+        return membreCourant;
+    }
+
+    public void setMembreCourant(Membre membreCourant) {
+        this.membreCourant = membreCourant;
+    }
+
     public boolean isAuthenticated() {
         return membreCourant != null;
     }
@@ -74,7 +82,8 @@ public class MembreController {
         try {
             return membreEJB.addUser(login, password, mail, nom, prenom);
         } catch (Exception e) {
-            throw new BusinessException("Impossible de créer le membre :" + e.getMessage());
+            System.out.println("FacadeException : " + e);
+            throw new BusinessException(e.getMessage());
         }
     }
 
@@ -84,7 +93,7 @@ public class MembreController {
             return membreCourant;
         } catch (DBException e) {
             membreCourant = null;
-            throw new BusinessException("Impossible de trouver le membre à authentifier :"+e.getMessage());
+            throw new BusinessException(e.getMessage());
         }
     }
 }

@@ -15,7 +15,7 @@
             </h:form>
         </div>
         <div class="listeMembre">
-            <h:dataTable value="#{projetCtrl.membres}" var="membre">
+            <h:dataTable value="#{projetCtrl.projetCourant.allParticipant}" var="membre">
                 <h:column>
                     <f:facet name="header">
                         <h:outputText value="Liste des membres"/>

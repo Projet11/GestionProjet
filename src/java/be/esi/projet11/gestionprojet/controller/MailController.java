@@ -9,23 +9,27 @@ import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.exception.BusinessException;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
  * @author g34771
  */
 @ManagedBean(name = "mailCtrl")
-@RequestScoped
+@SessionScoped
 public class MailController {
-
-    @ManagedProperty(value = "#{param.idProjet}")
-    private String idProjet;
-    @ManagedProperty(value = "#{param.idMembre}")
-    private String idMembre;
+//
+//    @ManagedProperty(value = "#{param.idProjet}")
+//    private String idProjet;
+//    @ManagedProperty(value = "#{param.idMembre}")
+//    private String idMembre;
+    @ManagedProperty("#{membreCtrl}")
+    private MembreController membreCtrl;
     private Membre membre;
     private Projet projet;
     @EJB
@@ -48,22 +52,31 @@ public class MailController {
         return projet;
     }
 
-    public String getIdMembre() {
-        return idMembre;
+//    public String getIdMembre() {
+//        return idMembre;
+//    }
+//
+//    public void setIdMembre(String idMembre) {
+//        this.idMembre = idMembre;
+//    }
+//
+//    public String getIdProjet() {
+//        return idProjet;
+//    }
+//
+//    public void setIdProjet(String idProjet) {
+//        this.idProjet = idProjet;
+//    }
+
+    public MembreController getMembreCtrl() {
+        return membreCtrl;
     }
 
-    public void setIdMembre(String idMembre) {
-        this.idMembre = idMembre;
+    public void setMembreCtrl(MembreController membreCtrl) {
+        this.membreCtrl = membreCtrl;
     }
 
-    public String getIdProjet() {
-        return idProjet;
-    }
-
-    public void setIdProjet(String idProjet) {
-        this.idProjet = idProjet;
-    }
-
+    
     /**
      * Set the value of projet
      *
@@ -93,22 +106,25 @@ public class MailController {
 
     public void ajoutMembreProjet() throws BusinessException {
         try {
-            long projectlong = Long.parseLong(idProjet);
-            long membrelong = Long.parseLong(idMembre);
+            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            long projectlong = Long.parseLong(map.get("idProjet"));
+            long membrelong = Long.parseLong(map.get("idMembre"));
             projet = projetEJB.getProjetById(projectlong);
             membre = membreEJB.getMembreById(membrelong);
-            projet.accepterParticipant(membre);
-        } catch (NumberFormatException nfe) {
-            throw new BusinessException("Les identifiants du projet et/ou du membre sont incorrects");
         } catch (Exception e) {
-            throw new BusinessException("Impossible d'accepter l'ajout du membre au projet :" + e.getMessage());
+            //Pas de traitement en cas d'exception car ca veux juste dire
+            //que le projet et le membre sont bien initialise
+        }
+        if (membreCtrl.isAuthenticated()) {
+            projetEJB.accepterParticipant(projet, membre);
         }
     }
 
     public void refusAjoutMembreProjet() throws BusinessException {
         try {
-            long projectlong = Long.parseLong(idProjet);
-            long membrelong = Long.parseLong(idMembre);
+            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            long projectlong = Long.parseLong(map.get("idProjet"));
+            long membrelong = Long.parseLong(map.get("idMembre"));
             projet = projetEJB.getProjetById(projectlong);
             membre = membreEJB.getMembreById(membrelong);
             projetEJB.removeParticipeProjet(projet, membre);
