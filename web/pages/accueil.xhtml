@@ -17,19 +17,23 @@
         <div class="navbar">
             <div class="navbar-inner">
                 <div class="container">
-                    <a class="brand" >Gestion Projet</a>
                     <div class="nav-collapse collapse navbar-responsive-collapse">
-                        <ul class="nav">
-                            <li class="dropdown">
-                                <ui:include src="stopTimer.xhtml"/>
-                            </li>
+                        <ul class="nav pull-center">
+                            <a class="brand" >
+                                Gestion Projet
+                            </a>
                         </ul>
                         <ul class="nav pull-right">
-                            <li>
-                                <h:form>
-                                    <h:commandButton class="btn btn-danger" value="Deconnecter"/> 
-                                </h:form>
-                            </li>
+                            <div class="controls">
+                                <div class="pull-left">
+                                    <ui:include src="stopTimer.xhtml"/>
+                                </div>
+                                <div class="span2">
+                                    <h:form>
+                                        <h:commandLink class="btn btn-danger" value="Deconnecter"/> 
+                                    </h:form>
+                                </div>
+                            </div>
                         </ul>
                     </div>
                 </div>

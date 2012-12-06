@@ -26,34 +26,40 @@
                     </tbody>
                 </table>
             </div>
-           
+
             <p style="white-space:pre-wrap;width:0px"> </p> 
 
             <p:dataTable styleClass="table" id="resultat" var="item" value="#{tacheCtrl.taches}" rowStyleClass="#{item.importance.balise}">
-                <p:column>
+                <p:column style="text-align:center;">
                     <f:facet name="header">
                         <h:outputText value ="Archivée"/>
                     </f:facet>
                     <h:selectBooleanCheckbox disabled="true" value="#{item.archive}"/>
                 </p:column>
-                <p:column>
-                    <f:facet  name="header">
+                <p:column style="text-align:center;">
+                    <f:facet name="header">
                         <h:outputText value ="Nom"/>
                     </f:facet>
                     <h:outputText value="#{item.nom}"/>
                 </p:column>
-                <p:column>
+                <p:column style="text-align:center;">
                     <f:facet name="header">
                         <h:outputText value ="Progression"/>
                     </f:facet>
                     <h:outputText value="#{item.pourcentage} %"/>
                 </p:column>
-                <p:column>
+                <p:column style="text-align:center;">
                     <f:facet name="header">
                         <h:outputText value ="Action"/>
                     </f:facet>
-                    <h:commandButton styleClass="btn btn-info" action="#{tacheCtrl.modifierTache(item)}" value="Modifier"/>
-                    <h:commandButton styleClass="btn btn-success"  action="#{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
+                    <div class="controls">
+                        <div class="pull-left">
+                            <h:commandButton styleClass="btn" action="#{tacheCtrl.modifierTache(item)}" value="Modifier"/>
+                        </div>
+                        <div class="span2">
+                            <h:commandButton styleClass="btn"  action="#{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
+                        </div>
+                    </div>
                 </p:column>
             </p:dataTable>
         </h:form>     
