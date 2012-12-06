@@ -5,14 +5,15 @@
 package be.esi.projet11.gestionprojet.entity;
 
 import be.esi.projet11.gestionprojet.exception.MailException;
+import be.esi.projet11.gestionprojet.exception.ProjetException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +31,8 @@ import javax.persistence.Temporal;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Projet.findByNom", query = "SELECT p FROM Projet p WHERE p.nom = :nom")})
+    @NamedQuery(name = "Projet.findByNom", query = "SELECT p FROM Projet p WHERE p.nom = :nom"),
+    @NamedQuery(name = "Projet.findAll", query = "SELECT p FROM Projet p")})
 public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,17 +49,16 @@ public class Projet implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateDeb;
 
+    public Projet() {
+        this(0l, "Projet sans nom", "");
+    }
 
-    public Projet(){
-        this(0l,"Projet sans nom","");
+    public Projet(Long id, String nom) {
+        this(id, nom, "");
     }
-    
-    public Projet(Long id,String nom){
-        this(id,nom,"");
-    }
-    
-    public Projet(Long id,String nom, String description){
-        if (nom == null || nom.isEmpty()){
+
+    public Projet(Long id, String nom, String description) {
+        if (nom == null || nom.isEmpty()) {
             throw new IllegalArgumentException("Le nom est obligatoire");
         }
         this.id = id;
@@ -83,7 +84,7 @@ public class Projet implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -122,8 +123,7 @@ public class Projet implements Serializable {
     public void setDateDeb(Date dateDeb) {
         this.dateDeb = dateDeb;
     }
-    
-    
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -152,7 +152,7 @@ public class Projet implements Serializable {
         }
     }
 
-    public void refuserParticipant(Membre mbr) {
+    public void refuserParticipant(Membre mbr) throws ProjetException {
         ParticipeProjet pp = getParticipeProjet(mbr);
         if (pp != null) {
             participants.remove(pp);
@@ -164,7 +164,7 @@ public class Projet implements Serializable {
                 try {
                     Mailer.send(unMembre.getMail(), objet, corps);
                 } catch (MailException ex) {
-                    Logger.getLogger(Projet.class.getName()).log(Level.WARNING, "Impossible d'envoyer un mail a " + unMembre.getMail(), ex);
+                    throw new ProjetException("Impossible d'envoyer un mail à " + unMembre.getMail());
                 }
             }
         }
@@ -194,10 +194,9 @@ public class Projet implements Serializable {
      *
      * @param mbr le nouveau membre
      */
-    public void ajouterMembre(Membre mbr) {
+    public void ajouterMembre(Membre mbr) throws ProjetException {
         if (!containsMembre(mbr)) {
             participants.add(new ParticipeProjet(mbr, this, false));
-            System.out.println("participants size="+participants.size());
             try {
                 String objet = "Ajout a un projet";
                 String corps = "<html>Vous etes invité a etre ajouter au projet " + nom + ". </br> ";
@@ -206,7 +205,7 @@ public class Projet implements Serializable {
                 corps += "<p><a href='http://localhost:8080/GestionProjet/faces/pages/refuserProjet.xhtml?idMembre=" + mbr.getId() + "&idProjet=" + id + "'>Refusser</a></p>";
                 Mailer.send(mbr.getMail(), objet, corps, true);
             } catch (MailException ex) {
-                Logger.getLogger(Projet.class.getName()).log(Level.WARNING, "Impossible d'envoyer un mail a " + mbr.getMail(), ex);
+                throw new ProjetException("Impossible d'envoyer un mail à " + mbr.getMail());
             }
         }
     }
@@ -227,5 +226,10 @@ public class Projet implements Serializable {
             }
         }
         return null;
+    }
+    
+    public String getInformations(){
+        DateFormat df=new SimpleDateFormat("dd MMM yyyy");
+        return description+" <br/>Créé Le "+df.format(dateDeb);
     }
 }

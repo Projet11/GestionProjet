@@ -9,12 +9,15 @@ import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
+import be.esi.projet11.gestionprojet.exception.BusinessException;
+import be.esi.projet11.gestionprojet.exception.DBException;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -33,8 +36,8 @@ public class TacheController {
 
     @EJB
     private TacheEJB tacheEJB;
-    @ManagedProperty("#{projetCtrl}")
-    private ProjetController projetCtrl;
+//    @ManagedProperty("#{projetCtrl}")
+//    private ProjetController projetCtrl;
     // Attributs utilisés par le formulaire de création d'une tâche uniquement
     private String nomParam;
     private String descriptionParam;
@@ -42,57 +45,54 @@ public class TacheController {
     private Long revisionParam;
     private Long pourcentageParam;
     private Collection<Membre> membresSel;
+    private Membre membreCourantParam;
+    private String commentaireParam;
+    private Tache tacheCourante;
     private String archive;
     private Collection<Tache> taches;
-    //
-    private Tache tacheCourante;
     private String creationNom;
     private ImportanceEnum creationImportance;
     private String creationDescription;
+    private Projet projet;
 
-    public String getCreationDescription() {
-        return creationDescription;
+    public Membre getMembreCourantParam() {
+        return membreCourantParam;
     }
 
-    public void setCreationDescription(String creationDescription) {
-        this.creationDescription = creationDescription;
+    public void setMembreCourantParam(Membre membreCourantParam) {
+        this.membreCourantParam = membreCourantParam;
     }
 
-    public String getCreationNom() {
-        return creationNom;
+    public String getCommentaireParam() {
+        return commentaireParam;
     }
 
-    public void setCreationNom(String creationNom) {
-        this.creationNom = creationNom;
+    public void setCommentaireParam(String commentaireParam) {
+        this.commentaireParam = commentaireParam;
     }
 
-    public ImportanceEnum getCreationImportance() {
-        return creationImportance;
-    }
-
-    public void setCreationImportance(ImportanceEnum creationImportance) {
-        this.creationImportance = creationImportance;
-    }
-
-    /**
-     * Creates a new instance of TacheController
-     */
-    public TacheController() {
-        archive = "toutes";
+    @PostConstruct
+    private void init() {
+        this.archive = "toutes";
+        if (tacheCourante != null) {
+            this.nomParam = tacheCourante.getNom();
+            this.importanceParam = tacheCourante.getImportance();
+            this.pourcentageParam = tacheCourante.getPourcentage().longValue();
+            this.revisionParam = tacheCourante.getSVNRevision();
+        }
     }
 
     public String getNomParam() {
         return nomParam;
     }
 
-    public ProjetController getProjetCtrl() {
-        return projetCtrl;
-    }
-
-    public void setProjetCtrl(ProjetController projetCtrl) {
-        this.projetCtrl = projetCtrl;
-    }
-
+//    public ProjetController getProjetCtrl() {
+//        return projetCtrl;
+//    }
+//
+//    public void setProjetCtrl(ProjetController projetCtrl) {
+//        this.projetCtrl = projetCtrl;
+//    }
     public void setNomParam(String nomParam) {
         this.nomParam = nomParam;
     }
@@ -129,13 +129,12 @@ public class TacheController {
         this.pourcentageParam = pourcentageParam;
     }
 
-    public Tache getTacheCourante() {
+    public Tache getTacheCourante() throws BusinessException {
         if (tacheCourante == null) {
             try {
                 tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
-            } catch (TacheException ex) {
-                // TODO Retourner null si null.! 
-                Logger.getLogger(TacheController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DBException ex) {
+                throw new BusinessException("Il n'y a pas de tache courante ! : " + ex.getMessage());
             }
         }
         return tacheCourante;
@@ -165,9 +164,9 @@ public class TacheController {
     public String creerTache() {
         try {
             tacheEJB.creerTache(nomParam, descriptionParam, importanceParam);
-        } catch (TacheException ex) {
+        } catch (DBException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
-            ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>"+ex.getMessage(), ""));
+            ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>" + ex.getMessage(), ""));
             return "failure";
         }
         return "success";
@@ -177,14 +176,14 @@ public class TacheController {
         return "annuler";
     }
 
-    public void startTimer() {
+    public void startTimer() throws BusinessException {
         startTimer(getTacheCourante());
     }
 
-    public void stopTimer() {
+    public void stopTimer() throws BusinessException {
         stopTimer(getTacheCourante());
     }
-    
+
     public void startTimer(Tache tache) {
         tache.setTimerLaunched(true);
         tacheEJB.saveTache(tache);
@@ -195,40 +194,71 @@ public class TacheController {
         tacheEJB.saveTache(tache);
     }
 
-    public Time getTimer() {
+    public Time getTimer() throws BusinessException {
         Date currDate = new Date();
         return new Time(currDate.getTime() - getTacheCourante().getDateDeb().getTime());
     }
 
-    public boolean isTimerLaunched() {
+    public boolean isTimerLaunched() throws BusinessException {
         return getTacheCourante().isTimerLaunched();
     }
-    
-    public Collection<Tache> getAllTimerLaunched(){
+
+    public Collection<Tache> getAllTimerLaunched() {
         return tacheEJB.getAllTimerLaunched();
     }
 
-    public String inscrireMembresATache() {
+    public String inscrireMembresATache() throws BusinessException {
         for (Membre membre : membresSel) {
-            getTacheCourante().addMembre(membre);
+            try {
+                getTacheCourante().addMembre(membre);
+            } catch (TacheException ex) {
+                throw new BusinessException("Impossible d'inscrire le membre à la tâche : " + ex.getMessage());
+            }
         }
         tacheEJB.saveTache(getTacheCourante());
         return "success";
     }
 
-    public void modificationTache() throws TacheException {
-        tacheCourante.setPourcentage(pourcentageParam.intValue());
-        tacheCourante.setSVNRevision(revisionParam);
-        tacheCourante.setImportance(importanceParam);
-        tacheEJB.modificationTache(tacheCourante);
+    public String modificationTache() {
+        try {
+            if (pourcentageParam != null) {
+                tacheEJB.modificationTache(tacheCourante, pourcentageParam.intValue(), revisionParam, importanceParam);
+            } else {
+                throw new TacheException();
+            }
+            return retourneAccueil();
+        } catch (TacheException ex) {
+            System.err.println("Il existe au moins une donnée entrés  dans les paramètres entrés");
+            return null;
+        }
+    }
+
+    public void ajouterConversation() {
+        if (tacheCourante != null && membreCourantParam != null
+                && commentaireParam != null && !commentaireParam.isEmpty()) {
+            tacheEJB.ajouterConversation(tacheCourante, membreCourantParam, commentaireParam);
+        } else {
+            System.err.println("la tache, le membre ou le commentaire ne peut être vide");
+        }
     }
 
     public String modifierTache(Tache tache) {
-        tacheEJB.modificationTache(tache);
-        // TODO navigation vers modification page
+        if (tache != null) {
+            tacheCourante = tache;
+            nomParam = tache.getNom();
+            descriptionParam = tache.getDescription();
+            importanceParam = tache.getImportance();
+            revisionParam = tache.getSVNRevision();
+            pourcentageParam = tache.getPourcentage().longValue();
+            return "modificationTache";
+        }
         return null;
     }
-    
+
+    public String retourneAccueil() {
+        return "retourneAccueil";
+    }
+
     public String getArchive() {
         return archive;
     }
@@ -255,23 +285,31 @@ public class TacheController {
 
     public String affichageTaches() {
         taches = null;
-        Projet projet = projetCtrl.getProjetCourant();
         if (archive.equals("toutes")) {
-            System.out.println("TOUTES");
-            System.out.println(taches);
-            System.out.println(projet);
             taches = tacheEJB.getTaches(null, projet);
-            System.out.println(taches);
         } else {
             if (archive.equals("archivees")) {
-                System.out.println("archivees");
                 taches = tacheEJB.getTaches(true, projet);
             } else {
-                System.out.println("non archivees");
                 taches = tacheEJB.getTaches(false, projet);
             }
         }
         //return "success";
+        return null;
+    }
+
+    public String affichageTaches(Projet projet) {
+        taches = null;
+        this.projet = projet;
+        if (archive.equals("toutes")) {
+            taches = tacheEJB.getTaches(null, projet);
+        } else {
+            if (archive.equals("archivees")) {
+                taches = tacheEJB.getTaches(true, projet);
+            } else {
+                taches = tacheEJB.getTaches(false, projet);
+            }
+        }
         return null;
     }
 

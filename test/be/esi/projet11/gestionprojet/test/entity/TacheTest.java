@@ -134,7 +134,7 @@ public class TacheTest {
     }
 
     @Test
-    public void testAjouterUnMembreOk() {
+    public void testAjouterUnMembreOk() throws TacheException {
         Tache tache = null;
         try {
             tache = new Tache("Tâche 1", "Tâche de test 1");
@@ -145,7 +145,7 @@ public class TacheTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAjouterUnMembreNull() {
+    public void testAjouterUnMembreNull() throws TacheException {
         Tache tache = null;
         try {
             tache = new Tache("Tâche 2", "Tâche de test 2");
@@ -156,7 +156,7 @@ public class TacheTest {
     }
 
     @Test
-    public void testMembreEstSurTache() {
+    public void testMembreEstSurTache() throws TacheException {
         Tache tache = null;
         try {
             tache = new Tache("Tâche 3", "Tâche de test 3");
@@ -172,7 +172,7 @@ public class TacheTest {
     }
 
     @Test
-    public void testNbMembreEnAjoutantDeuxFoisLeMemeMembre() {
+    public void testNbMembreEnAjoutantDeuxFoisLeMemeMembre() throws TacheException {
         Tache tache = null;
         try {
             tache = new Tache("Tâche 5", "Tâche de test 5");
@@ -188,7 +188,7 @@ public class TacheTest {
     }
 
     @Test
-    public void testNbMembresAvecDeuxMembres() {
+    public void testNbMembresAvecDeuxMembres() throws TacheException {
         Tache tache = null;
         try {
             tache = new Tache("Tâche 6", "Tâche de test 6");
@@ -219,7 +219,7 @@ public class TacheTest {
     }
 
     @Test
-    public void testRecupererListeMembresPlusieursMembres() {
+    public void testRecupererListeMembresPlusieursMembres() throws TacheException {
         Tache tache = null;
         try {
             tache = new Tache("Tâche 8", "Tâche de test 8");
@@ -241,7 +241,7 @@ public class TacheTest {
     }
 
     @Test
-    public void testRecupererListeMembresPlusieursMembresNonActifs() {
+    public void testRecupererListeMembresPlusieursMembresNonActifs() throws TacheException {
         Tache tache = null;
         try {
             tache = new Tache("Tâche 9", "Tâche de test 9");

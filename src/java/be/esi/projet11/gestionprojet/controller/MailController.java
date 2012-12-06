@@ -8,8 +8,7 @@ import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import be.esi.projet11.gestionprojet.exception.BusinessException;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -19,7 +18,7 @@ import javax.faces.bean.RequestScoped;
  *
  * @author g34771
  */
-@ManagedBean(name="mailCtrl")
+@ManagedBean(name = "mailCtrl")
 @RequestScoped
 public class MailController {
 
@@ -33,6 +32,12 @@ public class MailController {
     private ProjetEJB projetEJB;
     @EJB
     private MembreEJB membreEJB;
+
+    /**
+     * Creates a new instance of UserActivation
+     */
+    public MailController() {
+    }
 
     /**
      * Get the value of projet
@@ -86,7 +91,7 @@ public class MailController {
         this.membre = membre;
     }
 
-    public void ajoutMembreProjet() {
+    public void ajoutMembreProjet() throws BusinessException {
         try {
             long projectlong = Long.parseLong(idProjet);
             long membrelong = Long.parseLong(idMembre);
@@ -94,13 +99,13 @@ public class MailController {
             membre = membreEJB.getMembreById(membrelong);
             projet.accepterParticipant(membre);
         } catch (NumberFormatException nfe) {
-            Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Impossible de convertir les identifiant en long", nfe);
+            throw new BusinessException("Les identifiants du projet et/ou du membre sont incorrects");
         } catch (Exception e) {
-            Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Erreur dans UserActivation.ajoutMembreProjet", e);
+            throw new BusinessException("Impossible d'accepter l'ajout du membre au projet :" + e.getMessage());
         }
     }
 
-    public void refusAjoutMembreProjet() {
+    public void refusAjoutMembreProjet() throws BusinessException {
         try {
             long projectlong = Long.parseLong(idProjet);
             long membrelong = Long.parseLong(idMembre);
@@ -108,16 +113,9 @@ public class MailController {
             membre = membreEJB.getMembreById(membrelong);
             projetEJB.removeParticipeProjet(projet, membre);
         } catch (NumberFormatException nfe) {
-            Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, "Impossible de convertir les identifiant en long", nfe);
+            throw new BusinessException("Les identifiants du projet et/ou du membre sont incorrects");
+        } catch (Exception e) {
+            throw new BusinessException("Impossible de refuser l'ajout du membre au projet :" + e.getMessage());
         }
-//        } catch (Exception e) {
-//            Logger.getLogger(UserActivation.class.getName()).log(Level.SEVERE, "Erreur dans UserActivation.refusAjoutMembreProjet", e);
-//        }
-    }
-
-    /**
-     * Creates a new instance of UserActivation
-     */
-    public MailController() {
     }
 }

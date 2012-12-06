@@ -29,6 +29,7 @@ lib/javaee-endorsed-api-6.0*
 lib/junit*
 *.sublime-project
 *.sublime-workspace
+lib/tomahawk*
 
 # Komodo
 *.komodoproject

@@ -5,28 +5,32 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <script type ="text/javascript" src ="js/verificationCreeTache.js"></script>
-        <script type ="text/javascript" src="js/bootstrap.min.js"></script>
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-        <script type ="text/javascript" src ="../js/verificationCreeTache.js"></script>
-        <script type ="text/javascript" src="../js/bootstrap.min.js"></script>
-        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <script type ="text/javascript" src="/GestionProjet/js/jquery.js"></script>
+        <script type ="text/javascript" src ="/GestionProjet/js/verificationCreeTache.js"></script>
+        <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
+        <link href="/GestionProjet/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
         <title>Gestion de projet</title>
 
     </h:head>
     <h:body>
-        <div class="navbar ">
+
+        <div class="navbar">
             <div class="navbar-inner">
                 <div class="container">
-                    <div class="row-fluid">
-                        <div class="span6">
-                            Gestion Projet
-                        </div>
-                        <div class="span4">
-                            <h:form>
-                                <h:commandButton class="btn btn-danger" value="Deconnecter"/> 
-                            </h:form>
-                        </div>
+                    <a class="brand" >Gestion Projet</a>
+                    <div class="nav-collapse collapse navbar-responsive-collapse">
+                        <ul class="nav">
+                            <li class="dropdown">
+                                <ui:include src="stopTimer.xhtml"/>
+                            </li>
+                        </ul>
+                        <ul class="nav pull-right">
+                            <li>
+                                <h:form>
+                                    <h:commandButton class="btn btn-danger" value="Deconnecter"/> 
+                                </h:form>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -34,15 +38,16 @@
         <div class="container-fluid">
             <div class="container-fluid">
                 <div class="row-fluid">
-                    <div class="span5">
-                        <ui:include src="afficherTaches.xhtml" />
+                    <div class="span3">
+                        <ui:include src="afficherProjet.xhtml" />
                     </div>
-                    <div class="span5">
+                    <div class="span6">
                         <ui:include src="afficherTaches.xhtml" />
                     </div>
                 </div>
             </div>
         </div>
+        <h:messages/>
     </h:body>
 </html>
 
