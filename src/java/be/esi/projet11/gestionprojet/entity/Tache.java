@@ -233,7 +233,7 @@ public class Tache implements Serializable {
 
     @Override
     public String toString() {
-        return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + "\n Description : " + this.description;
+        return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + " Projet : " + projet + "\n Description : " + this.description;
     }
 
     public boolean isTimerLaunched() {

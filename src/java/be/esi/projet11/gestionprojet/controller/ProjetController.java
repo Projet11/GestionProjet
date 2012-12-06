@@ -104,6 +104,7 @@ public class ProjetController {
     public String setProjetCourant(Projet projetCourant) {
         this.projetCourant = projetCourant;
         tacheCtrl.affichageTaches(projetCourant);
+        tacheCtrl.setProjetCourant(projetCourant);
         return null;
     }
 

@@ -38,8 +38,6 @@ public class TacheController {
 
     @EJB
     private TacheEJB tacheEJB;
-
-    
 //    @ManagedProperty("#{projetCtrl}")
 //    private ProjetController projetCtrl;
     // Attributs utilisés par le formulaire de création d'une tâche uniquement
@@ -57,14 +55,14 @@ public class TacheController {
     private String creationNom;
     private ImportanceEnum creationImportance;
     private String creationDescription;
-    
-    @ManagedProperty(value="#{membreCtrl}")
+    private Projet projetCourant;
+    @ManagedProperty(value = "#{membreCtrl}")
     private MembreController membreCtrl;
 
     public void setMembreCtrl(MembreController membreCtrl) {
         this.membreCtrl = membreCtrl;
     }
-    
+
     public String getCreationNom() {
         return creationNom;
     }
@@ -75,6 +73,15 @@ public class TacheController {
 
     public ImportanceEnum getCreationImportance() {
         return creationImportance;
+    }
+
+    public Projet getProjetCourant() {
+        return projetCourant;
+    }
+
+    public void setProjetCourant(Projet projetCourant) {
+        System.out.println("+++++++++" + projetCourant);
+        this.projetCourant = projetCourant;
     }
 
     public void setCreationImportance(ImportanceEnum creationImportance) {
@@ -88,7 +95,6 @@ public class TacheController {
     public void setCreationDescription(String creationDescription) {
         this.creationDescription = creationDescription;
     }
-    private Projet projet;
 
     public Membre getMembreCourantParam() {
         return membreCourantParam;
@@ -165,13 +171,13 @@ public class TacheController {
     }
 
     public Tache getTacheCourante() throws BusinessException {
-        if (tacheCourante == null) {
-            try {
-                tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
-            } catch (DBException ex) {
-                throw new BusinessException("Il n'y a pas de tache courante ! : " + ex.getMessage());
-            }
-        }
+//        if (tacheCourante == null) {
+//            try {
+//                tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
+//            } catch (DBException ex) {
+//                throw new BusinessException("Il n'y a pas de tache courante ! : " + ex.getMessage());
+//            }
+//        }
         return tacheCourante;
     }
 
@@ -198,7 +204,8 @@ public class TacheController {
 
     public String creerTache() {
         try {
-            tacheEJB.creerTache(nomParam, descriptionParam, importanceParam);
+            System.out.println("______________" + projetCourant);
+            tacheEJB.creerTache(creationNom, creationDescription, creationImportance, projetCourant);
         } catch (DBException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>" + ex.getMessage(), ""));
@@ -281,7 +288,7 @@ public class TacheController {
         if (tache != null) {
             try {
                 //A faire qu'une fois pour test;
-               // membreCourantParam = membreCtrl.createUser("fred", "fredo", "fred@gmail.com", "freddy","freud");
+//                membreCourantParam = membreCtrl.createUser("fred", "fredo", "fred@gmail.com", "freddy","freud");
                 //A faire parl a suite pour test
                 membreCourantParam = membreCtrl.authenticateUser("fred", "fredo");
                 tacheCourante = tache;
@@ -329,12 +336,12 @@ public class TacheController {
     public String affichageTaches() {
         taches = null;
         if (archive.equals("toutes")) {
-            taches = tacheEJB.getTaches(null, projet);
+            taches = tacheEJB.getTaches(null, projetCourant);
         } else {
             if (archive.equals("archivees")) {
-                taches = tacheEJB.getTaches(true, projet);
+                taches = tacheEJB.getTaches(true, projetCourant);
             } else {
-                taches = tacheEJB.getTaches(false, projet);
+                taches = tacheEJB.getTaches(false, projetCourant);
             }
         }
         return null;
@@ -342,7 +349,7 @@ public class TacheController {
 
     public String affichageTaches(Projet projet) {
         taches = null;
-        this.projet = projet;
+        this.projetCourant = projet;
         if (archive.equals("toutes")) {
             taches = tacheEJB.getTaches(null, projet);
         } else {
@@ -356,7 +363,6 @@ public class TacheController {
     }
 
     public List<Commentaire> getConversation() {
-        System.out.println("oooooooooo"+tacheCourante);
         if (tacheCourante != null) {
             return tacheEJB.getConversation(tacheCourante);
         } else {
@@ -365,6 +371,10 @@ public class TacheController {
     }
 
     public String fenetreCreeTache() {
-        return "creeTache";
+        if (projetCourant !=null ) {
+            return "creeTache";
+        } else {
+            return null;
+        }
     }
 }

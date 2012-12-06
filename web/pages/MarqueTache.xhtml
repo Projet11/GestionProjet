@@ -67,17 +67,22 @@
             </h:form>
             <hr class="separator"/>
 
-            <p:dataTable value="#{tacheCtrl.conversation}" var ="detailCommentaire">
-                <p:column headerText="Membre :">          
+            <p:dataTable value="#{tacheCtrl.conversation}" var ="detailCommentaire" style="overflow: auto; height: 250px ;width: 1150px" >
+
+                <p:column  >     
+                    <f:facet name="header">Membre :</f:facet>
                     <h:outputText value="#{detailCommentaire.membre}"/>
                 </p:column>
-                <p:column headerText="Commentaire :">          
+                <p:column >    
+                    <f:facet name="header">Commentaire :</f:facet>
                     <h:outputText value="#{detailCommentaire.corps}"/>
                 </p:column>
-                <p:column headerText="Date :">          
+                <p:column >     
+                    <f:facet name="header">Date :</f:facet>
                     <h:outputText value="#{detailCommentaire.date}"/>
                 </p:column>
             </p:dataTable>
+
             <hr class="separator"/>
             <h:form class="form-horizontal" onsubmit="return validateComment();">
                 <div class="controls" id="divComment" >

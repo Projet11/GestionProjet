@@ -28,14 +28,11 @@ public class TacheEJB {
     public TacheEJB() {
     }
 
-    public Tache creerTache(String nom, String description) throws DBException {
-        return creerTache(nom, description, ImportanceEnum.IMPORTANT);
-    }
-
     public Tache creerTache(String nom, String description, ImportanceEnum importance, Projet p) throws DBException {
         Tache uneTache = null;
         try {
             uneTache = new Tache(nom, description, importance, p);
+            System.out.println("---------------------"+uneTache);
             em.persist(uneTache);
         } catch (TacheException ex) {
             throw new DBException("Création de tâche impossible : " + ex.getMessage());
@@ -43,16 +40,6 @@ public class TacheEJB {
         return uneTache;
     }
 
-    public Tache creerTache(String nom, String description, ImportanceEnum importance) throws DBException {
-        Tache uneTache = null;
-        try {
-            uneTache = new Tache(nom, description, importance);
-            em.persist(uneTache);
-        } catch (TacheException ex) {
-            throw new DBException("Création de tâche impossible : " + ex.getMessage());
-        }
-        return uneTache;
-    }
 
     public Tache getTache(String nom) {
         Query query = em.createNamedQuery("Tache.findByNom");
