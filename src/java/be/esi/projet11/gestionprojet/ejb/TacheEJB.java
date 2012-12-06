@@ -32,7 +32,6 @@ public class TacheEJB {
         Tache uneTache = null;
         try {
             uneTache = new Tache(nom, description, importance, p);
-            System.out.println("---------------------"+uneTache);
             em.persist(uneTache);
         } catch (TacheException ex) {
             throw new DBException("Création de tâche impossible : " + ex.getMessage());
