@@ -152,7 +152,7 @@ public class Projet implements Serializable {
         }
     }
 
-    public void refuserParticipant(Membre mbr) throws ProjetException {
+    public ParticipeProjet refuserParticipant(Membre mbr) {
         ParticipeProjet pp = getParticipeProjet(mbr);
         if (pp != null) {
             participants.remove(pp);
@@ -168,6 +168,7 @@ public class Projet implements Serializable {
                 }
             }
         }
+        return pp;
     }
 
     public List<Membre> getParticipantAcceptes() {
@@ -201,8 +202,8 @@ public class Projet implements Serializable {
                 String objet = "Ajout a un projet";
                 String corps = "<html>Vous etes invité a etre ajouter au projet " + nom + ". </br> ";
 
-                corps += "<p><a href='http://localhost:8080/GestionProjet/faces/pages/accepterProjet.xhtml?idMembre=" + mbr.getId() + "&idProjet=" + id + "'>Accepter</a></p>";
-                corps += "<p><a href='http://localhost:8080/GestionProjet/faces/pages/refuserProjet.xhtml?idMembre=" + mbr.getId() + "&idProjet=" + id + "'>Refusser</a></p>";
+                corps += "<p><a href='http://localhost:8080/GestionProjet/pages/accepterProjet.xhtml?idMembre=" + mbr.getId() + "&idProjet=" + id + "'>Accepter</a></p>";
+                corps += "<p><a href='http://localhost:8080/GestionProjet/pages/refuserProjet.xhtml?idMembre=" + mbr.getId() + "&idProjet=" + id + "'>Refusser</a></p>";
                 Mailer.send(mbr.getMail(), objet, corps, true);
             } catch (MailException ex) {
                 throw new ProjetException("Impossible d'envoyer un mail à " + mbr.getMail());

@@ -3,20 +3,57 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
+        <script type="text/javascript" src="../js/jquery.js"></script>
+        <script type="text/javascript" src="../js/connexion.js"></script>
+        <script type="text/javascript" src="../js/inscription.js"></script>
+        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <style>
+            .separator
+            {
+                border: 0px;
+                height: 1px;
+                background-color: #E0E0E0;
+            }
+        </style>
     </h:head>
     <h:body>
         <f:view beforePhase="#{mailCtrl.ajoutMembreProjet()}"/>
-        Vous allez etre ajouté au projet #{mailCtrl.projet.nom}
-        <div id="connection">
-            <ui:include src=""/>
-        </div>
-        OU
-        <div id="inscription">
-            <ui:include src=""/>
-        </div>
+        Ajout Membre au projet <br/>
+        <c:choose>
+            <c:when test="#{membreCtrl.authenticated}">
+                Bienvenue #{membreCtrl.membreCourant.nom}<br/>
+                Vous avez été ajouter au projet #{mailCtrl.projet.nom}
+            </c:when>
+            <c:otherwise>
+                Veuillez vous authentifier avant d'etre ajouter au projet #{mailCtrl.projet.nom}
+                <div id="connexion">
+                    <ui:include src="connexion.xhtml"/>
+                </div>
+                OU
+                <div id="inscription">
+                    <ui:include src="../inscription.xhtml"/>
+                </div>
+            </c:otherwise>
+        </c:choose>
+        <!--
+                <c:if test="#{membreCtrl.authenticated}">
+                    Veuillez vous authentifier avant d'etre ajouter au projet #{mailCtrl.projet.nom}
+                    <div id="connexion">
+                        <ui:include src="connexion.xhtml"/>
+                    </div>
+                    OU
+                    <div id="inscription">
+                        <ui:include src="../inscription.xhtml"/>
+                    </div>
+                </c:if>
+                <c:if test="#{membreCtrl.authenticated}">
+                    Bienvenue #{membreCtrl.membreCourant.nom}<br/>
+                    Vous avez été ajouter au projet #{mailCtrl.projet.nom}
+                </c:if>-->
     </h:body>
 </html>
 
