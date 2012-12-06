@@ -22,10 +22,10 @@ public class ParticipeProjet implements Serializable {
     private char accepter;
     @JoinColumn(name="PROJET", referencedColumnName="ID", insertable=false, updatable=false)
     @ManyToOne(optional=false)
-    private Projet projet1;
+    private Projet projet;
     @JoinColumn(name="MEMBRE", referencedColumnName="ID", insertable=false, updatable=false)
     @ManyToOne(optional=false)
-    private Membre membre1;
+    private Membre membre;
 
     public ParticipeProjet() {
     }
@@ -33,8 +33,8 @@ public class ParticipeProjet implements Serializable {
     
     public ParticipeProjet(Membre mbr, Projet prj,boolean accepter) {
         pk= new ParticipeProjetPK(mbr.getId(), prj.getId());
-        membre1= mbr;
-        projet1= prj;
+        membre= mbr;
+        projet= prj;
         setAccepter(accepter);
     }
     
@@ -43,8 +43,9 @@ public class ParticipeProjet implements Serializable {
     }
     
     public Membre getMembre(){
-        return membre1;
+        return membre;
     }
+    
 
     public void setId(ParticipeProjetPK id) {
         this.pk = id;

@@ -23,6 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
 /**
@@ -37,13 +38,14 @@ public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Projet")
+    @TableGenerator(name = "Projet", allocationSize = 1)
     private Long id;
     @Column(nullable = false, unique = true)
     private String nom;
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "projet1")
-    private List<ParticipeProjet> participants;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "projet")
+    private List<ParticipeProjet> participants;   
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projet")
     Collection<Tache> listeTaches;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -67,7 +69,7 @@ public class Projet implements Serializable {
         listeTaches = new ArrayList<Tache>();
         participants = new ArrayList<ParticipeProjet>();
         dateDeb = new Date();
-    }
+    }   
 
     public String getNom() {
         return nom;
