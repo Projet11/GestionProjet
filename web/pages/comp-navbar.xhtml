@@ -10,11 +10,16 @@
 		<div class="navbar navbar-static-top navbar-inverse">
 			<div class="navbar-inner">
 				<a class="brand" href="#">GestionProjet</a>
-				<ul class="nav pull-right">
+
+				<ul class="nav">
 					<li><a href="/GestionProjet">Accueil</a></li>
 					<li><a href="/GestionProjet/pages/connexion.xhtml">Connexion</a></li>
 					<li><a href="/GestionProjet/pages/inscription.xhtml">Inscription</a></li>
 				</ul>
+
+				<div class="pull-right">
+					<ui:include src="stopTimer.xhtml"/>
+				</div>
 			</div>
 		</div>
 	</ui:component>
