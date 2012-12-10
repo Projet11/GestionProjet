@@ -79,14 +79,13 @@
             <div  style="max-height: 250px; overflow: auto">
                 <c:forEach items="#{tacheCtrl.conversation}" var ="detailCommentaire">
                     <blockquote>
-                        <small>Commenté par <strong>#{detailCommentaire.membre}</strong>  <cite title="Source Title">Le #{detailCommentaire.date}</cite></small>
+                        <small>Commentaire de <strong>#{detailCommentaire.membre}</strong>  <cite title="Source Title">Le #{detailCommentaire.date}</cite></small>
                         <p>#{detailCommentaire.corps}</p>
                     </blockquote>
                 </c:forEach>
             </div>
             <hr class="separator" />
-            <div  style="width: 100%">
-
+            <div>
                 <h:form  onsubmit="return validateComment();">
                     <div class="controls" id="divComment"  >
                         <h:inputTextarea id="comment"  value="#{tacheCtrl.commentaireParam}" rows="3"/>
