@@ -7,12 +7,26 @@
 	  xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Inscription</title>
         <script type="text/javascript" src="../js/jquery.js"></script>
         <script type="text/javascript" src="../js/inscription.js"></script>
         <link rel="stylesheet" media="screen" href="../css/bootstrap.min.css"/>
+		
+		<!-- Enable support for HTML5 elements in IE6-IE8 -->
+		<h:outputText escape="false" value='&lt;!--[if lt IE 9]&gt;&lt;script src="../js/html5shiv.js"&gt;&lt;/script&gt;&lt;![endif]--&gt;'/>
+		
+		 <title>Inscription</title>
     </h:head>
     <h:body>
-        <ui:include src="inscription-form.xhtml"/>
+		<ui:include src="comp-navbar.xhtml"/>
+		
+		<div class="container">
+			<div class="row">
+				<div class="span3"></div>
+				<div class="span6">
+					<ui:include src="inscription-form.xhtml"/>
+				</div>
+				<div class="span3"></div>
+			</div>
+		</div>
     </h:body>
 </html>
