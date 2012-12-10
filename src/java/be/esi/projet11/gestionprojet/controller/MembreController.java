@@ -16,151 +16,68 @@ public class MembreController {
     @EJB
     private MembreEJB membreEJB;
     private Membre membreCourant;
-	private String inputLogin;
-	private String inputPassword;
-	private String inputNom;
-	private String inputPrenom;
-	private String inputMail;
+    private String inputNom;
+    private String inputPassword;
+    private boolean identificationEchouee;
 
-	private boolean identificationEchouee;
-	private boolean inscriptionEchouee;
-	private String statusMessage;
-
-	@PostConstruct
-	public void init()
-	{
-		this.setIdentificationEchouee(false);
-		this.setInscriptionEchouee(false);
-		this.setStatusMessage(null);
-	}
-
-	public String getInputLogin()
-	{
-		return inputLogin;
-	}
-
-	public void setInputLogin(String inputLogin)
-	{
-		this.inputLogin = inputLogin;
-	}
-
-	public String getInputPassword()
-	{
-		return inputPassword;
-	}
-
-	public void setInputPassword(String inputPassword)
-	{
-		this.inputPassword = inputPassword;
-	}
-
-	public String getInputNom()
-	{
-		return inputNom;
-	}
-
-	public void setInputNom(String inputNom)
-	{
-		this.inputNom = inputNom;
-	}
-
-	public String getInputPrenom()
-	{
-		return inputPrenom;
-	}
-
-	public void setInputPrenom(String inputPrenom)
-	{
-		this.inputPrenom = inputPrenom;
-	}
-
-	public String getInputMail()
-	{
-		return inputMail;
-	}
-
-	public void setInputMail(String inputMail)
-	{
-		this.inputMail = inputMail;
-	}
-	
-	public boolean isIdentificationEchouee()
-	{
-		return identificationEchouee;
-	}
-
-	public void setIdentificationEchouee(boolean identificationEchouee)
-	{
-		this.identificationEchouee = identificationEchouee;
-	}
-
-	public boolean isInscriptionEchouee()
-	{
-		return inscriptionEchouee;
-	}
-
-	public void setInscriptionEchouee(boolean inscriptionEchouee)
-	{
-		this.inscriptionEchouee = inscriptionEchouee;
-	}
-
-	public String getStatusMessage()
-	{
-		return statusMessage;
-	}
-
-	public void setStatusMessage(String statusMessage)
-	{
-		this.statusMessage = statusMessage;
-	}
-    
-    public boolean isAuthenticated() {
-        return membreCourant != null;
+    @PostConstruct
+    public void init() {
+        this.setIdentificationEchouee(false);
     }
-	
-	public String identifier()
-	{
-		final String NAV_CASE_SUCCESS = "success";
-		final String NAV_CASE_FAILURE = "failure";
 
-		if (!this.isAuthenticated())
-		{
-			try
-			{
-				this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
-				this.setIdentificationEchouee(!this.isAuthenticated());
-			}
-			catch (BusinessException ex)
-			{
-				this.setIdentificationEchouee(true);
-			}
-		}
+    public String getInputNom() {
+        return this.inputNom;
+    }
 
-		return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
-	}
-	
-	public String inscrire()
-	{
-		try
-		{
-			this.membreCourant = this.createUser(inputLogin, inputPassword, inputMail, inputNom, inputPrenom);
-			
-			if (this.membreCourant == null)
-				throw new IllegalStateException("L'inscription a échoué");
-			
-			this.setInscriptionEchouee(false);
-			this.setStatusMessage("Merci. Votre compte a été créé.");
-		}
-		catch (Exception e)
-		{
-			this.setInscriptionEchouee(true);
-			this.setStatusMessage(e.getMessage());
-		}
+    public void setInputNom(String inputNom) {
+        this.inputNom = inputNom;
+    }
 
-		return null;
-	}
-	
-	private Membre createUser(String login, String password, String mail,
+    public String getInputPassword() {
+        return this.inputPassword;
+    }
+
+    public void setInputPassword(String inputPassword) {
+        this.inputPassword = inputPassword;
+    }
+
+    public boolean isIdentificationEchouee() {
+        return identificationEchouee;
+    }
+
+    public void setIdentificationEchouee(boolean identificationEchouee) {
+        this.identificationEchouee = identificationEchouee;
+    }
+
+    public Membre getMembreCourant() {
+        return membreCourant;
+    }
+
+    public void setMembreCourant(Membre membreCourant) {
+        this.membreCourant = membreCourant;
+    }
+
+    public boolean isAuthenticated() {
+        return getMembreCourant() != null;
+    }
+
+    public String identifier() {
+        final String NAV_CASE_SUCCESS = "success";
+        final String NAV_CASE_FAILURE = "failure";
+
+        if (!this.isAuthenticated()) {
+            try {
+                this.membreCourant = this.authenticateUser(this.inputNom, this.inputPassword);
+                this.setIdentificationEchouee(!this.isAuthenticated());
+            } catch (BusinessException ex) {
+                this.setIdentificationEchouee(true);
+            }
+        }
+
+        return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
+    }
+
+    private Membre createUser(String login, String password, String mail,
             String nom, String prenom) throws BusinessException {
         try {
             return membreEJB.addUser(login, password, mail, nom, prenom);
@@ -172,11 +89,11 @@ public class MembreController {
 
     private Membre authenticateUser(String login, String password) throws BusinessException {
         try {
-            membreCourant = membreEJB.getUserByAuthentification(login, password);
-            return membreCourant;
+            setMembreCourant(membreEJB.getUserByAuthentification(login, password));
+            return getMembreCourant();
         } catch (DBException e) {
-            membreCourant = null;
+            setMembreCourant(null);
             throw new BusinessException(e.getMessage());
         }
-    }
+    }    
 }
