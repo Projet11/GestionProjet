@@ -65,12 +65,12 @@ public class MembreController {
         return membreCourant != null;
     }
     
-    public void navigationIsAuthenticated(){
+    public void navigationIsAuthenticated() throws BusinessException{
         if(!isAuthenticated()){
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("pages/connexion.xhtml");
             } catch (IOException ex) {
-                Logger.getLogger(MembreController.class.getName()).log(Level.SEVERE, null, ex);
+                throw new BusinessException("Erreur: la redirection automatique a échoué");
             }
         }
     }
