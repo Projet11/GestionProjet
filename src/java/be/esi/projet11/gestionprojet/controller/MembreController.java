@@ -4,10 +4,14 @@ import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.exception.BusinessException;
 import be.esi.projet11.gestionprojet.exception.DBException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "membreCtrl")
 @SessionScoped
@@ -59,6 +63,16 @@ public class MembreController {
 
     public boolean isAuthenticated() {
         return membreCourant != null;
+    }
+    
+    public void navigationIsAuthenticated(){
+        if(!isAuthenticated()){
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("pages/connexion.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(MembreController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public String identifier() {
