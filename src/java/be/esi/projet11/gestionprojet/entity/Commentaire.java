@@ -5,6 +5,8 @@
 package be.esi.projet11.gestionprojet.entity;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,8 +56,9 @@ public class Commentaire implements Serializable {
         this.setDate(datePosted);
     }
 
-    public Date getDate() {
-        return datePosted;
+    public String getDate() {
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy kk:mm");
+        return df.format(datePosted);
     }
 
     public void setDate(Date datePosted) {

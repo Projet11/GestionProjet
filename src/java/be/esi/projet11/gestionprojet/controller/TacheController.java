@@ -290,7 +290,7 @@ public class TacheController {
                 //A faire qu'une fois pour test;
 //                membreCourantParam = membreCtrl.createUser("fred", "fredo", "fred@gmail.com", "freddy","freud");
                 //A faire parl a suite pour test
-                membreCourantParam = membreCtrl.authenticateUser("fred", "fredo");
+                membreCourantParam = membreCtrl.authenticateUser("Freddy", "Freddo");
                 tacheCourante = tache;
                 nomParam = tache.getNom();
                 descriptionParam = tache.getDescription();

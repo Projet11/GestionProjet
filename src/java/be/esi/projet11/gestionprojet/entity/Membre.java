@@ -188,6 +188,6 @@ public class Membre implements Serializable {
 
     @Override
     public String toString() {
-        return "[" + id + "-" + login + "] " + nom + " " + prenom + " " + mail;
+        return login;
     }
 }
