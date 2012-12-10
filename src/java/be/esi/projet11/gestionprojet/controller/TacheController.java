@@ -4,6 +4,7 @@
  */
 package be.esi.projet11.gestionprojet.controller;
 
+import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
@@ -36,6 +37,8 @@ public class TacheController {
 
     @EJB
     private TacheEJB tacheEJB;
+    @EJB
+    private MembreEJB membreEJB;
 //    @ManagedProperty("#{projetCtrl}")
 //    private ProjetController projetCtrl;
     // Attributs utilisés par le formulaire de création d'une tâche uniquement
@@ -44,7 +47,7 @@ public class TacheController {
     private ImportanceEnum importanceParam;
     private Long revisionParam;
     private Long pourcentageParam;
-    private Collection<Membre> membresSel;
+    private Collection<String> membresSel;
     private Membre membreCourantParam;
     private String commentaireParam;
     private Tache tacheCourante;
@@ -231,15 +234,22 @@ public class TacheController {
         return tacheEJB.getAllTimerLaunched();
     }
 
-    public String inscrireMembresATache() throws BusinessException {
-        for (Membre membre : membresSel) {
-            try {
+    public String inscrireMembresATache() {
+        try {
+            for (String membreId : membresSel) {
+                Membre membre = membreEJB.getById(Long.parseLong(membreId));
                 getTacheCourante().addMembre(membre);
-            } catch (TacheException ex) {
-                throw new BusinessException("Impossible d'inscrire le membre à la tâche : " + ex.getMessage());
             }
+            tacheEJB.saveTache(getTacheCourante());
         }
-        tacheEJB.saveTache(getTacheCourante());
+        catch (TacheException ex) {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("inscrireMembresATache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible d'ajouter un membre à la tâche <br/>" + ex.getMessage(), ""));
+        }
+        catch (BusinessException ex) {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("inscrireMembresATache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible d'ajouter un membre à la tâche <br/>" + ex.getMessage(), ""));
+        }
         return null; // Retour sur la même page
     }
 

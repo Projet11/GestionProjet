@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -286,7 +288,7 @@ public class Tache implements Serializable {
     }
 
     public void addMembre(Membre membre) throws TacheException {
-        if (membre == null) {
+        if (membre == null)
             throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
 
         if (hasMembre(membre))
@@ -388,7 +390,8 @@ public class Tache implements Serializable {
                 try {
                     Mailer.send(unMembre.getMail(), objet, corps);
                 } catch (MailException ex) {
-                    Logger.getLogger(Projet.class.getName()).log(Level.WARNING, "Impossible d'envoyer un mail a " + unMembre.getMail(), ex);
+                    FacesContext ctx = FacesContext.getCurrentInstance();
+                    ctx.addMessage("inscrireMembresATache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible d'envoyer un mail à " + unMembre.getMail() + " <br/>" + ex.getMessage(), ""));
                 }
             }
         }

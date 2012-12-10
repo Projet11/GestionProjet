@@ -10,9 +10,9 @@
     <h:body>
         <ui:composition>
             <h:form>
-                <h:selectManyMenu value="#{tacheCtrl.membresSel}">
+                <h:selectManyListbox class="span5" size="5" value="#{tacheCtrl.membresSel}">
                     <f:selectItems var="membre" itemLabel="#{membre.toString()}" itemValue="#{membre.id}" value="#{projetCtrl.projetCourant.allParticipant}"/>
-                </h:selectManyMenu>
+                </h:selectManyListbox>
                 &nbsp;<h:commandButton class="btn btn-success" action="#{tacheCtrl.inscrireMembresATache}" value="Ajouter"/>
             </h:form>
         </ui:composition>

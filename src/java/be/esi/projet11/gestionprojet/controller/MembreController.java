@@ -95,21 +95,5 @@ public class MembreController {
             setMembreCourant(null);
             throw new BusinessException(e.getMessage());
         }
-    }
-
-    /**
-     * @return the membreCourant
-     */
-    public Membre getMembreCourant() {
-        return membreCourant;
-    }
-
-    /**
-     * @param membreCourant the membreCourant to set
-     */
-    public void setMembreCourant(Membre membreCourant) {
-        this.membreCourant = membreCourant;
-    }
-    
-    
+    }    
 }
