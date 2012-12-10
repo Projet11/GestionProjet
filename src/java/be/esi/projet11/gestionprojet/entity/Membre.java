@@ -188,6 +188,10 @@ public class Membre implements Serializable {
 
     @Override
     public String toString() {
-        return login;
+
+        if (nom == null) // Pas encore inscrit, juste invité à un projet
+            return mail + " (Non inscrit)";
+        else
+            return login;
     }
 }
