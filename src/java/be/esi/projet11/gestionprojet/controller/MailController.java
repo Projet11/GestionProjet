@@ -6,8 +6,10 @@ package be.esi.projet11.gestionprojet.controller;
 
 import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
+import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
+import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.exception.BusinessException;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -32,6 +34,7 @@ public class MailController {
     private MembreController membreCtrl;
     private Membre membre;
     private Projet projet;
+    private Tache tache;
     @EJB
     private ProjetEJB projetEJB;
     @EJB
@@ -76,6 +79,15 @@ public class MailController {
         this.membreCtrl = membreCtrl;
     }
 
+    public Tache getTache() {
+        return tache;
+    }
+
+    public void setTache(Tache tache) {
+        this.tache = tache;
+    }
+
+    
     
     /**
      * Set the value of projet
