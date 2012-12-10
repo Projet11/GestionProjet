@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:f="http://java.sun.com/jsf/core">
+	<ui:component>
+		<h:form id="formInscription" styleClass="form-signin form-horizontal" onsubmit="return onSubmit();">
+			<h2 class="form-signin-heading">Inscription</h2>
+			
+			<hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%;"/>
+
+			<div id="controlNom" class="control-group">
+				<label class="control-label" for="nom">Nom</label>
+				<div class="controls">
+					<h:inputText id="nom" value="#{membreCtrl.inputNom}" onblur="clearErrors()"/>
+				</div>
+			</div>
+
+			<div id="controlPrenom" class="control-group">
+				<label class="control-label" for="prenom">Pr&eacute;nom</label>
+				<div class="controls">
+					<h:inputText id="prenom" value="#{membreCtrl.inputPrenom}" onblur="clearErrors()"/>
+				</div>
+			</div>
+
+			<div id="controlMail" class="control-group">
+				<label class="control-label" for="email">Adresse mail</label>
+				<div class="controls">
+					<h:inputText id="email" value="#{membreCtrl.inputMail}" onblur="clearErrors()"/>
+				</div>
+			</div>
+
+			<div id="controlLogin" class="control-group">
+				<label class="control-label" for="login">Identifiant</label>
+				<div class="controls">
+					<h:inputText id="login" value="#{membreCtrl.inputLogin}" onblur="clearErrors()"/>
+				</div>
+			</div>
+
+			<div id="controlPass1" class="control-group">
+				<label class="control-label" for="mdp">Mot de passe</label>
+				<div class="controls">
+					<h:inputSecret id="mdp" value="#{membreCtrl.inputPassword}" onblur="clearErrors()"/>
+				</div>
+			</div>
+
+			<div id="controlPass2" class="control-group">
+				<label class="control-label" for="mdpconfirm">Mot de passe (confirmation)</label>
+				<div class="controls">
+					<h:inputSecret id="mdpconfirm" onblur="clearErrors()"/>
+				</div>
+			</div>
+
+			<div class="controls">
+				<h:commandButton id="inscription" class="btn btn-primary" value="Valider" action="#{membreCtrl.inscrire()}"/>
+			</div>
+
+			<hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%;"/>
+
+			<div class="help-inline" />
+			<div id="div-status">
+				<h:outputText value='&lt;span class="text-error"&gt;' escape="false" rendered="#{membreCtrl.inscriptionEchouee}"/>
+				<h:outputText value='&lt;span class="text-success"&gt;' escape="false" rendered="#{!membreCtrl.inscriptionEchouee}"/>
+
+				<h:outputText value="#{membreCtrl.statusMessage}"/>
+
+				<h:outputText value='&lt;/span&gt;' escape="false"/>
+			</div>
+		</h:form>
+	</ui:component>
+</html>
