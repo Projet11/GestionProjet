@@ -6,63 +6,68 @@
 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
 	  xmlns:f="http://java.sun.com/jsf/core">
 	<ui:component>
-		<fieldset>
-            <legend>Inscription</legend>
-            <form name="formInscription" method="POST" class="form-horizontal">
-                <div id="errorNom" class="control-group">
-                    <label class="control-label" for="txtNom">Nom</label>
-                    <div class="controls">
-                        <input id="nom" name="txtNom" type="text" onblur="clearErrors()"/>
-                    </div>
-                </div>
+		<h:form id="formInscription" styleClass="form-signin form-horizontal" onsubmit="return onSubmit();">
+			<h2 class="form-signin-heading">Inscription</h2>
+			
+			<hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%;"/>
 
-                <div id="errorPrenom" class="control-group">
-                    <label class="control-label" for="txtPrenom">Pr&eacute;nom</label>
-                    <div class="controls">
-                        <input id="prenom" name="txtPrenom" type="text" onblur="clearErrors()"/>
-                    </div>
-                </div>
+			<div id="controlNom" class="control-group">
+				<label class="control-label" for="nom">Nom</label>
+				<div class="controls">
+					<h:inputText id="nom" value="#{membreCtrl.inputNom}" onblur="clearErrors()"/>
+				</div>
+			</div>
 
-                <div id="errorMail" class="control-group">
-                    <label class="control-label" for="txtMail">Adresse mail</label>
-                    <div class="controls">
-                        <input id="email" name="txtMail" type="text" onblur="clearErrors()"/>
-                    </div>
-                </div>
+			<div id="controlPrenom" class="control-group">
+				<label class="control-label" for="prenom">Pr&eacute;nom</label>
+				<div class="controls">
+					<h:inputText id="prenom" value="#{membreCtrl.inputPrenom}" onblur="clearErrors()"/>
+				</div>
+			</div>
 
-                <div id="errorLogin" class="control-group">
-                    <label class="control-label" for="txtMail">Identifiant</label>
-                    <div class="controls">
-                        <input id="login" name="txtLogin" type="text" onblur="clearErrors()"/>
-                    </div>
-                </div>
+			<div id="controlMail" class="control-group">
+				<label class="control-label" for="email">Adresse mail</label>
+				<div class="controls">
+					<h:inputText id="email" value="#{membreCtrl.inputMail}" onblur="clearErrors()"/>
+				</div>
+			</div>
 
-                <div id="errorPass1" class="control-group">
-                    <label class="control-label" for="txtMail">Mot de passe</label>
-                    <div class="controls">
-                        <input id="mdp" name="txtPass" type="password" onblur="clearErrors()"/>
-                    </div>
-                </div>
+			<div id="controlLogin" class="control-group">
+				<label class="control-label" for="login">Identifiant</label>
+				<div class="controls">
+					<h:inputText id="login" value="#{membreCtrl.inputLogin}" onblur="clearErrors()"/>
+				</div>
+			</div>
 
-                <div id="errorPass2" class="control-group">
-                    <label class="control-label" for="txtMail">Mot de passe (confirmation)</label>
-                    <div class="controls">
-                        <input id="mdpconfirm" name="txtPass2" type="password" onblur="clearErrors()"/>
-                    </div>
-                </div>
+			<div id="controlPass1" class="control-group">
+				<label class="control-label" for="mdp">Mot de passe</label>
+				<div class="controls">
+					<h:inputSecret id="mdp" value="#{membreCtrl.inputPassword}" onblur="clearErrors()"/>
+				</div>
+			</div>
 
-                <div class="controls">
-                    <input id="inscription" class="btn btn-large btn-success" type="button" onclick="on_submit()" value="Valider"/>
-                </div>
+			<div id="controlPass2" class="control-group">
+				<label class="control-label" for="mdpconfirm">Mot de passe (confirmation)</label>
+				<div class="controls">
+					<h:inputSecret id="mdpconfirm" onblur="clearErrors()"/>
+				</div>
+			</div>
 
-                <td colspan="2"><hr/></td>
+			<div class="controls">
+				<h:commandButton id="inscription" class="btn btn-primary" value="Valider" action="#{membreCtrl.inscrire()}"/>
+			</div>
 
-                <td class="help-inline"></td>
+			<hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%;"/>
 
-                <td colspan="2">
-                    <div id="div-status"></div>
-                </td>
-            </form>
-        </fieldset>
+			<div class="help-inline" />
+			<div id="div-status">
+				<h:outputText value='&lt;span class="text-error"&gt;' escape="false" rendered="#{membreCtrl.inscriptionEchouee}"/>
+				<h:outputText value='&lt;span class="text-success"&gt;' escape="false" rendered="#{!membreCtrl.inscriptionEchouee}"/>
+
+				<h:outputText value="#{membreCtrl.statusMessage}"/>
+
+				<h:outputText value='&lt;/span&gt;' escape="false"/>
+			</div>
+		</h:form>
 	</ui:component>
 </html>
