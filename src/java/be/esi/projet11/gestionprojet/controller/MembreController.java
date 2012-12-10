@@ -101,9 +101,6 @@ public class MembreController {
     }
 
     public String identifier() {
-        final String NAV_CASE_SUCCESS = "success";
-        final String NAV_CASE_FAILURE = "failure";
-
         if (!this.isAuthenticated()) {
             try {
                 this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
@@ -113,17 +110,12 @@ public class MembreController {
             }
         }
 
-        return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
+        return this.isAuthenticated() ? "success" : "failure";
     }
 
     public String inscrire() {
         try {
-            this.membreCourant = this.createUser(inputLogin, inputPassword, inputMail, inputNom, inputPrenom);
-
-            if (this.membreCourant == null) {
-                throw new IllegalStateException("L'inscription a échoué");
-            }
-
+            this.membreCourant = this.membreEJB.addUser(inputLogin, inputPassword, inputMail, inputNom, inputPrenom);
             this.setInscriptionEchouee(false);
             this.setStatusMessage("Merci. Votre compte a été créé.");
         } catch (Exception e) {
@@ -132,16 +124,6 @@ public class MembreController {
         }
 
         return null;
-    }
-
-    private Membre createUser(String login, String password, String mail,
-            String nom, String prenom) throws BusinessException {
-        try {
-            return membreEJB.addUser(login, password, mail, nom, prenom);
-        } catch (Exception e) {
-            System.out.println("FacadeException : " + e);
-            throw new BusinessException(e.getMessage());
-        }
     }
 
     private Membre authenticateUser(String login, String password) throws BusinessException {
