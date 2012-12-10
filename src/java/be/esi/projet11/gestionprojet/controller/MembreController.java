@@ -66,13 +66,13 @@ public class MembreController {
     }
     
     public void navigationIsAuthenticated() throws BusinessException{
-        if(!isAuthenticated()){
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("pages/connexion.xhtml");
-            } catch (IOException ex) {
-                throw new BusinessException("Erreur: la redirection automatique a échoué");
-            }
-        }
+//        if(!isAuthenticated()){
+//            try {
+//                FacesContext.getCurrentInstance().getExternalContext().redirect("pages/connexion.xhtml");
+//            } catch (IOException ex) {
+//                throw new BusinessException("Erreur: la redirection automatique a échoué");
+//            }
+//        }
     }
 
     public String identifier() {

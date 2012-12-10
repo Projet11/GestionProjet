@@ -63,8 +63,7 @@ public class Tache implements Serializable {
     private char timerLaunched;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDeb;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date tempsPasseSurTache;
+    private long tempsPasseSurTache;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private Collection<ParticipeTache> membres;
     private char archive;
@@ -248,7 +247,6 @@ public class Tache implements Serializable {
     public void setTimerLaunched() {
         if (isTimerLaunched()) {
             this.timerLaunched = '0';
-            System.out.println("TimerLaunched:"+(new Date().getTime() - dateDeb.getTime()));
             setTempsPasseSurTache(new Date().getTime() - dateDeb.getTime());
         }else{
             this.timerLaunched = '1';
@@ -278,7 +276,7 @@ public class Tache implements Serializable {
     /**
      * @return the tempsPasseSurTache
      */
-    public Date getTempsPasseSurTache() {
+    public long getTempsPasseSurTache() {
         return tempsPasseSurTache;
     }
 
@@ -286,9 +284,7 @@ public class Tache implements Serializable {
      * @param tempsPasseSurTache the tempsPasseSurTache to set
      */
     public void setTempsPasseSurTache(long tempsEnPlus) {
-        System.out.println(new Date(this.tempsPasseSurTache.getTime() + tempsEnPlus));
-        this.tempsPasseSurTache.setTime(this.tempsPasseSurTache.getTime() + tempsEnPlus);
-        System.out.println(tempsPasseSurTache);
+        this.tempsPasseSurTache+= tempsEnPlus;
     }
 
     public void addMembre(Membre membre) throws TacheException {
