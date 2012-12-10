@@ -16,151 +16,125 @@ public class MembreController {
     @EJB
     private MembreEJB membreEJB;
     private Membre membreCourant;
-	private String inputLogin;
-	private String inputPassword;
-	private String inputNom;
-	private String inputPrenom;
-	private String inputMail;
+    private String inputLogin;
+    private String inputPassword;
+    private String inputNom;
+    private String inputPrenom;
+    private String inputMail;
+    private boolean identificationEchouee;
+    private boolean inscriptionEchouee;
+    private String statusMessage;
 
-	private boolean identificationEchouee;
-	private boolean inscriptionEchouee;
-	private String statusMessage;
+    @PostConstruct
+    public void init() {
+        this.setIdentificationEchouee(false);
+        this.setInscriptionEchouee(false);
+        this.setStatusMessage(null);
+    }
 
-	@PostConstruct
-	public void init()
-	{
-		this.setIdentificationEchouee(false);
-		this.setInscriptionEchouee(false);
-		this.setStatusMessage(null);
-	}
+    public String getInputLogin() {
+        return inputLogin;
+    }
 
-	public String getInputLogin()
-	{
-		return inputLogin;
-	}
+    public void setInputLogin(String inputLogin) {
+        this.inputLogin = inputLogin;
+    }
 
-	public void setInputLogin(String inputLogin)
-	{
-		this.inputLogin = inputLogin;
-	}
+    public String getInputPassword() {
+        return inputPassword;
+    }
 
-	public String getInputPassword()
-	{
-		return inputPassword;
-	}
+    public void setInputPassword(String inputPassword) {
+        this.inputPassword = inputPassword;
+    }
 
-	public void setInputPassword(String inputPassword)
-	{
-		this.inputPassword = inputPassword;
-	}
+    public String getInputNom() {
+        return inputNom;
+    }
 
-	public String getInputNom()
-	{
-		return inputNom;
-	}
+    public void setInputNom(String inputNom) {
+        this.inputNom = inputNom;
+    }
 
-	public void setInputNom(String inputNom)
-	{
-		this.inputNom = inputNom;
-	}
+    public String getInputPrenom() {
+        return inputPrenom;
+    }
 
-	public String getInputPrenom()
-	{
-		return inputPrenom;
-	}
+    public void setInputPrenom(String inputPrenom) {
+        this.inputPrenom = inputPrenom;
+    }
 
-	public void setInputPrenom(String inputPrenom)
-	{
-		this.inputPrenom = inputPrenom;
-	}
+    public String getInputMail() {
+        return inputMail;
+    }
 
-	public String getInputMail()
-	{
-		return inputMail;
-	}
+    public void setInputMail(String inputMail) {
+        this.inputMail = inputMail;
+    }
 
-	public void setInputMail(String inputMail)
-	{
-		this.inputMail = inputMail;
-	}
-	
-	public boolean isIdentificationEchouee()
-	{
-		return identificationEchouee;
-	}
+    public boolean isIdentificationEchouee() {
+        return identificationEchouee;
+    }
 
-	public void setIdentificationEchouee(boolean identificationEchouee)
-	{
-		this.identificationEchouee = identificationEchouee;
-	}
+    public void setIdentificationEchouee(boolean identificationEchouee) {
+        this.identificationEchouee = identificationEchouee;
+    }
 
-	public boolean isInscriptionEchouee()
-	{
-		return inscriptionEchouee;
-	}
+    public boolean isInscriptionEchouee() {
+        return inscriptionEchouee;
+    }
 
-	public void setInscriptionEchouee(boolean inscriptionEchouee)
-	{
-		this.inscriptionEchouee = inscriptionEchouee;
-	}
+    public void setInscriptionEchouee(boolean inscriptionEchouee) {
+        this.inscriptionEchouee = inscriptionEchouee;
+    }
 
-	public String getStatusMessage()
-	{
-		return statusMessage;
-	}
+    public String getStatusMessage() {
+        return statusMessage;
+    }
 
-	public void setStatusMessage(String statusMessage)
-	{
-		this.statusMessage = statusMessage;
-	}
-    
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
+
     public boolean isAuthenticated() {
         return membreCourant != null;
     }
-	
-	public String identifier()
-	{
-		final String NAV_CASE_SUCCESS = "success";
-		final String NAV_CASE_FAILURE = "failure";
 
-		if (!this.isAuthenticated())
-		{
-			try
-			{
-				this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
-				this.setIdentificationEchouee(!this.isAuthenticated());
-			}
-			catch (BusinessException ex)
-			{
-				this.setIdentificationEchouee(true);
-			}
-		}
+    public String identifier() {
+        final String NAV_CASE_SUCCESS = "success";
+        final String NAV_CASE_FAILURE = "failure";
 
-		return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
-	}
-	
-	public String inscrire()
-	{
-		try
-		{
-			this.membreCourant = this.createUser(inputLogin, inputPassword, inputMail, inputNom, inputPrenom);
-			
-			if (this.membreCourant == null)
-				throw new IllegalStateException("L'inscription a échoué");
-			
-			this.setInscriptionEchouee(false);
-			this.setStatusMessage("Merci. Votre compte a été créé.");
-		}
-		catch (Exception e)
-		{
-			this.setInscriptionEchouee(true);
-			this.setStatusMessage(e.getMessage());
-		}
+        if (!this.isAuthenticated()) {
+            try {
+                this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
+                this.setIdentificationEchouee(!this.isAuthenticated());
+            } catch (BusinessException ex) {
+                this.setIdentificationEchouee(true);
+            }
+        }
 
-		return null;
-	}
-	
-	private Membre createUser(String login, String password, String mail,
+        return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
+    }
+
+    public String inscrire() {
+        try {
+            this.membreCourant = this.createUser(inputLogin, inputPassword, inputMail, inputNom, inputPrenom);
+
+            if (this.membreCourant == null) {
+                throw new IllegalStateException("L'inscription a échoué");
+            }
+
+            this.setInscriptionEchouee(false);
+            this.setStatusMessage("Merci. Votre compte a été créé.");
+        } catch (Exception e) {
+            this.setInscriptionEchouee(true);
+            this.setStatusMessage(e.getMessage());
+        }
+
+        return null;
+    }
+
+    private Membre createUser(String login, String password, String mail,
             String nom, String prenom) throws BusinessException {
         try {
             return membreEJB.addUser(login, password, mail, nom, prenom);
