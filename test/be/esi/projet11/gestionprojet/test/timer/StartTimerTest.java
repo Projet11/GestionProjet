@@ -65,7 +65,7 @@ public class StartTimerTest {
     public void TestLancerTimer1() throws DBException {
         Projet projet = new Projet(0l, "projet1");
         Tache tache = tacheEJB.creerTache("tache1", "   ", ImportanceEnum.IMPORTANT,projet);
-        tache.setTimerLaunched(true);
+        tache.setTimerLaunched();
         tacheEJB.saveTache(tache);
         Tache tachePersistee = tacheEJB.getTache(tache.getId());
         assertTrue(tachePersistee.isTimerLaunched());
@@ -84,7 +84,7 @@ public class StartTimerTest {
     public void TestLancerTimer3() throws DBException {
         Projet projet = new Projet(0l, "projet3");
         Tache tache = tacheEJB.creerTache("tache3", "   ", ImportanceEnum.IMPORTANT,projet);
-        tache.setTimerLaunched(true);
+        tache.setTimerLaunched();
         Date debutTimer = new Date();
         debutTimer.setTime(debutTimer.getTime() + 5000l);
         Date curr = new Date();
@@ -100,7 +100,7 @@ public class StartTimerTest {
     public void TestLancerTimer4() throws DBException {
         Projet projet = new Projet(0l, "projet4");
         Tache tache = tacheEJB.creerTache("tache4", "   ", ImportanceEnum.IMPORTANT,projet);
-        tache.setTimerLaunched(true);
+        tache.setTimerLaunched();
         Date debutTimer = new Date();
         debutTimer.setTime(debutTimer.getTime() + 3000l);
         Date curr = new Date();

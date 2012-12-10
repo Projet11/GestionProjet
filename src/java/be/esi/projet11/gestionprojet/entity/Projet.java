@@ -232,7 +232,7 @@ public class Projet implements Serializable {
     }
     
     public String getInformations(){
-        DateFormat df=new SimpleDateFormat("dd MMM yyyy");
+        DateFormat df=new SimpleDateFormat("dd MMM yyyy ");
         return description+" <br/>Créé Le "+df.format(dateDeb);
     }
 }

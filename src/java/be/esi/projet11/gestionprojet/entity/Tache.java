@@ -61,9 +61,9 @@ public class Tache implements Serializable {
     private Byte pourcentage;
     private Long revision;
     private char timerLaunched;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDeb;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date tempsPasseSurTache;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private Collection<ParticipeTache> membres;
@@ -223,7 +223,7 @@ public class Tache implements Serializable {
         if (revision != null && revision < 1L) {
             throw new TacheException("Le numéro de révision doit être strictement positif");
         }
-        if(revision == null){
+        if (revision == null) {
             throw new TacheException("La revision ne peut etre null");
         }
         this.revision = revision;
@@ -245,17 +245,21 @@ public class Tache implements Serializable {
     /**
      * @param timerLaunched the timerLaunched to set
      */
-    public void setTimerLaunched(boolean timerLaunched) {
-        this.timerLaunched = (timerLaunched ? '1' : '0');
-        setDateDeb(new Date());
+    public void setTimerLaunched() {
+        if (isTimerLaunched()) {
+            this.timerLaunched = '0';
+            System.out.println("TimerLaunched:"+(new Date().getTime() - dateDeb.getTime()));
+            setTempsPasseSurTache(new Date().getTime() - dateDeb.getTime());
+        }else{
+            this.timerLaunched = '1';
+            dateDeb=new Date();
+        }
     }
 
     public Time getTimer() {
         Date currDate = new Date();
         return new Time(currDate.getTime() - getDateDeb().getTime());
     }
-    
-
 
     /**
      * @return the dateDeb
@@ -281,8 +285,10 @@ public class Tache implements Serializable {
     /**
      * @param tempsPasseSurTache the tempsPasseSurTache to set
      */
-    public void setTempsPasseSurTache(Date tempsPasseSurTache) {
-        this.tempsPasseSurTache = tempsPasseSurTache;
+    public void setTempsPasseSurTache(long tempsEnPlus) {
+        System.out.println(new Date(this.tempsPasseSurTache.getTime() + tempsEnPlus));
+        this.tempsPasseSurTache.setTime(this.tempsPasseSurTache.getTime() + tempsEnPlus);
+        System.out.println(tempsPasseSurTache);
     }
 
     public void addMembre(Membre membre) throws TacheException {
@@ -292,7 +298,7 @@ public class Tache implements Serializable {
         if (hasMembre(membre)) {
             return;
         }
-        
+
         membres.add(new ParticipeTache(this, membre));
         String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // TODO: Lorsque le projet sera implémenté
         String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // TODO: Lorsque le projet sera implémenté
@@ -306,7 +312,7 @@ public class Tache implements Serializable {
             throw new TacheException("Impossible d'envoyer un mail à " + membre.getMail());
         }
     }
-    
+
     public boolean hasMembre(Membre membre) {
         if (this.getId() == null) // Si un tâche n'a pas encore été persistée, elle n'a pas de membres
         {
@@ -318,7 +324,6 @@ public class Tache implements Serializable {
     public Collection<ParticipeTache> getParticipations() {
         return membres;
     }
-
 
     public int getNbMembres() {
         return membres.size();
@@ -348,9 +353,14 @@ public class Tache implements Serializable {
         return new Projet();
 //        return projet; // TODO
     }
-    
-    public String getDate(){
+
+    public String getDate() {
         SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
         return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(dateDeb);
+    }
+
+    public String getInformations() {
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy kk:mm");
+        return "" + df.format(dateDeb);
     }
 }
