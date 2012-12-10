@@ -18,8 +18,6 @@ import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -87,8 +85,6 @@ public class TacheController {
         this.projetCourant = projetCourant;
     }
     private Projet projet;
-
-
 
     public void setCreationImportance(ImportanceEnum creationImportance) {
         this.creationImportance = creationImportance;
@@ -262,12 +258,10 @@ public class TacheController {
                 getTacheCourante().addMembre(membre);
             }
             tacheEJB.saveTache(getTacheCourante());
-        }
-        catch (TacheException ex) {
+        } catch (TacheException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("inscrireMembresATache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible d'ajouter un membre à la tâche <br/>" + ex.getMessage(), ""));
-        }
-        catch (BusinessException ex) {
+        } catch (BusinessException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("inscrireMembresATache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible d'ajouter un membre à la tâche <br/>" + ex.getMessage(), ""));
         }
@@ -297,15 +291,16 @@ public class TacheController {
         }
     }
 
-    public String modifierTache(Tache tache) {
+    public String modifierTache(Tache tache) throws BusinessException {
         if (tache != null) {
-                tacheCourante = tache;
-                nomParam = tache.getNom();
-                descriptionParam = tache.getDescription();
-                importanceParam = tache.getImportance();
-                revisionParam = tache.getSVNRevision();
-                pourcentageParam = tache.getPourcentage().longValue();
-                return "modificationTache";
+            membreCourantParam = membreCtrl.authenticateUser("Freddy", "Freddo");
+            tacheCourante = tache;
+            nomParam = tache.getNom();
+            descriptionParam = tache.getDescription();
+            importanceParam = tache.getImportance();
+            revisionParam = tache.getSVNRevision();
+            pourcentageParam = tache.getPourcentage().longValue();
+            return "modificationTache";
 
         }
         return null;
@@ -377,19 +372,19 @@ public class TacheController {
     }
 
     public String fenetreCreeTache() {
-        if (projetCourant !=null ) {
+        if (projetCourant != null) {
             return "creeTache";
         } else {
             return null;
         }
     }
-    
+
     public boolean isMembreInCurrentTache(Long membreId) {
         Membre membre = membreEJB.getById(membreId);
-        if (membre != null)
+        if (membre != null) {
             return tacheCourante.hasMembre(membre);
-        else
+        } else {
             return false;
+        }
     }
-    
 }

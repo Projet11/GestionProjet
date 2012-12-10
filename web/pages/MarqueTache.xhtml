@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <script type="text/javascript" src="/GestionProjet/js/jquery.js"></script>
         <script type ="text/javascript" src="/GestionProjet/js/verificationModificationTache.js"></script>
@@ -21,7 +22,9 @@
         <title>Marquage d'une tache</title>
     </h:head>
     <h:body>
-        <div class="hero-unit">
+        <ui:include src="comp-navbar.xhtml"/>
+
+        <div class="container-fluid">
 
             <legend>#{tacheCtrl.nomParam}</legend>
 
@@ -73,33 +76,28 @@
             </h:form>
             <hr class="separator"/>
 
-            <p:dataTable value="#{tacheCtrl.conversation}" var ="detailCommentaire" style="overflow: auto; height: 250px ;width: 1150px" >
+            <div  style="max-height: 250px; overflow: auto">
+                <c:forEach items="#{tacheCtrl.conversation}" var ="detailCommentaire">
+                    <blockquote>
+                        <small>Commenté par <strong>#{detailCommentaire.membre}</strong>  <cite title="Source Title">Le #{detailCommentaire.date}</cite></small>
+                        <p>#{detailCommentaire.corps}</p>
+                    </blockquote>
+                </c:forEach>
+            </div>
+            <hr class="separator" />
+            <div  style="width: 100%">
 
-                <p:column  >     
-                    <f:facet name="header">Membre :</f:facet>
-                    <h:outputText value="#{detailCommentaire.membre}"/>
-                </p:column>
-                <p:column >    
-                    <f:facet name="header">Commentaire :</f:facet>
-                    <h:outputText value="#{detailCommentaire.corps}"/>
-                </p:column>
-                <p:column >     
-                    <f:facet name="header">Date :</f:facet>
-                    <h:outputText value="#{detailCommentaire.date}"/>
-                </p:column>
-            </p:dataTable>
-
-            <hr class="separator"/>
-            <h:form class="form-horizontal" onsubmit="return validateComment();">
-                <div class="controls" id="divComment" >
-                    <h:inputTextarea id="comment"  value="#{tacheCtrl.commentaireParam}" rows="3"/>
-                </div>
-                <br/>
-                <div class="controls">
-                    <h:commandButton class="btn btn-success" action ="#{tacheCtrl.ajouterCommentaire()}" value="Ajouter le commentaire"/>
-                </div>
-                <span class="help-inline" id="ErrorComment"></span>
-            </h:form>
+                <h:form  onsubmit="return validateComment();">
+                    <div class="controls" id="divComment"  >
+                        <h:inputTextarea id="comment"  value="#{tacheCtrl.commentaireParam}" rows="3"/>
+                    </div>
+                    <br/>
+                    <div class="controls">
+                        <h:commandButton class="btn btn-success" action ="#{tacheCtrl.ajouterCommentaire()}" value="Ajouter le commentaire"/>
+                    </div>
+                    <span class="help-inline" id="ErrorComment"></span>
+                </h:form>
+            </div>
         </div>
 
     </h:body>

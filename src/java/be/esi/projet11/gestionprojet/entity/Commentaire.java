@@ -57,7 +57,7 @@ public class Commentaire implements Serializable {
     }
 
     public String getDate() {
-        DateFormat df = new SimpleDateFormat("dd MMM yyyy kk:mm");
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy à kk:mm");
         return df.format(datePosted);
     }
 
