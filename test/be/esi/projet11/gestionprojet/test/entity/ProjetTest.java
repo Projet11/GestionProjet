@@ -7,6 +7,8 @@ package be.esi.projet11.gestionprojet.test.entity;
 import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
+import be.esi.projet11.gestionprojet.exception.DBException;
+import be.esi.projet11.gestionprojet.exception.ProjetException;
 import java.util.HashMap;
 import javax.ejb.EJBException;
 import javax.ejb.embeddable.EJBContainer;
@@ -53,7 +55,7 @@ public class ProjetTest {
     }
     
     @Test
-    public void testAjoutProjetNonAccepter(){
+    public void testAjoutProjetNonAccepter() throws ProjetException{
         Projet projet = new Projet();
         Membre mbr = new Membre("truc@machin.be");
         projet.setId(1l);
@@ -61,8 +63,8 @@ public class ProjetTest {
         projet.ajouterMembre(mbr);
         assertFalse(projet.getParticipantAcceptes().contains(mbr));
     }
-    @Test
-    public void testAjoutProjetMembreSansMail(){
+    @Test (expected = ProjetException.class)
+    public void testAjoutProjetMembreSansMail() throws ProjetException{
         Projet projet = new Projet();
         Membre mbr = new Membre();
         projet.setId(1l);
@@ -72,7 +74,7 @@ public class ProjetTest {
         assertFalse(projet.getParticipantAcceptes().contains(mbr));
     }
     @Test
-    public void testAjoutProjetAccepter(){
+    public void testAjoutProjetAccepter() throws ProjetException{
         Projet projet = new Projet();
         Membre mbr = new Membre("truc@machin.be");
         projet.setId(1l);
@@ -82,7 +84,7 @@ public class ProjetTest {
         assertTrue(projet.getParticipantAcceptes().contains(mbr));
     }
     @Test
-    public void testAjoutProjetMembreDejaPresent(){
+    public void testAjoutProjetMembreDejaPresent() throws ProjetException{
         Projet projet = new Projet();
         Membre mbr = new Membre("truc@machin.be");
         projet.setId(1l);
@@ -94,7 +96,7 @@ public class ProjetTest {
     }
     
     @Test
-    public void testAccepterMembreDejaAccepter(){
+    public void testAccepterMembreDejaAccepter() throws ProjetException{
         Projet projet = new Projet();
         Membre mbr = new Membre("truc@machin.be");
         projet.setId(1l);
@@ -128,7 +130,7 @@ public class ProjetTest {
     }
     
     @Test (expected = EJBException.class)
-    public void testCreerProjetAvecNomDejaExistant(){
+    public void testCreerProjetAvecNomDejaExistant() throws DBException{
         instanceProjet.creerProjet("Projet 1", null);
         instanceProjet.creerProjet("Projet 1", null);    
     }

@@ -10,12 +10,12 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +28,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
 /**
@@ -43,15 +42,14 @@ import javax.persistence.Temporal;
     @NamedQuery(name = "Tache.findTachesArchivees", query = "SELECT t FROM Tache t WHERE t.archive = '1'"),
     @NamedQuery(name = "Tache.findTachesNonArchivees", query = "SELECT t FROM Tache t WHERE t.archive = '0'"),
     @NamedQuery(name = "Tache.findTachesByProjet", query = "SELECT t FROM Tache t WHERE t.projet = :projet"),
-    @NamedQuery(name = "Tache.findTachesArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '1' AND t.projet = :projet"),             
+    @NamedQuery(name = "Tache.findTachesArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '1' AND t.projet = :projet"),
     @NamedQuery(name = "Tache.findTachesNonArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '0' AND t.projet = :projet"),
     @NamedQuery(name = "Tache.findTimerLaunched", query = "Select t FROM Tache t where t.timerLaunched = '1'")})
 public class Tache implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Tache")
-    @TableGenerator(name = "Tache", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true, nullable = false)
     private String nom;
@@ -72,13 +70,24 @@ public class Tache implements Serializable {
     private char archive;
     @JoinColumn(name = "PROJET", referencedColumnName = "ID")
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    private Projet projet;
-    
+    private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
+    private List<Commentaire> conversation;
+
+    public List<Commentaire> getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(List<Commentaire> conversation) {
+        this.conversation = conversation;
+    }
+
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");
         this.timerLaunched = '0';
         membres = new ArrayList<ParticipeTache>();
         projet = new Projet();
+        conversation = new ArrayList<Commentaire>();
     }
 
     public Tache(String nom, String description) throws TacheException {
@@ -91,6 +100,7 @@ public class Tache implements Serializable {
         this.importance = ImportanceEnum.NORMALE;
         this.pourcentage = 0;
         this.revision = null;
+        conversation = new ArrayList<Commentaire>();
         membres = new ArrayList<ParticipeTache>();
         projet = new Projet();
     }
@@ -213,9 +223,8 @@ public class Tache implements Serializable {
         if (revision != null && revision < 1L) {
             throw new TacheException("Le numéro de révision doit être strictement positif");
         }
-        if (revision == null && this.isFinie()) {
-            throw new TacheException("On ne peut assigner null à une revision quand la tache est finie");
-
+        if(revision == null){
+            throw new TacheException("La revision ne peut etre null");
         }
         this.revision = revision;
     }
@@ -240,11 +249,13 @@ public class Tache implements Serializable {
         this.timerLaunched = (timerLaunched ? '1' : '0');
         setDateDeb(new Date());
     }
-    
+
     public Time getTimer() {
         Date currDate = new Date();
         return new Time(currDate.getTime() - getDateDeb().getTime());
     }
+    
+
 
     /**
      * @return the dateDeb
@@ -274,8 +285,8 @@ public class Tache implements Serializable {
         this.tempsPasseSurTache = tempsPasseSurTache;
     }
 
-    public void addMembre(Membre membre) {
-        if (membre == null)
+    public void addMembre(Membre membre) throws TacheException {
+        if (membre == null) {
             throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
 
         if (hasMembre(membre))
@@ -291,19 +302,22 @@ public class Tache implements Serializable {
         try {
             Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps, true);
         } catch (MailException ex) {
-            Logger.getLogger(Tache.class.getName()).log(Level.SEVERE, null, ex); // FIXME
+            throw new TacheException("Impossible d'envoyer un mail à " + membre.getMail());
         }
     }
-
+    
     public boolean hasMembre(Membre membre) {
         if (this.getId() == null) // Si un tâche n'a pas encore été persistée, elle n'a pas de membres
+        {
             return false;
+        }
         return membres.contains(new ParticipeTache(this, membre));
     }
-    
+
     public Collection<ParticipeTache> getParticipations() {
         return membres;
     }
+
 
     public int getNbMembres() {
         return membres.size();
@@ -378,5 +392,10 @@ public class Tache implements Serializable {
                 }
             }
         }
+    }
+    
+    public String getDate(){
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(dateDeb);
     }
 }

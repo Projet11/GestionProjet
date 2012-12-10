@@ -3,11 +3,12 @@
   <persistence-unit name="GestionProjetPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>GestionProjetDB</jta-data-source>
+    <class>be.esi.projet11.gestionprojet.entity.Tache</class>
     <class>be.esi.projet11.gestionprojet.entity.Membre</class>
     <class>be.esi.projet11.gestionprojet.entity.ParticipeTache</class>
     <class>be.esi.projet11.gestionprojet.entity.Projet</class>
     <class>be.esi.projet11.gestionprojet.entity.ParticipeProjet</class>
-    <class>be.esi.projet11.gestionprojet.entity.Tache</class>
+    <class>be.esi.projet11.gestionprojet.entity.Commentaire</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.ddl-generation" value="create-tables"/>

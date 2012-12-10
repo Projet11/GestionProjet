@@ -8,6 +8,7 @@ import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.exception.DBException;
 import be.esi.projet11.gestionprojet.exception.MailException;
+import be.esi.projet11.gestionprojet.exception.ProjetException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.util.Collection;
 import java.util.Set;
@@ -132,7 +133,7 @@ public class MembreEJB {
         return em.find(Membre.class, mbrId);
     }
 
-    public void ajoutMembreProjet(String email, Projet projet) {
+    public void ajoutMembreProjet(String email, Projet projet) throws DBException{
         if (email == null || email.equals("")) {
             return;
         }
@@ -141,7 +142,11 @@ public class MembreEJB {
             mbr = new Membre(email);
             em.persist(mbr);
         }
-        projet.ajouterMembre(mbr);
+        try {
+            projet.ajouterMembre(mbr);
+        } catch (ProjetException ex) {
+           throw new DBException("Ajout du membre au projet impossible : "+ex.getMessage());
+        }
         em.merge(projet);
     }
 

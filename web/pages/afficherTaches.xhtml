@@ -3,54 +3,65 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:p="http://primefaces.org/ui">
+
     <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
-        <script type ="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-        <script type ="text/javascript" src="../js/bootstrap.min.js"></script>
+        <link href="/GestionProjet/css/GestionProjetCSS.css" rel="stylesheet" media="screen"></link>
         <title>Afficher Taches</title>
     </h:head>
     <h:body>
         <h:form>
-            <div class="form-inline">
-                <div class="span8">
-                    <h:selectOneRadio value="#{tacheCtrl.archive}">
-                        <f:selectItem itemValue="toutes" itemLabel="Toutes" /> 
-                        <f:selectItem itemValue="archivees" itemLabel="Archivées"/>
-                        <f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>             
-                    </h:selectOneRadio>
-                </div>
-                <div class="span2">
-                    <h:commandButton class="btn" action="#{tacheCtrl.affichageTaches()}" value="Choisir"/> 
-                </div>
-                <div class="span2">
-                    <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
-                </div>
+            <div class="pull-left">
+                <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
+            </div> 
+            <div class="pull-right">
+                <table cellpadding="5" style="margin-bottom:5px">
+                    <tbody>
+                        <p:selectOneRadio value="#{tacheCtrl.archive}" id="selection">
+                            <f:selectItem itemValue="toutes" itemLabel="Toutes"/> 
+                            <f:selectItem itemValue="archivees" itemLabel="Archivées"/>
+                            <f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>     
+                            <f:ajax event="change" listener="#{tacheCtrl.affichageTaches()}" execute="selection" render="resultat"/> 
+                        </p:selectOneRadio>
+                    </tbody>
+                </table>
             </div>
-        </h:form>     
 
-        <table class="table"> 
-            <tr>
-                <td>Archivée</td>
-                <td>Nom</td>
-                <td>Pourcentage</td>
-                <td>Action</td>
-            </tr>
-            <c:forEach var="tache" items="#{tacheCtrl.taches}">
-                <h:form>
-                    <tr class="#{tache.importance.balise}">
-                        <td>
-                            <h:selectBooleanCheckbox disabled="true" value="#{tache.archive}"/> </td>
-                        <td><h:outputText value="#{tache.nom}"/></td>
-                        <td><h:outputText value="#{tache.pourcentage} %"/></td>
-                        <td>
-                            <h:commandButton class="btn" action="#{tacheEJB.modifierTache(tache)}" value="Modifier"/>
-                            <h:commandButton class="btn" action="#{tacheEJB.startTimer(tache)}" value="Démarrer le timer"/>
-                        </td> </tr>    
-                </h:form>
-            </c:forEach>  
-        </table>
+            <p style="white-space:pre-wrap;width:0px"> </p> 
+
+            <p:dataTable styleClass="table" id="resultat" var="item" value="#{tacheCtrl.taches}" rowStyleClass="#{item.importance.balise}">
+                <p:column style="text-align:center;">
+                    <f:facet name="header">
+                        <h:outputText value ="Archivée"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox disabled="true" value="#{item.archive}"/>
+                </p:column>
+                <p:column style="text-align:center;">
+                    <f:facet name="header">
+                        <h:outputText value ="Nom"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nom}"/>
+                </p:column>
+                <p:column style="text-align:center;">
+                    <f:facet name="header">
+                        <h:outputText value ="Progression"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pourcentage} %"/>
+                </p:column>
+                <p:column style="text-align:center;">
+                    <f:facet name="header">
+                        <h:outputText value ="Action"/>
+                    </f:facet>
+                    <div class="controls">
+                        <div class="pull-left">
+                            <h:commandButton styleClass="btn" action="#{tacheCtrl.modifierTache(item)}" value="Modifier"/>
+                        </div>
+                        <div class="span2">
+                            <h:commandButton styleClass="btn"  action="#{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
+                        </div>
+                    </div>
+                </p:column>
+            </p:dataTable>
+        </h:form>     
     </h:body>
 </html>
-

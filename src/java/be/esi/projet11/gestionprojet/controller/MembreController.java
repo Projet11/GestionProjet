@@ -16,72 +16,68 @@ public class MembreController {
     @EJB
     private MembreEJB membreEJB;
     private Membre membreCourant;
-	private String inputNom;
-	private String inputPassword;
-	private boolean identificationEchouee;
+    private String inputNom;
+    private String inputPassword;
+    private boolean identificationEchouee;
 
-	@PostConstruct
-	public void init()
-	{
-		this.setIdentificationEchouee(false);
-	}
-	
-	public String getInputNom()
-	{
-		return this.inputNom;
-	}
+    @PostConstruct
+    public void init() {
+        this.setIdentificationEchouee(false);
+    }
 
-	public void setInputNom(String inputNom)
-	{
-		this.inputNom = inputNom;
-	}
+    public String getInputNom() {
+        return this.inputNom;
+    }
 
-	public String getInputPassword()
-	{
-		return this.inputPassword;
-	}
+    public void setInputNom(String inputNom) {
+        this.inputNom = inputNom;
+    }
 
-	public void setInputPassword(String inputPassword)
-	{
-		this.inputPassword = inputPassword;
-	}
-	
-	public boolean isIdentificationEchouee()
-	{
-		return identificationEchouee;
-	}
+    public String getInputPassword() {
+        return this.inputPassword;
+    }
 
-	public void setIdentificationEchouee(boolean identificationEchouee)
-	{
-		this.identificationEchouee = identificationEchouee;
-	}
-    
+    public void setInputPassword(String inputPassword) {
+        this.inputPassword = inputPassword;
+    }
+
+    public boolean isIdentificationEchouee() {
+        return identificationEchouee;
+    }
+
+    public void setIdentificationEchouee(boolean identificationEchouee) {
+        this.identificationEchouee = identificationEchouee;
+    }
+
+    public Membre getMembreCourant() {
+        return membreCourant;
+    }
+
+    public void setMembreCourant(Membre membreCourant) {
+        this.membreCourant = membreCourant;
+    }
+
     public boolean isAuthenticated() {
         return getMembreCourant() != null;
     }
-	
-	public String identifier()
-	{
-		final String NAV_CASE_SUCCESS = "success";
-		final String NAV_CASE_FAILURE = "failure";
 
-		if (!this.isAuthenticated())
-		{
-			try
-			{
-				this.setMembreCourant(this.authenticateUser(this.inputNom, this.inputPassword));
-				this.setIdentificationEchouee(!this.isAuthenticated());
-			}
-			catch (BusinessException ex)
-			{
-				this.setIdentificationEchouee(true);
-			}
-		}
+    public String identifier() {
+        final String NAV_CASE_SUCCESS = "success";
+        final String NAV_CASE_FAILURE = "failure";
 
-		return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
-	}
-	
-	private Membre createUser(String login, String password, String mail,
+        if (!this.isAuthenticated()) {
+            try {
+                this.membreCourant = this.authenticateUser(this.inputNom, this.inputPassword);
+                this.setIdentificationEchouee(!this.isAuthenticated());
+            } catch (BusinessException ex) {
+                this.setIdentificationEchouee(true);
+            }
+        }
+
+        return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
+    }
+
+    private Membre createUser(String login, String password, String mail,
             String nom, String prenom) throws BusinessException {
         try {
             return membreEJB.addUser(login, password, mail, nom, prenom);
