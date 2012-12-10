@@ -21,6 +21,7 @@
         </style>
     </h:head>
     <h:body>
+        <ui:include src="comp-navbar.xhtml"/>
         <f:view beforePhase="#{mailCtrl.ajoutMembreProjet()}"/>
         Ajout Membre au projet <br/>
         <c:choose>
@@ -31,11 +32,11 @@
             <c:otherwise>
                 Veuillez vous authentifier avant d'etre ajouter au projet #{mailCtrl.projet.nom}
                 <div id="connexion">
-                    <ui:include src="connexion.xhtml"/>
+                    <ui:include src="connexion-form.xhtml"/>
                 </div>
                 OU
                 <div id="inscription">
-                    <ui:include src="../inscription.xhtml"/>
+                    <ui:include src="inscription-form.xhtml"/>
                 </div>
             </c:otherwise>
         </c:choose>

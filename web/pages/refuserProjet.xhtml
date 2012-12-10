@@ -2,13 +2,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
+        <script type ="text/javascript" src ="/GestionProjet/js/verificationCreeTache.js"></script>
+        <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
+        <link href="/GestionProjet/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
         <title>Refusé l'ajout a un projet</title>
     </h:head>
     <h:body>
+        <ui:include src="comp-navbar.xhtml"/>
         <f:view beforePhase="#{mailCtrl.refusAjoutMembreProjet()}"/>
-        Vous avez refusé d'etre rajouté au projet: #{mailCtrl.projet.nom}
+
+        <div class="container-fluid">
+            <legend>Vous avez refusé d'etre rajouté au projet: #{mailCtrl.projet.nom}</legend>
+        </div>
     </h:body>
 </html>
 

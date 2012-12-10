@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <script type ="text/javascript" src ="/GestionProjet/js/verificationCreeTache.js"></script>
@@ -10,11 +11,20 @@
         <title>Ajout de membres</title>
     </h:head>
     <h:body>
-        <div class="hero-unit">
-            <a class="btn" href="accueil.xhtml"><i class="icon-home"></i></a>
-            <legend>Ajout de membre au projet</legend>
+        <ui:include src="comp-navbar.xhtml"/>
+        <div class="container-fluid">
+            <legend>Liste des membres</legend>
             <!-- Debut formulaire -->
 
+            <h:form>
+                <h:dataTable value="#{projetCtrl.membres}" var="membre" styleClass="table table-bordered table-striped">
+                    <h:column>
+                        <h:outputText value="#{membre.mail}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+
+            <legend>Ajout de membre au projet</legend>
             <h:form name="Ajout de membre au projet" class="form-horizontal">
                 <fieldset>
                     <div class="control-group">
@@ -29,16 +39,6 @@
                         </div>
                     </div>
                 </fieldset>
-            </h:form>
-            <h:form>
-                <h:dataTable value="#{projetCtrl.membres}" var="membre" styleClass="table">
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Liste des membres"/>
-                        </f:facet>
-                        <h:outputText value="#{membre.mail}"/>
-                    </h:column>
-                </h:dataTable>
             </h:form>
         </div>
     </h:body>

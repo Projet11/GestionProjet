@@ -91,7 +91,9 @@ public class ProjetController {
     }
 
     public Projet getProjetCourant() {
-        projetCourant = projetEJB.refresh(projetCourant);
+        if (projetCourant != null) {
+            projetCourant = projetEJB.refresh(projetCourant);
+        }
         return projetCourant;
     }
 
@@ -111,11 +113,14 @@ public class ProjetController {
         return "ajouter";
     }
 
-    public String ajouterMembreProjet(){
+    public String ajouterMembreProjet() {
+        if (getProjetCourant() == null) {
+            return null;
+        }
         membres = getProjetCourant().getAllParticipant();
-        System.out.println("projet size"+projetCourant.getAllParticipant().size());
         return "ajouteMembre";
     }
+
     public boolean isCurrentProject(Projet projet) {
         return projet == projetCourant;
     }
