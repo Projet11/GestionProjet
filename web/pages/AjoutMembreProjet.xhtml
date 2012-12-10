@@ -4,25 +4,42 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <script type ="text/javascript" src ="/GestionProjet/js/verificationCreeTache.js"></script>
+        <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
+        <link href="/GestionProjet/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <title>Ajout de membres</title>
     </h:head>
     <h:body>
-        <div class="ajoutMembre">
-            <h:form>
-                Ajouter un nouveau membre<br/>
-                Email: <h:inputText value="#{projetCtrl.email}"/><br/>
-                <h:commandButton action="#{projetCtrl.ajouterMembre()}" value="Ajouter"/>
+        <div class="hero-unit">
+            <a class="btn" href="accueil.xhtml"><i class="icon-home"></i></a>
+            <legend>Ajout de membre au projet</legend>
+            <!-- Debut formulaire -->
+
+            <h:form name="Ajout de membre au projet" class="form-horizontal">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label">Email:</label>
+                        <div class="controls">
+                            <h:inputText value="#{projetCtrl.email}"/>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <div class="span1">
+                            <h:commandButton class="btn btn-success" action="#{projetCtrl.ajouterMembre()}" value="Ajouter"/>
+                        </div>
+                    </div>
+                </fieldset>
             </h:form>
-        </div>
-        <div class="listeMembre">
-            <h:dataTable value="#{projetCtrl.projetCourant.allParticipant}" var="membre">
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Liste des membres"/>
-                    </f:facet>
-                    <h:outputText value="#{membre.mail}"/>
-                </h:column>
-            </h:dataTable>
+            <h:form>
+                <h:dataTable value="#{projetCtrl.membres}" var="membre" styleClass="table">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Liste des membres"/>
+                        </f:facet>
+                        <h:outputText value="#{membre.mail}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
         </div>
     </h:body>
 </html>

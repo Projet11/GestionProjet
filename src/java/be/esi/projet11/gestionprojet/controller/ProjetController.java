@@ -117,6 +117,11 @@ public class ProjetController {
         return "ajouter";
     }
 
+    public String ajouterMembreProjet(){
+        System.out.println("projet size"+projetCourant.getAllParticipant().size());
+        membres = projetCourant.getAllParticipant();
+        return "ajouteMembre";
+    }
     public boolean isCurrentProject(Projet projet) {
         return projet == projetCourant;
     }
