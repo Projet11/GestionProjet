@@ -350,4 +350,12 @@ public class TacheController {
     public String fenetreCreeTache() {
         return "creeTache";
     }
+    
+    public boolean isMembreInCurrentTache(Long membreId) {
+        Membre membre = membreEJB.getById(membreId);
+        if (membre != null)
+            return tacheCourante.hasMembre(membre);
+        else
+            return false;
+    }
 }
