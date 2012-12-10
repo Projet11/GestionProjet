@@ -7,9 +7,16 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>Accepter une tâche</title>
+        <script type="text/javascript" src="../js/jquery.js"></script>
+        <script type="text/javascript" src="../js/connexion.js"></script>
+        <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+
+        <!-- Enable support for HTML5 elements in IE6-IE8 -->
+        <h:outputText escape="false" value='&lt;!--[if lt IE 9]&gt;&lt;script src="../js/html5shiv.js"&gt;&lt;/script&gt;&lt;![endif]--&gt;'/>
     </h:head>
     <h:body>
         <f:view beforePhase="#{mailCtrl.ajoutMembreTache()}"/>
+        <ui:include src="comp-navbar.xhtml"/>
         <h2>Accepter une tâche</h2>
         <c:choose>
             <c:when test="#{membreCtrl.authenticated}">
@@ -17,9 +24,9 @@
                 Vous avez été ajouté à la tâche #{mailCtrl.tache.nom}
             </c:when>
             <c:otherwise>
-                Veuillez vous authentifier avant d'être ajouté à la tâche #{mailCtrl.tache.nom}
+                Veuillez vous authentifier avant d'être ajouté à la tâche #{mailCtrl.tache.nom}.
                 <div id="connexion">
-                    <ui:include src="connexion.xhtml"/>
+                    <ui:include src="connexion-form.xhtml"/>
                 </div>
             </c:otherwise>
         </c:choose>
