@@ -91,13 +91,7 @@ public class ProjetController {
     }
 
     public Projet getProjetCourant() {
-        if (projetCourant == null) {
-            try {
-                projetCourant = projetEJB.creerProjet("nouveauProjet", "descriptionNewProjet");
-            } catch (DBException ex) {
-                Logger.getLogger(ProjetController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        projetCourant = projetEJB.refresh(projetCourant);
         return projetCourant;
     }
 
@@ -118,8 +112,8 @@ public class ProjetController {
     }
 
     public String ajouterMembreProjet(){
+        membres = getProjetCourant().getAllParticipant();
         System.out.println("projet size"+projetCourant.getAllParticipant().size());
-        membres = projetCourant.getAllParticipant();
         return "ajouteMembre";
     }
     public boolean isCurrentProject(Projet projet) {
