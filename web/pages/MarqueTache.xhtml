@@ -44,6 +44,12 @@
                             </h:inputText>
                         </div>
                     </div>
+                    <div class="control-group">
+                        <label class="control-label" for="ajoutmembres">Ajouter des membres</label>
+                        <div class="controls">
+                            <ui:include src="ajoutMembreTache.xhtml"/>
+                        </div>
+                    </div>
                     <div class="controls">
                         <h:commandButton class="btn btn-success" action ="#{TacheEJB.modificationTache()}" value="Valider"/>
                     </div>

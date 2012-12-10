@@ -217,7 +217,7 @@ public class TacheController {
             getTacheCourante().addMembre(membre);
         }
         tacheEJB.saveTache(getTacheCourante());
-        return "success";
+        return null; // Retour sur la même page
     }
 
     public void modificationTache() throws TacheException {
