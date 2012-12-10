@@ -141,6 +141,12 @@ public class MembreController {
 
         return null;
     }
+	
+    public String deconnexion()
+    {
+        this.membreCourant = null;
+        return null;
+    }
 
     private Membre createUser(String login, String password, String mail,
             String nom, String prenom) throws BusinessException {
