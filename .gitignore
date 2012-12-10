@@ -27,6 +27,7 @@ lib/CopyLibs
 lib/CopyLibs-*
 lib/javaee-endorsed-api-6.0*
 lib/junit*
+lib/primefaces*
 *.sublime-project
 *.sublime-workspace
 lib/tomahawk*

@@ -12,14 +12,14 @@
             <h:commandButton class="btn" value="Créer un projet"/>
         </h:form>
         <br/>
-        <p:dataTable value="#{projetCtrl.projets}" var="projet" styleClass="table">
-            <p:column>
-                <f:facet name="header">Noms des projets</f:facet>
-                <h:form>
-                    <h:commandLink rel="tooltip" action="#{projetCtrl.setProjetCourant(projet)}" title="#{projet.informations}" value="#{projet.nom}"/>
-                </h:form>
-            </p:column>
-        </p:dataTable>
+        <h:form>
+            <p:dataTable value="#{projetCtrl.projets}" var="projet" styleClass="table">
+                <p:column>
+                    <f:facet name="header">Noms des projets</f:facet>
+                    <h:commandLink style="#{projetCtrl.isCurrentProject(projet) ? 'font-weight:bold;' : ''}" rel="tooltip" action="#{projetCtrl.setProjetCourant(projet)}" title="#{projet.informations}" value="#{projet.nom}" /> 
+                </p:column>
+            </p:dataTable>
+        </h:form>
         <script>
             $(function(){
                 $('[rel=tooltip]').tooltip({placement: 'right', html: true})

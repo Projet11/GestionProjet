@@ -39,7 +39,6 @@ public class ProjetController {
     @ManagedProperty("#{tacheCtrl}")
     private TacheController tacheCtrl;
 
-
     public TacheController getTacheCtrl() {
         return tacheCtrl;
     }
@@ -47,6 +46,7 @@ public class ProjetController {
     public void setTacheCtrl(TacheController tacheCtrl) {
         this.tacheCtrl = tacheCtrl;
     }
+
     /**
      * Get the value of projets
      *
@@ -112,9 +112,13 @@ public class ProjetController {
         try {
             membreEJB.ajoutMembreProjet(email, getProjetCourant());
         } catch (DBException ex) {
-            throw new BusinessException("Ajout du membre au projet impossible : "+ex.getMessage());
+            throw new BusinessException("Ajout du membre au projet impossible : " + ex.getMessage());
         }
         membres = projetCourant.getAllParticipant();
         return "ajouter";
+    }
+
+    public boolean isCurrentProject(Projet projet) {
+        return projet == projetCourant;
     }
 }

@@ -55,9 +55,15 @@
                             </h:inputText>
                         </div>
                     </div>
+                    <div class="control-group">
+                        <label class="control-label" for="ajoutmembres">Ajouter des membres</label>
+                        <div class="controls">
+                            <ui:include src="ajoutMembreTache.xhtml"/>
+                        </div>
+                    </div>
                     <div class="controls">
                         <h:commandButton class="btn btn-success" action ="#{tacheCtrl.modificationTache()}" value="Valider"/>
-                        <h:commandLink class="btn btn-danger" action ="#{tacheCtrl.retourneAccueil()}" value="Retour"/>
+                        <h:commandButton class="btn btn-danger" action ="#{tacheCtrl.retourneAccueil()}" value="Retour"/>
                     </div>
                     <span class="help-inline" id="Error"></span>
                     <br/>

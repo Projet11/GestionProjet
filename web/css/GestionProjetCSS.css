@@ -16,3 +16,7 @@
 .error {
     background-color: #ff0000;
 }
+
+.projectSelected {
+    background-color: #ccffff;
+}
