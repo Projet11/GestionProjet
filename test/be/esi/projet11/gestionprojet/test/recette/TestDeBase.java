@@ -36,12 +36,12 @@ public class TestDeBase {
 //        membreEJB.addUser("Pluquet", "Pluquet", "pluquet@gmail.com", "Pluquet", "Frederic");
     }
 
-    public static void seConnecter() {
+    public void seConnecter() {
         selenium.open("/GestionProjet/pages/connexion.xhtml");
         selenium.type("id=formIdentification:txtNom", "Pluquet");
         selenium.type("id=formIdentification:txtPass", "Pluquet");
         selenium.click("id=formIdentification:login");
-        selenium.waitForPageToLoad("30000");
+        attendre();
     }
 
 //    public static void supprimerUser() {

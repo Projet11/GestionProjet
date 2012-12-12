@@ -7,7 +7,7 @@
 	  xmlns:f="http://java.sun.com/jsf/core">
 	<ui:component>
 		<!-- HEADER -->
-		<h:form>
+		<h:form id="navform">
 			<div class="navbar navbar-static-top navbar-inverse">
 				<div class="navbar-inner">
 					<a class="brand" href="#">GestionProjet</a>
@@ -20,7 +20,7 @@
 						</c:if>
 
 						<c:if test="#{membreCtrl.authenticated}">
-							<li><h:commandLink action="#{membreCtrl.deconnexion()}" value="Déconnexion"/></li>
+							<li><h:commandLink id="logout" action="#{membreCtrl.deconnexion()}" value="Déconnexion"/></li>
 						</c:if>
 					</ul>
 
