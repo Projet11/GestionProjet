@@ -124,14 +124,7 @@ public class TacheController {
     public String getNomParam() {
         return nomParam;
     }
-
-//    public ProjetController getProjetCtrl() {
-//        return projetCtrl;
-//    }
-//
-//    public void setProjetCtrl(ProjetController projetCtrl) {
-//        this.projetCtrl = projetCtrl;
-//    }
+    
     public void setNomParam(String nomParam) {
         this.nomParam = nomParam;
     }
@@ -169,13 +162,6 @@ public class TacheController {
     }
 
     public Tache getTacheCourante() throws BusinessException {
-//        if (tacheCourante == null) {
-//            try {
-//                tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
-//            } catch (DBException ex) {
-//                throw new BusinessException("Il n'y a pas de tache courante ! : " + ex.getMessage());
-//            }
-//        }
         return tacheCourante;
     }
 
@@ -215,16 +201,8 @@ public class TacheController {
         return "annuler";
     }
 
-    public void startTimer() throws BusinessException {
-        startTimer(getTacheCourante());
-    }
-
-    public void stopTimer() throws BusinessException {
-        stopTimer(getTacheCourante());
-    }
-
     public void startTimer(Tache tache) {
-        System.out.println("start tache: timer lancé?" + tache.isTimerLaunched());
+        tache=tacheEJB.getTache(tache.getId());
         if (!tache.isTimerLaunched()) {
             tache.setTimerLaunched();
             tacheEJB.saveTache(tache);
@@ -232,7 +210,7 @@ public class TacheController {
     }
 
     public void stopTimer(Tache tache) {
-        System.out.println("stop tache: timer lancé?" + tache.isTimerLaunched());
+        tache=tacheEJB.getTache(tache.getId());
         if (tache.isTimerLaunched()) {
             tache.setTimerLaunched();
             tacheEJB.saveTache(tache);
