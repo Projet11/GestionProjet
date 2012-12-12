@@ -8,24 +8,26 @@
     </h:head>
     <h:body>
         <h:form>
-			<ul class="nav">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						Timers
-						<b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<c:forEach var="tache" items="#{tacheCtrl.getAllTimerLaunched()}">
-							<li>
-								<h:outputText value="#{tache.nom}"/>
-								<h:outputText value=" démarré à "/>
-								<h:outputText value="#{tache.timer.toString()}"/>
-								<h:commandButton class="btn" action="#{tacheCtrl.stopTimer(tache)}" value="Arrêter"/>
-							</li>
-						</c:forEach>
-					</ul>
-				</li>
-			</ul>
+            <ul class="nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Timers
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <c:forEach var="tache" items="#{tacheCtrl.getAllTimerLaunched()}">
+                            <li>
+                                <a class="pull-right">
+                                    <h:outputText value="#{tache.nom}"/>
+                                    <h:outputText value=" démarré à "/>
+                                    <h:outputText value="#{tache.timer.toString()}"/>
+                                    <h:commandButton class="btn" action="#{tacheCtrl.stopTimer(tache)}" value="Arrêter"/>
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </li>
+            </ul>
         </h:form>
     </h:body>
 </html>

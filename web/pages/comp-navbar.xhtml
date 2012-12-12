@@ -7,20 +7,28 @@
 	  xmlns:f="http://java.sun.com/jsf/core">
 	<ui:component>
 		<!-- HEADER -->
-		<div class="navbar navbar-static-top navbar-inverse">
-			<div class="navbar-inner">
-				<a class="brand" href="#">GestionProjet</a>
+		<h:form>
+			<div class="navbar navbar-static-top">
+				<div class="navbar-inner">
+					<a class="brand" href="#">GestionProjet</a>
 
-				<ul class="nav">
-					<li><a href="/GestionProjet">Accueil</a></li>
-					<li><a href="/GestionProjet/pages/connexion.xhtml">Connexion</a></li>
-					<li><a href="/GestionProjet/pages/inscription.xhtml">Inscription</a></li>
-				</ul>
+					<ul class="nav">
+						<li><a href="/GestionProjet">Accueil</a></li>
+						<c:if test="#{!membreCtrl.authenticated}">
+							<li><a href="/GestionProjet/pages/connexion.xhtml">Connexion</a></li>
+							<li><a href="/GestionProjet/pages/inscription.xhtml">Inscription</a></li>
+						</c:if>
 
-				<div class="pull-right">
-					<ui:include src="stopTimer.xhtml"/>
+						<c:if test="#{membreCtrl.authenticated}">
+							<li><h:commandLink action="#{membreCtrl.deconnexion()}" value="Déconnexion"/></li>
+						</c:if>
+					</ul>
+
+					<div class="pull-right">
+						<ui:include src="stopTimer.xhtml"/>
+					</div>
 				</div>
 			</div>
-		</div>
+		</h:form>
 	</ui:component>
 </html>

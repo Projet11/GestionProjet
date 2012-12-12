@@ -2,6 +2,7 @@ package be.esi.projet11.gestionprojet.ejb;
 
 import be.esi.projet11.gestionprojet.entity.Commentaire;
 import be.esi.projet11.gestionprojet.entity.Membre;
+import be.esi.projet11.gestionprojet.entity.ParticipeTache;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
@@ -134,5 +135,25 @@ public class TacheEJB {
         }
         query.setParameter("projet", p);
         return query.getResultList();
+    }
+
+    public void removeParticipeTache(Tache tache, Membre membre) {
+        tache.refuserParticipant(membre);
+        em.merge(tache);
+    }
+    
+    public void ajouterMembre(Tache tache, Membre membre) {
+        tache.accepterMembre(membre);
+        em.merge(tache);
+    }
+    
+    public void supprimerMembre(Tache tache, Membre membre) {
+        ParticipeTache pt = tache.getParticipeTache(membre);
+        tache.refuserParticipant(membre);
+        Query q = em.createQuery("delete from ParticipeTache pt where pt.membre.id = :idMembre and pt.tache.id = :idTache");
+        q.setParameter("idMembre", membre.getId());
+        q.setParameter("idTache", tache.getId());
+        q.executeUpdate();
+        em.merge(tache);
     }
 }

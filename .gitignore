@@ -31,6 +31,7 @@ lib/primefaces*
 *.sublime-project
 *.sublime-workspace
 lib/tomahawk*
+web/welcomePrimefaces.*
 
 # Komodo
 *.komodoproject
