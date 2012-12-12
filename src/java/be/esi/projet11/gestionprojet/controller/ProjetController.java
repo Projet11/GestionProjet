@@ -12,8 +12,6 @@ import be.esi.projet11.gestionprojet.exception.BusinessException;
 import be.esi.projet11.gestionprojet.exception.DBException;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -91,12 +89,8 @@ public class ProjetController {
     }
 
     public Projet getProjetCourant() {
-        if (projetCourant == null) {
-            try {
-                projetCourant = projetEJB.creerProjet("nouveauProjet", "descriptionNewProjet");
-            } catch (DBException ex) {
-                Logger.getLogger(ProjetController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if (projetCourant != null) {
+            projetCourant = projetEJB.refresh(projetCourant);
         }
         return projetCourant;
     }
@@ -104,6 +98,7 @@ public class ProjetController {
     public String setProjetCourant(Projet projetCourant) {
         this.projetCourant = projetCourant;
         tacheCtrl.affichageTaches(projetCourant);
+        tacheCtrl.setProjetCourant(projetCourant);
         return null;
     }
 
@@ -115,6 +110,14 @@ public class ProjetController {
         }
         membres = projetCourant.getAllParticipant();
         return "ajouter";
+    }
+
+    public String ajouterMembreProjet() {
+        if (getProjetCourant() == null) {
+            return null;
+        }
+        membres = getProjetCourant().getAllParticipant();
+        return "ajouteMembre";
     }
 
     public boolean isCurrentProject(Projet projet) {

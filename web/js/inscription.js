@@ -1,17 +1,17 @@
-function onSubmit()
+function onRegistrationSubmit()
 {
-    if (!valider())
+    if (!validateRegistration())
         return false;
 	
 	return true;
 }
 
-function valider()
+function validateRegistration()
 {
     var result = true;
     var message = "";
 	
-    clearErrors();
+    clearRegistrationErrors();
 	
     // Vérifier si des champs ont été laissés vides
     if (!checkChampsVides())
@@ -59,7 +59,7 @@ function valider()
     return result;
 }
 
-function clearErrors()
+function clearRegistrationErrors()
 {
     // Effacer les messages d'erreur déjà présents, s'il y en a
     $("#controlNom").removeClass();

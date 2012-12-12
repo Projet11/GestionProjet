@@ -9,15 +9,18 @@ import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.ParticipeProjet;
 import be.esi.projet11.gestionprojet.entity.Projet;
+import be.esi.projet11.gestionprojet.exception.DBException;
 import java.util.HashMap;
+import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -80,5 +83,23 @@ public class ProjetEJBTest {
         Projet projetEnDB = projetEJB.getProjetById(projet.getId());
         ParticipeProjet participationDeCeMembreAuProjet = projetEnDB.getParticipants().get(0);
         assertTrue(participationDeCeMembreAuProjet.isAccepter() );
+    }
+    
+    @Test (expected = EJBException.class)
+    public void testCreerProjetAvecNomDejaExistant() throws DBException{
+        projetEJB.creerProjet("Projet 1", null);
+        projetEJB.creerProjet("Projet 1", null);    
+    }
+    
+    @Test 
+    public void testCreerProjetAvecNomDifferent() throws DBException{
+        projetEJB.creerProjet("Projet 2", null);
+        projetEJB.creerProjet("Projet 3", null);    
+    }
+    
+    @Test
+    public void testRecupererTousLesProjets(){
+        List<Projet> listeProjets = projetEJB.getAllProjets();
+        assertEquals(5, listeProjets.size());
     }
 }

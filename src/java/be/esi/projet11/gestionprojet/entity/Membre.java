@@ -67,7 +67,7 @@ public class Membre implements Serializable {
     @Column(name = "PRENOM")
     @Size(min = 1, max = 100)
     private String prenom;
-    @OneToMany(cascade= CascadeType.ALL, mappedBy="membre1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "membre1")
     private Collection<ParticipeProjet> projets;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "membre")
     private Collection<ParticipeTache> taches;
@@ -89,14 +89,19 @@ public class Membre implements Serializable {
     }
 
     public Membre(String mail) {
+        this.id = 0l;
+        this.login = null;
+        this.nom = null;
+        this.prenom = null;
+        this.password = null;
         this.mail = mail;
     }
-    
+
     // Ne sert que pour les tests
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -188,9 +193,10 @@ public class Membre implements Serializable {
 
     @Override
     public String toString() {
+
         if (nom == null) // Pas encore inscrit, juste invité à un projet
             return mail + " (Non inscrit)";
         else
-            return mail + " (" + nom + " " + prenom + ")";
+            return login;
     }
 }

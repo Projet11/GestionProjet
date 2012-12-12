@@ -61,8 +61,8 @@
 
         </navigation-case>
         <navigation-case>
-            <from-outcome>connexion</from-outcome>
-            <to-view-id>/pages/connexion.xhtml</to-view-id>
+            <from-outcome>ajouteMembre</from-outcome>
+            <to-view-id>/pages/AjoutMembreProjet.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>

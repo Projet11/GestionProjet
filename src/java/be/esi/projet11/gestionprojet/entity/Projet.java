@@ -154,7 +154,7 @@ public class Projet implements Serializable {
         }
     }
 
-    public ParticipeProjet refuserParticipant(Membre mbr) {
+    public ParticipeProjet refuserParticipant(Membre mbr)  {
         ParticipeProjet pp = getParticipeProjet(mbr);
         if (pp != null) {
             participants.remove(pp);
@@ -184,8 +184,10 @@ public class Projet implements Serializable {
     }
 
     public List<Membre> getAllParticipant() {
+        System.out.println("all participant");
         List<Membre> membres = new ArrayList<Membre>();
         for (ParticipeProjet pp : participants) {
+            System.out.println("membre");
             membres.add(pp.getMembre());
         }
         return membres;
@@ -230,9 +232,9 @@ public class Projet implements Serializable {
         }
         return null;
     }
-    
-    public String getInformations(){
-        DateFormat df=new SimpleDateFormat("dd MMM yyyy ");
-        return description+" <br/>Créé Le "+df.format(dateDeb);
+
+    public String getInformations() {
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+        return description + " <br/>Créé Le " + df.format(dateDeb);
     }
 }

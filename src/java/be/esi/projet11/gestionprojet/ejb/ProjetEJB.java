@@ -8,7 +8,6 @@ import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.ParticipeProjet;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.exception.DBException;
-import be.esi.projet11.gestionprojet.exception.ProjetException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -41,6 +40,8 @@ public class ProjetEJB {
         q.setParameter("idMembre", mbr.getId());
         q.setParameter("idProjet", projet.getId());
         q.executeUpdate();
+        em.merge(projet);
+        System.out.println("projetejb "+ projet.getParticipants().size());
     }
 
     public List<Projet> getAllProjets() {
@@ -66,6 +67,10 @@ public class ProjetEJB {
     public void accepterParticipant(Projet projet, Membre membre) {
         projet.accepterParticipant(membre);
         em.merge(projet);
+    }
+
+    public Projet refresh(Projet projetCourant) {
+        return em.find(Projet.class,projetCourant.getId());
     }
     
     

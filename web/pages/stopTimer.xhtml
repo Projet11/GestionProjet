@@ -14,13 +14,15 @@
                         Timers
                         <b class="caret"></b>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu pull-right">
                         <c:forEach var="tache" items="#{tacheCtrl.getAllTimerLaunched()}">
                             <li>
-                                <h:outputText value="#{tache.nom}"/>
-                                <h:outputText value=" démarré le "/>
-                                <h:outputText value="#{tache.date}"/>
-                                <h:commandButton class="btn" action="#{tacheCtrl.stopTimer(tache)}" value="Arrêter"/>
+                                <a class="pull-right">
+                                    <h:outputText value="#{tache.nom}"/>
+                                    <h:outputText value=" démarré à "/>
+                                    <h:outputText value="#{tache.timer.toString()}"/>
+                                    <h:commandButton class="btn" action="#{tacheCtrl.stopTimer(tache)}" value="Arrêter"/>
+                                </a>
                             </li>
                         </c:forEach>
                     </ul>
