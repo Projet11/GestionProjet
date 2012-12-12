@@ -5,6 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
+        <f:event type="preRenderView" listener="#{membreCtrl.navigationIsAuthenticated()}"/>
         <script type ="text/javascript" src ="/GestionProjet/js/verificationCreeTache.js"></script>
         <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
         <link href="/GestionProjet/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
@@ -49,7 +50,7 @@
                     <!-- Fin -->
                     <div class="controls">
                         <div class="span1">
-                            <h:commandButton class="btn btn-success" action="#{tacheCtrl.creerTache()}" value="Créer"/> 
+                            <h:commandButton class="btn btn-success" action="#{tacheCtrl.creerTache(projetCtrl.projetCourant.id)}" value="Créer"/> 
                         </div>
                         <div class="span1">
                             <h:commandButton class="btn btn-danger" action="#{tacheCtrl.annulerCreation()}" value="Annuler" immediate="true"/>

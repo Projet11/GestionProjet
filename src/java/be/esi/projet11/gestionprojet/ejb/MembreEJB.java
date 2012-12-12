@@ -42,7 +42,7 @@ public class MembreEJB {
             qry.setParameter("password", password);
             return (Membre) qry.getSingleResult();
         } catch (Exception e) {
-            throw new DBException("Impossible d'identifier le client !\n");
+            throw new DBException("Impossible d'identifier le client !\n"+e.getMessage());
         }
     }
 

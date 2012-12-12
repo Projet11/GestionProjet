@@ -25,6 +25,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
 /**
@@ -39,7 +40,8 @@ public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Projet")
+    @TableGenerator(name = "Projet", allocationSize = 1)
     private Long id;
     @Column(nullable = false, unique = true)
     private String nom;
@@ -184,10 +186,8 @@ public class Projet implements Serializable {
     }
 
     public List<Membre> getAllParticipant() {
-        System.out.println("all participant");
         List<Membre> membres = new ArrayList<Membre>();
         for (ParticipeProjet pp : participants) {
-            System.out.println("membre");
             membres.add(pp.getMembre());
         }
         return membres;

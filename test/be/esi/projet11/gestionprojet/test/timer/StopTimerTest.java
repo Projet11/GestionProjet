@@ -32,14 +32,14 @@ import org.junit.Test;
  *
  * @author G34754
  */
-public class StartTimerTest {
+public class StopTimerTest {
 
     private static EJBContainer container;
     private static HashMap<Object, Object> properties;
     private static TacheEJB tacheEJB;
     private static ProjetEJB projetEJB;
 
-    public StartTimerTest() {
+    public StopTimerTest() {
     }
 
     @BeforeClass
@@ -47,8 +47,9 @@ public class StartTimerTest {
         properties = new HashMap<Object, Object>();
         properties.put(EJBContainer.APP_NAME, "GestionProjet");
         container = javax.ejb.embeddable.EJBContainer.createEJBContainer(properties);
-        tacheEJB = (TacheEJB) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         projetEJB = (ProjetEJB) container.getContext().lookup("java:global/GestionProjet/classes/ProjetEJB");
+
+        tacheEJB = (TacheEJB) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
     }
 
     @AfterClass
@@ -65,51 +66,53 @@ public class StartTimerTest {
     }
 
     @Test
-    public void TestLancerTimer1() throws DBException {
+    public void TestStopTimer1() throws DBException {
         Projet projet=projetEJB.creerProjet("projet1", "projet1");
         Tache tache = tacheEJB.creerTache("tache1", "   ", ImportanceEnum.IMPORTANT, projet);
         tache.setTimerLaunched();
         tacheEJB.saveTache(tache);
         Tache tachePersistee = tacheEJB.getTache(tache.getId());
-        assertTrue(tachePersistee.isTimerLaunched());
+        tachePersistee.setTimerLaunched();
+        tacheEJB.saveTache(tachePersistee);
+        tache = tacheEJB.getTache(tachePersistee.getId());
+        assertFalse(tache.isTimerLaunched());
     }
 
     @Test
-    public void TestLancerTimer2() throws DBException {
-        Projet projet=projetEJB.creerProjet("projet2", "projet1");
+    public void TestStopTimer2() throws DBException {
+        Projet projet=projetEJB.creerProjet("projet2", "");
         Tache tache = tacheEJB.creerTache("tache2", "   ", ImportanceEnum.IMPORTANT, projet);
+        tache.setTimerLaunched();
         tacheEJB.saveTache(tache);
+        Date finTimer = new Date();
+        finTimer.setTime(finTimer.getTime() + 3000l);
+        Date curr = new Date();
+        while (curr.compareTo(finTimer) < 0) {
+            curr = new Date();
+        }
         Tache tachePersistee = tacheEJB.getTache(tache.getId());
-        assertFalse(tachePersistee.isTimerLaunched());
+        tachePersistee.setTimerLaunched();
+        tacheEJB.saveTache(tachePersistee);
+        tache = tacheEJB.getTache(tachePersistee.getId());
+        assertTrue(tache.getTempsPasseSurTache() >= 3000 && tache.getTempsPasseSurTache() <= 3500);
     }
 
     @Test
-    public void TestLancerTimer3() throws DBException {
-        Projet projet=projetEJB.creerProjet("projet3", "projet1");
+    public void TestStopTimer3() throws DBException {
+        Projet projet=projetEJB.creerProjet("projet3", "");
         Tache tache = tacheEJB.creerTache("tache3", "   ", ImportanceEnum.IMPORTANT, projet);
         tache.setTimerLaunched();
-        Date debutTimer = new Date();
-        debutTimer.setTime(debutTimer.getTime() + 5000l);
+        tacheEJB.saveTache(tache);
+        Date finTimer = new Date();
+        finTimer.setTime(finTimer.getTime() + 5000l);
         Date curr = new Date();
-        while (curr.compareTo(debutTimer) < 0) {
+        while (curr.compareTo(finTimer) < 0) {
             curr = new Date();
         }
-        Time t = tache.getTimer();
-        assertTrue(t.compareTo(new Time(4950l)) >= 0);
-        assertTrue(t.compareTo(new Time(5050l)) <= 0);
-    }
-
-    @Test
-    public void TestLancerTimer4() throws DBException {
-        Projet projet=projetEJB.creerProjet("projet4", "projet1");
-        Tache tache = tacheEJB.creerTache("tache4", "   ", ImportanceEnum.IMPORTANT, projet);
-        tache.setTimerLaunched();
-        Date debutTimer = new Date();
-        debutTimer.setTime(debutTimer.getTime() + 3000l);
-        Date curr = new Date();
-        while (curr.compareTo(debutTimer) < 0) {
-            curr = new Date();
-        }
-        assertFalse(tache.getTimer().compareTo(new Time(5000l)) >= 0);
+        Tache tachePersistee = tacheEJB.getTache(tache.getId());
+        tachePersistee.setTimerLaunched();
+        tacheEJB.saveTache(tachePersistee);
+        tache = tacheEJB.getTache(tachePersistee.getId());
+        assertFalse(tache.getTempsPasseSurTache() >= 3000 && tache.getTempsPasseSurTache() <= 3500);
     }
 }

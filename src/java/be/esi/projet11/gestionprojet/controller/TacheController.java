@@ -5,6 +5,7 @@
 package be.esi.projet11.gestionprojet.controller;
 
 import be.esi.projet11.gestionprojet.ejb.MembreEJB;
+import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Commentaire;
 import be.esi.projet11.gestionprojet.entity.Membre;
@@ -17,12 +18,12 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
-import javax.faces.bean.ManagedProperty;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -39,6 +40,9 @@ public class TacheController {
     private TacheEJB tacheEJB;
     @EJB
     private MembreEJB membreEJB;
+    @EJB
+    private ProjetEJB projetEJB;
+    // Attributs utilisés par le formulaire de création d'une tâche uniquement
     private String nomParam;
     private String descriptionParam;
     private ImportanceEnum importanceParam;
@@ -80,7 +84,6 @@ public class TacheController {
     }
 
     public void setProjetCourant(Projet projetCourant) {
-        System.out.println("+++++++++" + projetCourant);
         this.projetCourant = projetCourant;
     }
     public void setCreationImportance(ImportanceEnum creationImportance) {
@@ -125,14 +128,7 @@ public class TacheController {
     public String getNomParam() {
         return nomParam;
     }
-
-//    public ProjetController getProjetCtrl() {
-//        return projetCtrl;
-//    }
-//
-//    public void setProjetCtrl(ProjetController projetCtrl) {
-//        this.projetCtrl = projetCtrl;
-//    }
+    
     public void setNomParam(String nomParam) {
         this.nomParam = nomParam;
     }
@@ -170,13 +166,6 @@ public class TacheController {
     }
 
     public Tache getTacheCourante() throws BusinessException {
-//        if (tacheCourante == null) {
-//            try {
-//                tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
-//            } catch (DBException ex) {
-//                throw new BusinessException("Il n'y a pas de tache courante ! : " + ex.getMessage());
-//            }
-//        }
         return tacheCourante;
     }
 
@@ -201,10 +190,10 @@ public class TacheController {
         return items;
     }
 
-    public String creerTache() {
+    public String creerTache(Long creationProjet) {
         try {
-            System.out.println("______________" + projetCourant);
-            tacheEJB.creerTache(creationNom, creationDescription, creationImportance, projetCourant);
+            Projet crProjet = projetEJB.getProjetById(creationProjet);
+            tacheEJB.creerTache(creationNom, creationDescription, creationImportance, crProjet);
         } catch (DBException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>" + ex.getMessage(), ""));
@@ -217,22 +206,20 @@ public class TacheController {
         return "annuler";
     }
 
-    public void startTimer() throws BusinessException {
-        startTimer(getTacheCourante());
-    }
-
-    public void stopTimer() throws BusinessException {
-        stopTimer(getTacheCourante());
-    }
-
     public void startTimer(Tache tache) {
-        tache.setTimerLaunched(true);
-        tacheEJB.saveTache(tache);
+        tache=tacheEJB.getTache(tache.getId());
+        if (!tache.isTimerLaunched()) {
+            tache.setTimerLaunched();
+            tacheEJB.saveTache(tache);
+        }
     }
 
     public void stopTimer(Tache tache) {
-        tache.setTimerLaunched(false);
-        tacheEJB.saveTache(tache);
+        tache=tacheEJB.getTache(tache.getId());
+        if (tache.isTimerLaunched()) {
+            tache.setTimerLaunched();
+            tacheEJB.saveTache(tache);
+        }
     }
 
     public Time getTimer() throws BusinessException {
