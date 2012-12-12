@@ -49,7 +49,7 @@
                     <!-- Fin -->
                     <div class="controls">
                         <div class="span1">
-                            <h:commandButton class="btn btn-success" action="#{tacheCtrl.creerTache()}" value="Créer"/> 
+                            <h:commandButton class="btn btn-success" action="#{tacheCtrl.creerTache(projetCtrl.projetCourant.id)}" value="Créer"/> 
                         </div>
                         <div class="span1">
                             <h:commandButton class="btn btn-danger" action="#{tacheCtrl.annulerCreation()}" value="Annuler" immediate="true"/>

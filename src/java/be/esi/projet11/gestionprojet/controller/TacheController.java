@@ -5,6 +5,7 @@
 package be.esi.projet11.gestionprojet.controller;
 
 import be.esi.projet11.gestionprojet.ejb.MembreEJB;
+import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Commentaire;
 import be.esi.projet11.gestionprojet.entity.Membre;
@@ -39,6 +40,9 @@ public class TacheController {
     private TacheEJB tacheEJB;
     @EJB
     private MembreEJB membreEJB;
+    @EJB
+    private ProjetEJB projetEJB;
+    // Attributs utilisés par le formulaire de création d'une tâche uniquement
     private String nomParam;
     private String descriptionParam;
     private ImportanceEnum importanceParam;
@@ -201,10 +205,10 @@ public class TacheController {
         return items;
     }
 
-    public String creerTache() {
+    public String creerTache(Long creationProjet) {
         try {
-            System.out.println("______________" + projetCourant);
-            tacheEJB.creerTache(creationNom, creationDescription, creationImportance, projetCourant);
+            Projet crProjet = projetEJB.getProjetById(creationProjet);
+            tacheEJB.creerTache(creationNom, creationDescription, creationImportance, crProjet);
         } catch (DBException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>" + ex.getMessage(), ""));
