@@ -42,8 +42,6 @@ public class TacheController {
     private MembreEJB membreEJB;
     @EJB
     private ProjetEJB projetEJB;
-//    @ManagedProperty("#{projetCtrl}")
-//    private ProjetController projetCtrl;
     // Attributs utilisés par le formulaire de création d'une tâche uniquement
     private String nomParam;
     private String descriptionParam;
@@ -210,10 +208,7 @@ public class TacheController {
     public String creerTache(Long creationProjet) {
         try {
             Projet crProjet = projetEJB.getProjetById(creationProjet);
-            if (crProjet != null)
-                tacheEJB.creerTache(creationNom, creationDescription, creationImportance, crProjet);
-            else
-                tacheEJB.creerTache(creationNom, creationDescription, creationImportance);
+            tacheEJB.creerTache(creationNom, creationDescription, creationImportance, crProjet);
         } catch (DBException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("creerTache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de créer la tâche <br/>" + ex.getMessage(), ""));
