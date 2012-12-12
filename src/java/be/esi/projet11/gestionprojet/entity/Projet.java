@@ -186,10 +186,8 @@ public class Projet implements Serializable {
     }
 
     public List<Membre> getAllParticipant() {
-        System.out.println("all participant");
         List<Membre> membres = new ArrayList<Membre>();
         for (ParticipeProjet pp : participants) {
-            System.out.println("membre");
             membres.add(pp.getMembre());
         }
         return membres;

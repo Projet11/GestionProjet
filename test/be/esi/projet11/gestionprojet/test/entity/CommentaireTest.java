@@ -71,7 +71,6 @@ public class CommentaireTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testSetMembreNull() {
-        System.out.println("SetMembreNull");
         comment.setMembre(null);
     }
 
@@ -80,7 +79,6 @@ public class CommentaireTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testSetMembreAlreadyAssigned() {
-        System.out.println("SetMembreAlreadyAssigned");
         comment.setMembre(modifMembre);
     }
 
@@ -89,7 +87,6 @@ public class CommentaireTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testSetCommentaireNull() {
-        System.out.println("SetCommentaireNull");
         comment.setCorps(null);
     }
 
@@ -98,7 +95,6 @@ public class CommentaireTest {
      */
     @Test()
     public void testSetCommentaire() {
-        System.out.println("setCommentaireTrue");
         String newComment = "olleH";
         comment.setCorps(newComment);
         assertEquals(comment.getCorps(), newComment);
@@ -106,24 +102,20 @@ public class CommentaireTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSetTacheNull() {
-        System.out.println("setTacheNull");
         comment.setTache(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSetTacheAlreadyAssigned() {
-        System.out.println("SetTacheAlreadyAssigned");
         comment.setTache(modifTache);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSetDateNull() {
-        System.out.println("SetDateNull");
         comment.setDate(null);
     }
 
     public void testSetDate() {
-        System.out.println("SetDateTrue");
         comment.setDate(modifDate);
         assertEquals(comment.getDate(), modifDate);
     }

@@ -4,10 +4,12 @@ import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.exception.BusinessException;
 import be.esi.projet11.gestionprojet.exception.DBException;
+import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "membreCtrl")
 @SessionScoped
@@ -111,15 +113,14 @@ public class MembreController {
     public String identifier() {
         final String NAV_CASE_SUCCESS = "success";
         final String NAV_CASE_FAILURE = "failure";
-
         if (!this.isAuthenticated()) {
             try {
-                this.membreCourant = this.authenticateUser(this.inputNom, this.inputPassword);
+                this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
                 this.setIdentificationEchouee(!this.isAuthenticated());
             } catch (BusinessException ex) {
                 this.setIdentificationEchouee(true);
             }
-        }
+        }        
 
         return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
     }
@@ -153,7 +154,6 @@ public class MembreController {
         try {
             return membreEJB.addUser(login, password, mail, nom, prenom);
         } catch (Exception e) {
-            System.out.println("FacadeException : " + e);
             throw new BusinessException(e.getMessage());
         }
     }
@@ -169,12 +169,12 @@ public class MembreController {
     }
     
     public void navigationIsAuthenticated() throws BusinessException{
-//        if(!isAuthenticated()){
-//            try {
-//                FacesContext.getCurrentInstance().getExternalContext().redirect("pages/connexion.xhtml");
-//            } catch (IOException ex) {
-//                throw new BusinessException("Erreur: la redirection automatique a Ã©chouÃ©");
-//            }
-//        }
+        if(!isAuthenticated()){
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/GestionProjet/pages/connexion.xhtml");
+            } catch (IOException ex) {
+                throw new BusinessException("Erreur: la redirection automatique a échouée");
+            }
+        }
     }
 }

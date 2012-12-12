@@ -4,6 +4,7 @@
  */
 package be.esi.projet11.gestionprojet.test.timer;
 
+import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
@@ -36,6 +37,7 @@ public class StartTimerTest {
     private static EJBContainer container;
     private static HashMap<Object, Object> properties;
     private static TacheEJB tacheEJB;
+    private static ProjetEJB projetEJB;
 
     public StartTimerTest() {
     }
@@ -45,7 +47,8 @@ public class StartTimerTest {
         properties = new HashMap<Object, Object>();
         properties.put(EJBContainer.APP_NAME, "GestionProjet");
         container = javax.ejb.embeddable.EJBContainer.createEJBContainer(properties);
-        tacheEJB = (TacheEJB) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");       
+        tacheEJB = (TacheEJB) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
+        projetEJB = (ProjetEJB) container.getContext().lookup("java:global/GestionProjet/classes/ProjetEJB");
     }
 
     @AfterClass
@@ -63,8 +66,8 @@ public class StartTimerTest {
 
     @Test
     public void TestLancerTimer1() throws DBException {
-        Projet projet = new Projet(0l, "projet1");
-        Tache tache = tacheEJB.creerTache("tache1", "   ", ImportanceEnum.IMPORTANT,projet);
+        Projet projet=projetEJB.creerProjet("projet1", "projet1");
+        Tache tache = tacheEJB.creerTache("tache1", "   ", ImportanceEnum.IMPORTANT, projet);
         tache.setTimerLaunched();
         tacheEJB.saveTache(tache);
         Tache tachePersistee = tacheEJB.getTache(tache.getId());
@@ -73,8 +76,8 @@ public class StartTimerTest {
 
     @Test
     public void TestLancerTimer2() throws DBException {
-        Projet projet = new Projet(0l, "projet2");
-        Tache tache = tacheEJB.creerTache("tache2", "   ", ImportanceEnum.IMPORTANT,projet);
+        Projet projet=projetEJB.creerProjet("projet2", "projet1");
+        Tache tache = tacheEJB.creerTache("tache2", "   ", ImportanceEnum.IMPORTANT, projet);
         tacheEJB.saveTache(tache);
         Tache tachePersistee = tacheEJB.getTache(tache.getId());
         assertFalse(tachePersistee.isTimerLaunched());
@@ -82,8 +85,8 @@ public class StartTimerTest {
 
     @Test
     public void TestLancerTimer3() throws DBException {
-        Projet projet = new Projet(0l, "projet3");
-        Tache tache = tacheEJB.creerTache("tache3", "   ", ImportanceEnum.IMPORTANT,projet);
+        Projet projet=projetEJB.creerProjet("projet3", "projet1");
+        Tache tache = tacheEJB.creerTache("tache3", "   ", ImportanceEnum.IMPORTANT, projet);
         tache.setTimerLaunched();
         Date debutTimer = new Date();
         debutTimer.setTime(debutTimer.getTime() + 5000l);
@@ -98,8 +101,8 @@ public class StartTimerTest {
 
     @Test
     public void TestLancerTimer4() throws DBException {
-        Projet projet = new Projet(0l, "projet4");
-        Tache tache = tacheEJB.creerTache("tache4", "   ", ImportanceEnum.IMPORTANT,projet);
+        Projet projet=projetEJB.creerProjet("projet4", "projet1");
+        Tache tache = tacheEJB.creerTache("tache4", "   ", ImportanceEnum.IMPORTANT, projet);
         tache.setTimerLaunched();
         Date debutTimer = new Date();
         debutTimer.setTime(debutTimer.getTime() + 3000l);
@@ -109,6 +112,4 @@ public class StartTimerTest {
         }
         assertFalse(tache.getTimer().compareTo(new Time(5000l)) >= 0);
     }
-    
-    
 }

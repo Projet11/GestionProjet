@@ -4,6 +4,7 @@
  */
 package be.esi.projet11.gestionprojet.test.timer;
 
+import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
@@ -36,6 +37,7 @@ public class StopTimerTest {
     private static EJBContainer container;
     private static HashMap<Object, Object> properties;
     private static TacheEJB tacheEJB;
+    private static ProjetEJB projetEJB;
 
     public StopTimerTest() {
     }
@@ -45,7 +47,9 @@ public class StopTimerTest {
         properties = new HashMap<Object, Object>();
         properties.put(EJBContainer.APP_NAME, "GestionProjet");
         container = javax.ejb.embeddable.EJBContainer.createEJBContainer(properties);
-        tacheEJB = (TacheEJB) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");       
+        projetEJB = (ProjetEJB) container.getContext().lookup("java:global/GestionProjet/classes/ProjetEJB");
+
+        tacheEJB = (TacheEJB) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
     }
 
     @AfterClass
@@ -63,8 +67,8 @@ public class StopTimerTest {
 
     @Test
     public void TestStopTimer1() throws DBException {
-        Projet projet = new Projet(0l, "projet1");
-        Tache tache = tacheEJB.creerTache("tache1", "   ", ImportanceEnum.IMPORTANT,projet);
+        Projet projet=projetEJB.creerProjet("projet1", "projet1");
+        Tache tache = tacheEJB.creerTache("tache1", "   ", ImportanceEnum.IMPORTANT, projet);
         tache.setTimerLaunched();
         tacheEJB.saveTache(tache);
         Tache tachePersistee = tacheEJB.getTache(tache.getId());
@@ -73,11 +77,11 @@ public class StopTimerTest {
         tache = tacheEJB.getTache(tachePersistee.getId());
         assertFalse(tache.isTimerLaunched());
     }
-    
+
     @Test
     public void TestStopTimer2() throws DBException {
-        Projet projet = new Projet(1l, "projet2");
-        Tache tache = tacheEJB.creerTache("tache2", "   ", ImportanceEnum.IMPORTANT,projet);
+        Projet projet=projetEJB.creerProjet("projet2", "");
+        Tache tache = tacheEJB.creerTache("tache2", "   ", ImportanceEnum.IMPORTANT, projet);
         tache.setTimerLaunched();
         tacheEJB.saveTache(tache);
         Date finTimer = new Date();
@@ -90,13 +94,13 @@ public class StopTimerTest {
         tachePersistee.setTimerLaunched();
         tacheEJB.saveTache(tachePersistee);
         tache = tacheEJB.getTache(tachePersistee.getId());
-        assertTrue(tache.getTempsPasseSurTache()>=3000&&tache.getTempsPasseSurTache()<=3500);
+        assertTrue(tache.getTempsPasseSurTache() >= 3000 && tache.getTempsPasseSurTache() <= 3500);
     }
-    
+
     @Test
     public void TestStopTimer3() throws DBException {
-        Projet projet = new Projet(42l, "projet3");
-        Tache tache = tacheEJB.creerTache("tache3", "   ", ImportanceEnum.IMPORTANT,projet);
+        Projet projet=projetEJB.creerProjet("projet3", "");
+        Tache tache = tacheEJB.creerTache("tache3", "   ", ImportanceEnum.IMPORTANT, projet);
         tache.setTimerLaunched();
         tacheEJB.saveTache(tache);
         Date finTimer = new Date();
@@ -109,7 +113,6 @@ public class StopTimerTest {
         tachePersistee.setTimerLaunched();
         tacheEJB.saveTache(tachePersistee);
         tache = tacheEJB.getTache(tachePersistee.getId());
-        assertFalse(tache.getTempsPasseSurTache()>=3000&&tache.getTempsPasseSurTache()<=3500);
+        assertFalse(tache.getTempsPasseSurTache() >= 3000 && tache.getTempsPasseSurTache() <= 3500);
     }
-    
 }

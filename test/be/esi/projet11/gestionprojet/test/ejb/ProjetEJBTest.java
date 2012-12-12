@@ -75,7 +75,6 @@ public class ProjetEJBTest {
      */
     @Test
     public void testAccepterParticipant() throws Exception {
-        System.out.println("test2");
         Projet projet = projetEJB.creerProjet("test2", "test2");
         Membre mbr = membreEJB.addUser("null2", "null2", "nul2l@null.null", "null2", "null2");
         membreEJB.ajoutMembreProjet(mbr.getMail(), projet);

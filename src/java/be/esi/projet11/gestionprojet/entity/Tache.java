@@ -30,6 +30,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
 /**
@@ -51,7 +52,8 @@ public class Tache implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Tache")
+    @TableGenerator(name = "Tache", allocationSize = 1)
     private Long id;
     @Column(unique = true, nullable = false)
     private String nom;
@@ -70,8 +72,8 @@ public class Tache implements Serializable {
     private Collection<ParticipeTache> membres;
     private char archive;
     @JoinColumn(name = "PROJET", referencedColumnName = "ID")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
+    @ManyToOne(optional = false)
+    private Projet projet; 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private List<Commentaire> conversation;
 
@@ -111,11 +113,16 @@ public class Tache implements Serializable {
         this.importance = importance;
     }
 
-    public Tache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {
-        this(nom, description);
-        this.importance = importance;
-        this.projet = p;
-    }
+    public Tache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {    
+        this.id = 0l;
+        this.nom = nom;
+        this.description = description;
+        this.importance = ImportanceEnum.NORMALE;
+        this.pourcentage = 0;
+        this.revision = null;
+        conversation = new ArrayList<Commentaire>();
+        membres = new ArrayList<ParticipeTache>();
+   this.projet = p;    }
 
     /**
      * Get the value of pourcentage
@@ -248,11 +255,9 @@ public class Tache implements Serializable {
      */
     public void setTimerLaunched() {
         if (isTimerLaunched()) {
-            System.out.println("Timerlaunched: arrêt");
             this.timerLaunched = '0';
             setTempsPasseSurTache(new Date().getTime() - dateDeb.getTime());
         }else{
-            System.out.println("Timerlaunched: début");
             this.timerLaunched = '1';
             dateDeb=new Date();
         }
