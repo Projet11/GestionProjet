@@ -11,21 +11,17 @@
     </h:head>
     <h:body>
         <h:form>
-            <div class="pull-left">
-                <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
+            <div class="btn-group pull-left">
+                <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Créer"/> 
                 <h:commandButton class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
             </div> 
-            <div class="pull-right">
-                <table cellpadding="5" style="margin-bottom:5px">
-                    <tbody>
-                        <p:selectOneRadio value="#{tacheCtrl.archive}" id="selection">
-                            <f:selectItem itemValue="toutes" itemLabel="Toutes"/> 
-                            <f:selectItem itemValue="archivees" itemLabel="Archivées"/>
-                            <f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>     
-                            <f:ajax event="change" listener="#{tacheCtrl.affichageTaches()}" execute="selection" render="resultat"/> 
-                        </p:selectOneRadio>
-                    </tbody>
-                </table>
+            <div id="tachesFilter" class="pull-right">
+				<h:selectOneRadio value="#{tacheCtrl.archive}" id="selection">
+					<f:selectItem itemValue="toutes" itemLabel="Toutes"/>
+					<f:selectItem itemValue="archivees" itemLabel="Archivées"/>
+					<f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>     
+					<f:ajax event="change" listener="#{tacheCtrl.affichageTaches()}" execute="selection" render="resultat"/> 
+				</h:selectOneRadio>
             </div>
 
             <p style="white-space:pre-wrap;width:0px"> </p> 
@@ -65,4 +61,13 @@
             </p:dataTable>
         </h:form>     
     </h:body>
+	<script type="text/javascript">
+		$("#tachesFilter input").removeClass();
+		$("#tachesFilter input").css("margin-left", "18px");
+		
+		$("#tachesFilter label").removeClass();
+		$("#tachesFilter label").addClass("radio");
+		$("#tachesFilter label").addClass("inline");
+		$("#tachesFilter label").css("padding-left", "6px");
+	</script>
 </html>
