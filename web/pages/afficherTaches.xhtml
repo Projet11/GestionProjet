@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <h:head>
         <link href="/GestionProjet/css/GestionProjetCSS.css" rel="stylesheet" media="screen"></link>
@@ -13,7 +14,9 @@
         <h:form>
             <div class="pull-left">
                 <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
-                <h:commandButton class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
+                <c:if test="#{not empty projetCtrl.projetCourant}">
+                    <h:commandButton class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
+                </c:if>
             </div> 
             <div class="pull-right">
                 <table cellpadding="5" style="margin-bottom:5px">
