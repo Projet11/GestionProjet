@@ -1,9 +1,10 @@
-function onSubmit()
+function onLoginSubmit()
 {
-	return validate();
+    console.log("Test");
+	return validateLogin();
 }
 
-function clearErrors()
+function clearLoginErrors()
 {
 	// Effacer les messages d'erreur déjà présents, s'il y en a
     $("#fieldNom").removeClass();
@@ -12,7 +13,7 @@ function clearErrors()
     $("#fieldMdp").addClass("control-group");
 }
 
-function validate()
+function validateLogin()
 {
 	var result = true;
 	
