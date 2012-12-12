@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,7 +48,7 @@ import javax.persistence.Temporal;
     @NamedQuery(name = "Tache.findTachesNonArchiveesByProjet", query = "SELECT t FROM Tache t WHERE t.archive = '0' AND t.projet = :projet"),
     @NamedQuery(name = "Tache.findTimerLaunched", query = "Select t FROM Tache t where t.timerLaunched = '1'")})
 public class Tache implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -222,7 +224,7 @@ public class Tache implements Serializable {
         if (revision != null && revision < 1L) {
             throw new TacheException("Le numéro de révision doit être strictement positif");
         }
-        if (revision == null) {
+        if(revision == null){
             throw new TacheException("La revision ne peut etre null");
         }
         this.revision = revision;
@@ -258,6 +260,8 @@ public class Tache implements Serializable {
         Date currDate = new Date();
         return new Time(currDate.getTime() - getDateDeb().getTime());
     }
+    
+
 
     /**
      * @return the dateDeb
@@ -288,27 +292,26 @@ public class Tache implements Serializable {
     }
 
     public void addMembre(Membre membre) throws TacheException {
-        if (membre == null) {
+        if (membre == null)
             throw new IllegalArgumentException("Impossible d'ajouter un membre null à la tâche !");
-        }
-        if (hasMembre(membre)) {
-            return;
-        }
 
+        if (hasMembre(membre))
+            return;
+        
         membres.add(new ParticipeTache(this, membre));
-        String sujet = "[PROJET MACHIN] Invitation à rejoindre une tâche"; // TODO: Lorsque le projet sera implémenté
-        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche TRUC du projet MACHIN</h1>"; // TODO: Lorsque le projet sera implémenté
+        String sujet = "[PROJET " + projet.getNom() + "] Invitation à rejoindre une tâche";
+        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche " + nom + " du projet " + projet.getNom() + "</h1>";
         corps += "<p>Pour accepter ou refuser, cliquez sur un des liens suivants :</p>";
-        corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=accepterTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Accepter</a></p>";
-        corps += "<p><a href='http://localhost/GestionProjet/FrontController?action=refuserTache&membre=" + membre.getId() + "&tache=" + getId() + "'>Refuser</a></p>"; // TODO: Corriger les liens
+        corps += "<p><a href='http://localhost:27583/GestionProjet/pages/accepterTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Accepter</a></p>";
+        corps += "<p><a href='http://localhost:27583/GestionProjet/pages/refuserTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Refuser</a></p>"; // TODO: Corriger les liens
         corps += "<br/><br/>A bientôt !";
         try {
-            Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps);
+            Mailer.send(membre.getMail(), "Invitation à rejoindre une tâche", corps, true);
         } catch (MailException ex) {
             throw new TacheException("Impossible d'envoyer un mail à " + membre.getMail());
         }
     }
-
+    
     public boolean hasMembre(Membre membre) {
         if (this.getId() == null) // Si un tâche n'a pas encore été persistée, elle n'a pas de membres
         {
@@ -320,6 +323,7 @@ public class Tache implements Serializable {
     public Collection<ParticipeTache> getParticipations() {
         return membres;
     }
+
 
     public int getNbMembres() {
         return membres.size();
@@ -335,6 +339,35 @@ public class Tache implements Serializable {
 
         return ret;
     }
+    
+    public List<Membre> getParticipantsAcceptes() {
+        List<Membre> ret = new ArrayList<Membre>();
+        for (ParticipeTache pt : membres) {
+            if (pt.isAccepte()) {
+                ret.add(pt.getMembre());
+            }
+        }
+        return ret;
+    }
+    
+    public void accepterMembre(Membre mbr) {
+        if (mbr.getMail() == null || mbr.getMail().equals("")) {
+            return;
+        }
+        ParticipeTache pt = getParticipeTache(mbr);
+        if (pt != null) {
+            pt.setAccepte(true);
+        }
+    }
+    
+    public ParticipeTache getParticipeTache(Membre mbr) {
+        for (ParticipeTache pt : membres) {
+            if (pt.getMembre().equals(mbr)) {
+                return pt;
+            }
+        }
+        return null;
+    }
 
     public List<Membre> getAllMembres() {
         List<Membre> ret = new ArrayList<Membre>();
@@ -346,17 +379,30 @@ public class Tache implements Serializable {
     }
 
     public Projet getProjet() {
-        return new Projet();
-//        return projet; // TODO
+        return projet; // TODO
     }
 
-    public String getDate() {
+    public void refuserParticipant(Membre membre) {
+        ParticipeTache pt = getParticipeTache(membre);
+        if (pt != null) {
+            membres.remove(pt);
+            List<Membre> membres = getParticipantsAcceptes();
+            String objet = "Refus d'ajout";
+            String corps = "Le membre " + membre.getMail() + " a refusé d'être ajouté à la tâche "
+                    + nom + ".";
+            for (Membre unMembre : membres) {
+                try {
+                    Mailer.send(unMembre.getMail(), objet, corps);
+                } catch (MailException ex) {
+                    FacesContext ctx = FacesContext.getCurrentInstance();
+                    ctx.addMessage("inscrireMembresATache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible d'envoyer un mail à " + unMembre.getMail() + " <br/>" + ex.getMessage(), ""));
+                }
+            }
+        }
+    }
+    
+    public String getDate(){
         SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
         return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(dateDeb);
-    }
-
-    public String getInformations() {
-        DateFormat df = new SimpleDateFormat("dd MMM yyyy kk:mm");
-        return "" + df.format(dateDeb);
     }
 }

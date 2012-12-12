@@ -5,7 +5,6 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <f:event type="preRenderView" listener="#{membreCtrl.navigationIsAuthenticated()}"/>
         <script type ="text/javascript" src="/GestionProjet/js/jquery.js"></script>
         <script type ="text/javascript" src ="/GestionProjet/js/verificationCreeTache.js"></script>
         <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
@@ -14,8 +13,8 @@
 
     </h:head>
     <h:body>
-
-        <div class="navbar">
+		<ui:include src="comp-navbar.xhtml"/>
+        <!--b<div class="navbar">
             <div class="navbar-inner">
                 <div class="container">
                     <div class="nav-collapse collapse navbar-responsive-collapse">
@@ -39,7 +38,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="container-fluid">
             <div class="row-fluid">
