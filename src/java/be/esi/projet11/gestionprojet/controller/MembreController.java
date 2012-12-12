@@ -111,10 +111,10 @@ public class MembreController {
     public String identifier() {
         final String NAV_CASE_SUCCESS = "success";
         final String NAV_CASE_FAILURE = "failure";
-
+        
         if (!this.isAuthenticated()) {
             try {
-                this.membreCourant = this.authenticateUser(this.inputNom, this.inputPassword);
+                this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
                 this.setIdentificationEchouee(!this.isAuthenticated());
             } catch (BusinessException ex) {
                 this.setIdentificationEchouee(true);
