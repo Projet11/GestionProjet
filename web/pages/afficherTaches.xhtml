@@ -11,20 +11,22 @@
     </h:head>
     <h:body>
         <h:form>
-            <div class="btn-group pull-left">
-                <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Créer"/> 
-                <h:commandButton class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
-            </div> 
-            <div id="tachesFilter" class="pull-right">
-				<h:selectOneRadio value="#{tacheCtrl.archive}" id="selection">
-					<f:selectItem itemValue="toutes" itemLabel="Toutes"/>
-					<f:selectItem itemValue="archivees" itemLabel="Archivées"/>
-					<f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>     
-					<f:ajax event="change" listener="#{tacheCtrl.affichageTaches()}" execute="selection" render="resultat"/> 
-				</h:selectOneRadio>
-            </div>
-
-            <p style="white-space:pre-wrap;width:0px"> </p> 
+			<div class="well">
+				<div class="row-fluid">
+					<div class="btn-group pull-left">
+						<h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Créer"/> 
+						<h:commandButton class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
+					</div> 
+					<div id="tachesFilter" class="pull-right">
+						<h:selectOneRadio value="#{tacheCtrl.archive}" id="selection">
+							<f:selectItem itemValue="toutes" itemLabel="Toutes"/>
+							<f:selectItem itemValue="archivees" itemLabel="Archivées"/>
+							<f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>     
+							<f:ajax event="change" listener="#{tacheCtrl.affichageTaches()}" execute="selection" render="resultat"/> 
+						</h:selectOneRadio>
+					</div>
+				</div>
+			</div>
 
             <p:dataTable styleClass="table" id="resultat" var="item" value="#{tacheCtrl.taches}" rowStyleClass="#{item.importance.balise}">
                 <p:column style="text-align:center;">

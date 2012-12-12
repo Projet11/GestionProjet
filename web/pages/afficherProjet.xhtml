@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>Afficher Projet</title>
     </h:head>
@@ -11,7 +12,6 @@
         <h:form>
             <h:commandButton class="btn" value="Créer un projet"/>
         </h:form>
-        <br/>
         <h:form>
             <p:dataTable value="#{projetCtrl.projets}" var="projet" styleClass="table">
                 <p:column>
