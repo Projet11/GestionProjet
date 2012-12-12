@@ -71,7 +71,7 @@ public class Tache implements Serializable {
     private Collection<ParticipeTache> membres;
     private char archive;
     @JoinColumn(name = "PROJET", referencedColumnName = "ID")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(optional = false)
     private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private List<Commentaire> conversation;
