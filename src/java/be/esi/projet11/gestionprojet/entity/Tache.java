@@ -401,7 +401,8 @@ public class Tache implements Serializable {
     }
     
     public String getDate(){
-        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy kk:mm:ss");
-        return format.format(dateDeb);
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat formatTime = new SimpleDateFormat("kk:mm:ss");
+        return formatTime.format(dateDeb)+" le "+formatDate.format(dateDeb);
     }
 }

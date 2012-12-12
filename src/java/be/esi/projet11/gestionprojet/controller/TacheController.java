@@ -17,10 +17,12 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -78,7 +80,6 @@ public class TacheController {
     }
 
     public void setProjetCourant(Projet projetCourant) {
-        System.out.println("+++++++++" + projetCourant);
         this.projetCourant = projetCourant;
     }
     public void setCreationImportance(ImportanceEnum creationImportance) {
@@ -201,7 +202,6 @@ public class TacheController {
 
     public String creerTache() {
         try {
-            System.out.println("______________" + projetCourant);
             tacheEJB.creerTache(creationNom, creationDescription, creationImportance, projetCourant);
         } catch (DBException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
@@ -224,7 +224,7 @@ public class TacheController {
     }
 
     public void startTimer(Tache tache) {
-        System.out.println("start: Timer lancé?" + tache.isTimerLaunched());
+        System.out.println("start tache: timer lancé?" + tache.isTimerLaunched());
         if (!tache.isTimerLaunched()) {
             tache.setTimerLaunched();
             tacheEJB.saveTache(tache);
@@ -232,7 +232,7 @@ public class TacheController {
     }
 
     public void stopTimer(Tache tache) {
-        System.out.println("stop: Timer lancé?" + tache.isTimerLaunched());
+        System.out.println("stop tache: timer lancé?" + tache.isTimerLaunched());
         if (tache.isTimerLaunched()) {
             tache.setTimerLaunched();
             tacheEJB.saveTache(tache);
