@@ -167,4 +167,14 @@ public class MembreController {
             throw new BusinessException(e.getMessage());
         }
     }
+    
+    public void navigationIsAuthenticated() throws BusinessException{
+//        if(!isAuthenticated()){
+//            try {
+//                FacesContext.getCurrentInstance().getExternalContext().redirect("pages/connexion.xhtml");
+//            } catch (IOException ex) {
+//                throw new BusinessException("Erreur: la redirection automatique a Ã©chouÃ©");
+//            }
+//        }
+    }
 }

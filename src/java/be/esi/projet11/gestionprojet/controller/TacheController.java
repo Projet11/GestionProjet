@@ -209,6 +209,7 @@ public class TacheController {
     }
 
     public void startTimer(Tache tache) {
+        System.out.println("start: Timer lancé?" + tache.isTimerLaunched());
         if (!tache.isTimerLaunched()) {
             tache.setTimerLaunched();
             tacheEJB.saveTache(tache);
@@ -216,6 +217,7 @@ public class TacheController {
     }
 
     public void stopTimer(Tache tache) {
+        System.out.println("stop: Timer lancé?" + tache.isTimerLaunched());
         if (tache.isTimerLaunched()) {
             tache.setTimerLaunched();
             tacheEJB.saveTache(tache);

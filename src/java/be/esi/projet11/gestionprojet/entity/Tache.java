@@ -248,9 +248,11 @@ public class Tache implements Serializable {
      */
     public void setTimerLaunched() {
         if (isTimerLaunched()) {
+            System.out.println("Timerlaunched: arrêt");
             this.timerLaunched = '0';
             setTempsPasseSurTache(new Date().getTime() - dateDeb.getTime());
         }else{
+            System.out.println("Timerlaunched: début");
             this.timerLaunched = '1';
             dateDeb=new Date();
         }
@@ -261,8 +263,6 @@ public class Tache implements Serializable {
         return new Time(currDate.getTime() - getDateDeb().getTime());
     }
     
-
-
     /**
      * @return the dateDeb
      */
@@ -323,7 +323,6 @@ public class Tache implements Serializable {
     public Collection<ParticipeTache> getParticipations() {
         return membres;
     }
-
 
     public int getNbMembres() {
         return membres.size();
@@ -402,7 +401,7 @@ public class Tache implements Serializable {
     }
     
     public String getDate(){
-        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-        return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(dateDeb);
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy kk:mm:ss");
+        return format.format(dateDeb);
     }
 }
