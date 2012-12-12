@@ -56,9 +56,13 @@ public class TacheController {
     private Projet projetCourant;
     @ManagedProperty(value = "#{membreCtrl}")
     private MembreController membreCtrl;
+
+
     private Projet projet;
     private String etatArchive;
-
+    public void setMembreCtrl(MembreController membreCtrl) {
+        this.membreCtrl = membreCtrl;
+    }
     public String getCreationNom() {
         return creationNom;
     }
