@@ -18,12 +18,12 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
-import javax.faces.bean.ManagedProperty;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -84,7 +84,6 @@ public class TacheController {
     }
 
     public void setProjetCourant(Projet projetCourant) {
-        System.out.println("+++++++++" + projetCourant);
         this.projetCourant = projetCourant;
     }
     public void setCreationImportance(ImportanceEnum creationImportance) {
@@ -129,14 +128,7 @@ public class TacheController {
     public String getNomParam() {
         return nomParam;
     }
-
-//    public ProjetController getProjetCtrl() {
-//        return projetCtrl;
-//    }
-//
-//    public void setProjetCtrl(ProjetController projetCtrl) {
-//        this.projetCtrl = projetCtrl;
-//    }
+    
     public void setNomParam(String nomParam) {
         this.nomParam = nomParam;
     }
@@ -174,13 +166,6 @@ public class TacheController {
     }
 
     public Tache getTacheCourante() throws BusinessException {
-//        if (tacheCourante == null) {
-//            try {
-//                tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
-//            } catch (DBException ex) {
-//                throw new BusinessException("Il n'y a pas de tache courante ! : " + ex.getMessage());
-//            }
-//        }
         return tacheCourante;
     }
 
@@ -221,22 +206,20 @@ public class TacheController {
         return "annuler";
     }
 
-    public void startTimer() throws BusinessException {
-        startTimer(getTacheCourante());
-    }
-
-    public void stopTimer() throws BusinessException {
-        stopTimer(getTacheCourante());
-    }
-
     public void startTimer(Tache tache) {
-        tache.setTimerLaunched(true);
-        tacheEJB.saveTache(tache);
+        tache=tacheEJB.getTache(tache.getId());
+        if (!tache.isTimerLaunched()) {
+            tache.setTimerLaunched();
+            tacheEJB.saveTache(tache);
+        }
     }
 
     public void stopTimer(Tache tache) {
-        tache.setTimerLaunched(false);
-        tacheEJB.saveTache(tache);
+        tache=tacheEJB.getTache(tache.getId());
+        if (tache.isTimerLaunched()) {
+            tache.setTimerLaunched();
+            tacheEJB.saveTache(tache);
+        }
     }
 
     public Time getTimer() throws BusinessException {

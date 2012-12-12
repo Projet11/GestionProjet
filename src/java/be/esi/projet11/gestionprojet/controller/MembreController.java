@@ -111,10 +111,10 @@ public class MembreController {
     public String identifier() {
         final String NAV_CASE_SUCCESS = "success";
         final String NAV_CASE_FAILURE = "failure";
-        
+
         if (!this.isAuthenticated()) {
             try {
-                this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
+                this.membreCourant = this.authenticateUser(this.inputNom, this.inputPassword);
                 this.setIdentificationEchouee(!this.isAuthenticated());
             } catch (BusinessException ex) {
                 this.setIdentificationEchouee(true);
@@ -154,7 +154,7 @@ public class MembreController {
             return membreEJB.addUser(login, password, mail, nom, prenom);
         } catch (Exception e) {
             System.out.println("FacadeException : " + e);
-            throw new BusinessException(e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
         }
     }
 
@@ -166,5 +166,15 @@ public class MembreController {
             setMembreCourant(null);
             throw new BusinessException(e.getMessage());
         }
+    }
+    
+    public void navigationIsAuthenticated() throws BusinessException{
+//        if(!isAuthenticated()){
+//            try {
+//                FacesContext.getCurrentInstance().getExternalContext().redirect("pages/connexion.xhtml");
+//            } catch (IOException ex) {
+//                throw new BusinessException("Erreur: la redirection automatique a Ã©chouÃ©");
+//            }
+//        }
     }
 }

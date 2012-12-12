@@ -30,7 +30,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
 /**
@@ -52,8 +51,7 @@ public class Tache implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Tache")
-    @TableGenerator(name = "Tache", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true, nullable = false)
     private String nom;
@@ -65,19 +63,25 @@ public class Tache implements Serializable {
     private Byte pourcentage;
     private Long revision;
     private char timerLaunched;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDeb;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date tempsPasseSurTache;
+    private long tempsPasseSurTache;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private Collection<ParticipeTache> membres;
     private char archive;
     @JoinColumn(name = "PROJET", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private List<Commentaire> conversation;
 
+    public List<Commentaire> getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(List<Commentaire> conversation) {
+        this.conversation = conversation;
+    }
 
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");
@@ -111,14 +115,6 @@ public class Tache implements Serializable {
         this(nom, description);
         this.importance = importance;
         this.projet = p;
-    }
-    
-    public List<Commentaire> getConversation() {
-        return conversation;
-    }
-
-    public void setConversation(List<Commentaire> conversation) {
-        this.conversation = conversation;
     }
 
     /**
@@ -240,7 +236,7 @@ public class Tache implements Serializable {
 
     @Override
     public String toString() {
-        return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + " Projet : " + projet + "\n Description : " + this.description;
+        return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + "\n Description : " + this.description;
     }
 
     public boolean isTimerLaunched() {
@@ -250,9 +246,16 @@ public class Tache implements Serializable {
     /**
      * @param timerLaunched the timerLaunched to set
      */
-    public void setTimerLaunched(boolean timerLaunched) {
-        this.timerLaunched = (timerLaunched ? '1' : '0');
-        setDateDeb(new Date());
+    public void setTimerLaunched() {
+        if (isTimerLaunched()) {
+            System.out.println("Timerlaunched: arrêt");
+            this.timerLaunched = '0';
+            setTempsPasseSurTache(new Date().getTime() - dateDeb.getTime());
+        }else{
+            System.out.println("Timerlaunched: début");
+            this.timerLaunched = '1';
+            dateDeb=new Date();
+        }
     }
 
     public Time getTimer() {
@@ -260,8 +263,6 @@ public class Tache implements Serializable {
         return new Time(currDate.getTime() - getDateDeb().getTime());
     }
     
-
-
     /**
      * @return the dateDeb
      */
@@ -279,15 +280,15 @@ public class Tache implements Serializable {
     /**
      * @return the tempsPasseSurTache
      */
-    public Date getTempsPasseSurTache() {
+    public long getTempsPasseSurTache() {
         return tempsPasseSurTache;
     }
 
     /**
      * @param tempsPasseSurTache the tempsPasseSurTache to set
      */
-    public void setTempsPasseSurTache(Date tempsPasseSurTache) {
-        this.tempsPasseSurTache = tempsPasseSurTache;
+    public void setTempsPasseSurTache(long tempsEnPlus) {
+        this.tempsPasseSurTache+= tempsEnPlus;
     }
 
     public void addMembre(Membre membre) throws TacheException {
@@ -298,8 +299,8 @@ public class Tache implements Serializable {
             return;
         
         membres.add(new ParticipeTache(this, membre));
-        String sujet = "[PROJET " + getProjet().getNom() + "] Invitation à rejoindre une tâche";
-        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche " + nom + " du projet " + getProjet().getNom() + "</h1>";
+        String sujet = "[PROJET " + projet.getNom() + "] Invitation à rejoindre une tâche";
+        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche " + nom + " du projet " + projet.getNom() + "</h1>";
         corps += "<p>Pour accepter ou refuser, cliquez sur un des liens suivants :</p>";
         corps += "<p><a href='http://localhost:27583/GestionProjet/pages/accepterTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Accepter</a></p>";
         corps += "<p><a href='http://localhost:27583/GestionProjet/pages/refuserTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Refuser</a></p>"; // TODO: Corriger les liens
@@ -322,7 +323,6 @@ public class Tache implements Serializable {
     public Collection<ParticipeTache> getParticipations() {
         return membres;
     }
-
 
     public int getNbMembres() {
         return membres.size();
@@ -401,7 +401,8 @@ public class Tache implements Serializable {
     }
     
     public String getDate(){
-        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-        return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(dateDeb);
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat formatTime = new SimpleDateFormat("kk:mm:ss");
+        return formatTime.format(dateDeb)+" le "+formatDate.format(dateDeb);
     }
 }
