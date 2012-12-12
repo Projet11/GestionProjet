@@ -31,7 +31,9 @@ public class MembreController {
         this.setInscriptionEchouee(false);
         this.setStatusMessage(null);
     }
-
+    public MembreEJB getMembreEJB() {
+        return membreEJB;
+    }
     public String getInputLogin() {
         return inputLogin;
     }
