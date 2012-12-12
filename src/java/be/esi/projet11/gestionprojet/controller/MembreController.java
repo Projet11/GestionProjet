@@ -122,7 +122,6 @@ public class MembreController {
             this.setInscriptionEchouee(true);
             this.setStatusMessage(e.getMessage());
         }
-
         return null;
     }
 
