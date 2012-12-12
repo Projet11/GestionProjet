@@ -8,7 +8,6 @@ import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.ParticipeProjet;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.exception.DBException;
-import be.esi.projet11.gestionprojet.exception.ProjetException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
