@@ -10,8 +10,6 @@ import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;

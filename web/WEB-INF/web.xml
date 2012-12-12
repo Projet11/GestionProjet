@@ -21,9 +21,4 @@
     <welcome-file-list>
         <welcome-file>pages/accueil.xhtml</welcome-file>
     </welcome-file-list>
-    <ejb-local-ref>
-        <ejb-ref-name>TacheEJB</ejb-ref-name>
-        <ejb-ref-type>Session</ejb-ref-type>
-        <ejb-link>#TacheEJB</ejb-link>
-    </ejb-local-ref>
 </web-app>

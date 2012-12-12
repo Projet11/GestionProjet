@@ -4,14 +4,9 @@
  */
 package be.esi.projet11.gestionprojet.test.entity;
 
-import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
-import be.esi.projet11.gestionprojet.exception.DBException;
 import be.esi.projet11.gestionprojet.exception.ProjetException;
-import java.util.HashMap;
-import javax.ejb.EJBException;
-import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import org.junit.After;
 import org.junit.AfterClass;

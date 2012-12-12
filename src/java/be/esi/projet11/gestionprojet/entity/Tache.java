@@ -106,8 +106,17 @@ public class Tache implements Serializable {
     }
 
     public Tache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {
-        this(nom, description);
+        if (nom == null || nom.equals("") || description == null || description.equals("") || importance == null || p == null) {
+            throw new TacheException("Pour crée une tache il faut un nom, une description, une importance et un projet.");
+        }
+        this.id = 0l;
+        this.nom = nom;
+        this.description = description;
         this.importance = importance;
+        this.pourcentage = 0;
+        this.revision = null;
+        conversation = new ArrayList<Commentaire>();
+        membres = new ArrayList<ParticipeTache>();
         this.projet = p;
     }
     

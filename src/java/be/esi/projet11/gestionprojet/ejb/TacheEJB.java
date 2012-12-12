@@ -34,17 +34,21 @@ public class TacheEJB {
         try {
             uneTache = new Tache(nom, description, importance, p);
             em.persist(uneTache);
-        } catch (TacheException ex) {
+        } catch (Exception ex) {
             throw new DBException("Création de tâche impossible : " + ex.getMessage());
         }
         return uneTache;
     }
 
-
-    public Tache getTache(String nom) {
-        Query query = em.createNamedQuery("Tache.findByNom");
-        query.setParameter("nom", nom);
-        Tache tache = (Tache) query.getSingleResult();
+    public Tache getTache(String nom) throws DBException {
+        Tache tache = null;
+        try {
+            Query query = em.createNamedQuery("Tache.findByNom");
+            query.setParameter("nom", nom);
+            tache = (Tache) query.getSingleResult();
+        } catch (Exception ex) {
+            throw new DBException("Cette tache n'existe pas dans la base de donnée");
+        }
         return tache;
     }
 
@@ -63,21 +67,20 @@ public class TacheEJB {
         }
     }
 
-    public void modificationTache(Tache tacheCourante) {
-    }
-
-    public void ajouterCommentaire(Tache tacheCourante, Membre membre, String commentaire) {
-        if (em.find(Tache.class, tacheCourante.getId()) != null) {
-            Commentaire comment = new Commentaire(tacheCourante, membre, commentaire,new Date());
-            em.persist(comment);
-            tacheCourante.getConversation().add(comment);
+    public void ajouterCommentaire(Tache tacheCourante, Membre membre, String commentaire) throws IllegalArgumentException{
+        if (tacheCourante != null) {
+            if (em.find(Tache.class, tacheCourante.getId()) != null) {
+                Commentaire comment = new Commentaire(tacheCourante, membre, commentaire, new Date());
+                em.persist(comment);
+                tacheCourante.getConversation().add(comment);
+            }
         } else {
             throw new IllegalArgumentException("La tache ne peut être null");
         }
     }
 
     public List<Commentaire> getConversation(Tache tacheCourante) {
-         Query query = null;
+        Query query = null;
         if (em.find(Tache.class, tacheCourante.getId()) != null) {
             query = em.createNamedQuery("Commentaire.findByTache");
             query.setParameter("tache", tacheCourante);
@@ -85,9 +88,9 @@ public class TacheEJB {
         return query.getResultList();
     }
 
-    public void modificationTache(Tache tacheCourante, int intValue, Long revisionParam, ImportanceEnum importanceParam) throws TacheException {
+    public void modificationTache(Tache tacheCourante, int pourcentageParam, Long revisionParam, ImportanceEnum importanceParam) throws TacheException {
         tacheCourante.setImportance(importanceParam);
-        tacheCourante.setPourcentage(intValue);
+        tacheCourante.setPourcentage(pourcentageParam);
         tacheCourante.setSVNRevision(revisionParam);
         em.merge(tacheCourante);
     }
@@ -126,12 +129,12 @@ public class TacheEJB {
         tache.refuserParticipant(membre);
         em.merge(tache);
     }
-    
+
     public void ajouterMembre(Tache tache, Membre membre) {
         tache.accepterMembre(membre);
         em.merge(tache);
     }
-    
+
     public void supprimerMembre(Tache tache, Membre membre) {
         ParticipeTache pt = tache.getParticipeTache(membre);
         tache.refuserParticipant(membre);
