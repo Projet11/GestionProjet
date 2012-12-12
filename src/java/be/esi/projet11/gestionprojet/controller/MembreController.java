@@ -145,7 +145,7 @@ public class MembreController {
     public String deconnexion()
     {
         this.membreCourant = null;
-        return null;
+        return "accueil.xhtml";
     }
 
     private Membre createUser(String login, String password, String mail,
