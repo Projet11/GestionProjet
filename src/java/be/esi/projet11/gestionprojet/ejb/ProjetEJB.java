@@ -41,6 +41,8 @@ public class ProjetEJB {
         q.setParameter("idMembre", mbr.getId());
         q.setParameter("idProjet", projet.getId());
         q.executeUpdate();
+        em.merge(projet);
+        System.out.println("projetejb "+ projet.getParticipants().size());
     }
 
     public List<Projet> getAllProjets() {
@@ -66,6 +68,10 @@ public class ProjetEJB {
     public void accepterParticipant(Projet projet, Membre membre) {
         projet.accepterParticipant(membre);
         em.merge(projet);
+    }
+
+    public Projet refresh(Projet projetCourant) {
+        return em.find(Projet.class,projetCourant.getId());
     }
     
     
