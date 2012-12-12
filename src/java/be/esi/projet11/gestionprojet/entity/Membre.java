@@ -89,6 +89,11 @@ public class Membre implements Serializable {
     }
 
     public Membre(String mail) {
+        this.id = 0l;
+        this.login = null;
+        this.nom = null;
+        this.prenom = null;
+        this.password = null;
         this.mail = mail;
     }
     

@@ -12,7 +12,6 @@ import be.esi.projet11.gestionprojet.exception.ProjetException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.util.Collection;
 import java.util.Set;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -31,8 +30,6 @@ public class MembreEJB {
 
     @PersistenceContext(unitName = "GestionProjetPU")
     private EntityManager em;
-    @EJB
-    private ProjetEJB projetEJB;
 
     public void persist(Object object) {
         em.persist(object);
@@ -61,6 +58,20 @@ public class MembreEJB {
         }
     }
 
+    public Membre updateUser(String login, String password, String mail, String nom, String prenom) throws DBException {
+        Query qry = em.createNamedQuery("Membre.findByMail");
+        qry.setParameter("mail", mail);
+        Membre mbr = (Membre) qry.getSingleResult();
+        if (mbr == null) {
+            throw new DBException("Aucune utilisateur ne possède cette adresse mail.\n");
+        }
+        mbr.setLogin(login);
+        mbr.setNom(nom);
+        mbr.setPrenom(prenom);
+        mbr.setPassword(password);
+        return mbr;
+    }
+
     public Membre addUser(String login, String password, String mail, String nom, String prenom) throws DBException {
         String erreur = "Impossible d'enregistrer ce nouveau client !\n";
         try {
@@ -75,15 +86,23 @@ public class MembreEJB {
                 erreur += "L'identifiant est déjà utilisé.\n";
             }
             if (mailExists(mail)) {
-                erreur += "L'adresse mail est déjà utilisée.\n";
+                Membre mbr = getMembreByEmail(mail);
+                if (mbr != null && mbr.getLogin() == null) {
+                    updateUser(login, password, mail, nom, prenom);
+                    return mbr;
+                } else {
+                    erreur += "L'adresse mail est déjà utilisée.\n";
+                    throw new DBException(erreur);
+                }
+            } else {
+                Membre usr = new Membre(0l, login, password, mail, nom, prenom);
+                em.persist(usr);
+                em.flush();
+                Mailer.send(mail, "GestionProjet - Inscription", "Mlle, Mme, Mr " + nom + "\n"
+                        + "Votre inscription a été validée.\n"
+                        + "Votre login est : " + login);
+                return usr;
             }
-            Membre usr = new Membre(0l, login, password, mail, nom, prenom);
-            em.persist(usr);
-            em.flush();
-            Mailer.send(mail, "GestionProjet - Inscription", "Mr " + nom + "\n"
-                    + "Votre inscription a été validée.\n"
-                    + "Votre login est : " + login);
-            return usr;
         } catch (PersistenceException e) {
             throw new DBException(erreur);
         } catch (ConstraintViolationException e) {
@@ -108,6 +127,9 @@ public class MembreEJB {
     public boolean userExists(String login) {
         boolean exists = true;
         try {
+            if (login == null) {
+                return false;
+            }
             Query qry = em.createNamedQuery("Membre.findByLogin");
             qry.setParameter("login", login);
             qry.getSingleResult();
@@ -120,10 +142,14 @@ public class MembreEJB {
     public boolean mailExists(String mail) {
         boolean exists = true;
         try {
-            Query qry = em.createNamedQuery("Membre.findByMail");
-            qry.setParameter("mail", mail);
-            qry.getSingleResult();
-        } catch (NoResultException e) {
+            if (mail == null) {
+                return false;
+            }
+            Membre mbr = getMembreByEmail(mail);
+            if (mbr == null) {
+                return false;
+            }
+        } catch (DBException e) {
             exists = false;
         }
         return exists;
@@ -133,7 +159,7 @@ public class MembreEJB {
         return em.find(Membre.class, mbrId);
     }
 
-    public void ajoutMembreProjet(String email, Projet projet) throws DBException{
+    public void ajoutMembreProjet(String email, Projet projet) throws DBException {
         if (email == null || email.equals("")) {
             return;
         }
@@ -145,20 +171,20 @@ public class MembreEJB {
         try {
             projet.ajouterMembre(mbr);
         } catch (ProjetException ex) {
-           throw new DBException("Ajout du membre au projet impossible : "+ex.getMessage());
+            throw new DBException("Ajout du membre au projet impossible : " + ex.getMessage());
         }
         em.merge(projet);
     }
 
-    public Membre getMembreByEmail(String email) {
-        Membre mbr = null;
+    public Membre getMembreByEmail(String email) throws DBException {
+        Membre mbr;
         Query q = em.createNamedQuery("Membre.findByMail");
         q.setParameter("mail", email);
         try {
             mbr = (Membre) q.getSingleResult();
+            return mbr;
         } catch (NoResultException nre) {
             return null;
         }
-        return mbr;
     }
 }

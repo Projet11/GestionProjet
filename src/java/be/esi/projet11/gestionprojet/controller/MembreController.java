@@ -111,7 +111,7 @@ public class MembreController {
     public String identifier() {
         final String NAV_CASE_SUCCESS = "success";
         final String NAV_CASE_FAILURE = "failure";
-
+        
         if (!this.isAuthenticated()) {
             try {
                 this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
@@ -139,6 +139,12 @@ public class MembreController {
             this.setStatusMessage(e.getMessage());
         }
 
+        return null;
+    }
+	
+    public String deconnexion()
+    {
+        this.membreCourant = null;
         return null;
     }
 

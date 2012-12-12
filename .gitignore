@@ -13,6 +13,7 @@
 
 # OS or Editor folders
 build.xml
+nbbuild.xml
 .DS_Store
 ._*
 Thumbs.db
@@ -31,6 +32,7 @@ lib/primefaces*
 *.sublime-project
 *.sublime-workspace
 lib/tomahawk*
+web/welcomePrimefaces.*
 
 # Komodo
 *.komodoproject
