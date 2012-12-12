@@ -23,7 +23,6 @@
     <h:body>
         <ui:include src="comp-navbar.xhtml"/>
         <f:view beforePhase="#{mailCtrl.ajoutMembreProjet()}"/>
-        <br/>
         <c:choose>
             <c:when test="#{membreCtrl.authenticated}">
                 <legend>
