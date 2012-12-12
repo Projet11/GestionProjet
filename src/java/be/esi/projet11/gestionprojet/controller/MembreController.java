@@ -114,7 +114,7 @@ public class MembreController {
 
         if (!this.isAuthenticated()) {
             try {
-                this.membreCourant = this.authenticateUser(this.inputNom, this.inputPassword);
+                this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
                 this.setIdentificationEchouee(!this.isAuthenticated());
             } catch (BusinessException ex) {
                 this.setIdentificationEchouee(true);

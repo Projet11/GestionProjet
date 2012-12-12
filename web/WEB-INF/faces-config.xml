@@ -105,7 +105,7 @@
     <navigation-rule>
         <from-view-id>/pages/accepterTache.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>failure</from-outcome>
+            <from-outcome>success</from-outcome>
             <to-view-id>/pages/accepterTache.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>

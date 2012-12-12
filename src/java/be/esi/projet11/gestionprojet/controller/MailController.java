@@ -39,6 +39,8 @@ public class MailController {
     private ProjetEJB projetEJB;
     @EJB
     private MembreEJB membreEJB;
+    @EJB
+    private TacheEJB tacheEJB;
 
     /**
      * Creates a new instance of UserActivation
@@ -144,6 +146,41 @@ public class MailController {
             throw new BusinessException("Les identifiants du projet et/ou du membre sont incorrects");
         } catch (Exception e) {
             throw new BusinessException("Impossible de refuser l'ajout du membre au projet :" + e.getMessage());
+        }
+    }
+    
+    public void ajoutMembreTache() throws BusinessException {
+        try {
+            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            long tachelong = Long.parseLong(map.get("idTache"));
+            long membrelong = Long.parseLong(map.get("idMembre"));
+            tache = tacheEJB.getTache(tachelong);
+            setMembre(membreEJB.getMembreById(membrelong));
+        } catch (NumberFormatException nfe) {
+            //Pas de traitement en cas d'exception car ça veut juste dire
+            //que la tâche et le membre sont bien initialisés
+        }
+        
+        if (membreCtrl.isAuthenticated()) {
+            tacheEJB.ajouterMembre(tache, getMembre());
+        }
+    }
+    
+    public void refusAjoutMembreTache() throws BusinessException {
+        try {
+            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            long tachelong = Long.parseLong(map.get("idTache"));
+            long membrelong = Long.parseLong(map.get("idMembre"));
+            tache = tacheEJB.getTache(tachelong);
+            setMembre(membreEJB.getMembreById(membrelong));
+        } catch (NumberFormatException nfe) {
+            throw new BusinessException("Les identifiants de la tâche et/ou du membre sont incorrects");
+        } catch (Exception ex) {
+            throw new BusinessException("Impossible de refuser l'ajout du membre à la tâche :" + ex.getMessage());
+        }
+        
+        if (membreCtrl.isAuthenticated()) {
+            tacheEJB.supprimerMembre(tache, getMembre());
         }
     }
 }
