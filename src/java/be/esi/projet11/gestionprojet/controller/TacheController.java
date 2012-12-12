@@ -7,6 +7,7 @@ package be.esi.projet11.gestionprojet.controller;
 import be.esi.projet11.gestionprojet.ejb.MembreEJB;
 import be.esi.projet11.gestionprojet.ejb.ProjetEJB;
 import be.esi.projet11.gestionprojet.ejb.TacheEJB;
+import be.esi.projet11.gestionprojet.entity.Commentaire;
 import be.esi.projet11.gestionprojet.entity.Membre;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
@@ -17,6 +18,8 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
+import javax.faces.bean.ManagedProperty;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -56,8 +59,16 @@ public class TacheController {
     private String creationNom;
     private ImportanceEnum creationImportance;
     private String creationDescription;
-    private Projet projet;
+    private Projet projetCourant;
+    @ManagedProperty(value = "#{membreCtrl}")
+    private MembreController membreCtrl;
 
+
+    private Projet projet;
+    private String etatArchive;
+    public void setMembreCtrl(MembreController membreCtrl) {
+        this.membreCtrl = membreCtrl;
+    }
     public String getCreationNom() {
         return creationNom;
     }
@@ -70,6 +81,14 @@ public class TacheController {
         return creationImportance;
     }
 
+    public Projet getProjetCourant() {
+        return projetCourant;
+    }
+
+    public void setProjetCourant(Projet projetCourant) {
+        System.out.println("+++++++++" + projetCourant);
+        this.projetCourant = projetCourant;
+    }
     public void setCreationImportance(ImportanceEnum creationImportance) {
         this.creationImportance = creationImportance;
     }
@@ -157,13 +176,13 @@ public class TacheController {
     }
 
     public Tache getTacheCourante() throws BusinessException {
-        if (tacheCourante == null) {
-            try {
-                tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
-            } catch (DBException ex) {
-                throw new BusinessException("Il n'y a pas de tache courante ! : " + ex.getMessage());
-            }
-        }
+//        if (tacheCourante == null) {
+//            try {
+//                tacheCourante = tacheEJB.creerTache("Temporaire", "Tache courante automatique");
+//            } catch (DBException ex) {
+//                throw new BusinessException("Il n'y a pas de tache courante ! : " + ex.getMessage());
+//            }
+//        }
         return tacheCourante;
     }
 
@@ -259,29 +278,30 @@ public class TacheController {
 
     public String modificationTache() {
         try {
-            if (pourcentageParam != null) {
+            if (nomParam != null || pourcentageParam != null) {
                 tacheEJB.modificationTache(tacheCourante, pourcentageParam.intValue(), revisionParam, importanceParam);
             } else {
                 throw new TacheException();
             }
             return retourneAccueil();
         } catch (TacheException ex) {
-            System.err.println("Il existe au moins une donnée entrés  dans les paramètres entrés");
+            System.err.println("Il existe au moins une donnée entrés dans les paramètres qui est vide");
             return null;
         }
     }
 
-    public void ajouterConversation() {
+    public void ajouterCommentaire() {
         if (tacheCourante != null && membreCourantParam != null
                 && commentaireParam != null && !commentaireParam.isEmpty()) {
-            tacheEJB.ajouterConversation(tacheCourante, membreCourantParam, commentaireParam);
+            tacheEJB.ajouterCommentaire(tacheCourante, membreCourantParam, commentaireParam);
         } else {
             System.err.println("la tache, le membre ou le commentaire ne peut être vide");
         }
     }
 
-    public String modifierTache(Tache tache) {
+    public String modifierTache(Tache tache) throws BusinessException {
         if (tache != null) {
+            membreCourantParam = membreCtrl.getMembreCourant();
             tacheCourante = tache;
             nomParam = tache.getNom();
             descriptionParam = tache.getDescription();
@@ -289,6 +309,7 @@ public class TacheController {
             revisionParam = tache.getSVNRevision();
             pourcentageParam = tache.getPourcentage().longValue();
             return "modificationTache";
+
         }
         return null;
     }
@@ -313,32 +334,32 @@ public class TacheController {
         this.taches = taches;
     }
 
-    public void archiverTache() {
-        tacheCourante.setArchive(true);
-    }
-
-    public void desarchiverTache() {
-        tacheCourante.setArchive(false);
+    public String archiverTache() {
+        if (tacheCourante.isArchive()) {
+            tacheEJB.desarchiverTache(tacheCourante);
+        } else {
+            tacheEJB.archiverTache(tacheCourante);
+        }
+       return null;
     }
 
     public String affichageTaches() {
         taches = null;
         if (archive.equals("toutes")) {
-            taches = tacheEJB.getTaches(null, projet);
+            taches = tacheEJB.getTaches(null, projetCourant);
         } else {
             if (archive.equals("archivees")) {
-                taches = tacheEJB.getTaches(true, projet);
+                taches = tacheEJB.getTaches(true, projetCourant);
             } else {
-                taches = tacheEJB.getTaches(false, projet);
+                taches = tacheEJB.getTaches(false, projetCourant);
             }
         }
-        //return "success";
         return null;
     }
 
     public String affichageTaches(Projet projet) {
         taches = null;
-        this.projet = projet;
+        this.projetCourant = projet;
         if (archive.equals("toutes")) {
             taches = tacheEJB.getTaches(null, projet);
         } else {
@@ -351,15 +372,53 @@ public class TacheController {
         return null;
     }
 
-    public String fenetreCreeTache() {
-        return "creeTache";
+    public List<Commentaire> getConversation() {
+        if (tacheCourante != null) {
+            return tacheEJB.getConversation(tacheCourante);
+        } else {
+            return null;
+        }
     }
-    
+
+    public String fenetreCreeTache() {
+        if (projetCourant != null) {
+            return "creeTache";
+        } else {
+            return null;
+        }
+    }
+
     public boolean isMembreInCurrentTache(Long membreId) {
         Membre membre = membreEJB.getById(membreId);
-        if (membre != null)
+        if (membre != null) {
             return tacheCourante.hasMembre(membre);
-        else
+        } else {
             return false;
+        }
+    }
+    
+        public boolean isArchivee() {
+        if (tacheCourante != null) {
+            if (tacheEJB.getTache(tacheCourante.getId()).isArchive()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public String getEtatArchive() {
+        if (isArchivee()) {
+            setEtatArchive("Désarchiver");
+        } else {
+            setEtatArchive("Archiver");
+        }
+        return etatArchive;
+    }
+
+    public void setEtatArchive(String etatArchive) {
+        this.etatArchive = etatArchive;
     }
 }

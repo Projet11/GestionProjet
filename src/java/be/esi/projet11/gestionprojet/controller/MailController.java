@@ -142,6 +142,7 @@ public class MailController {
             projet = projetEJB.getProjetById(projectlong);
             membre = membreEJB.getMembreById(membrelong);
             projetEJB.removeParticipeProjet(projet, membre);
+            System.out.println("mail refuuser "+projetEJB.getProjetById(projet.getId()).getParticipants().size());
         } catch (NumberFormatException nfe) {
             throw new BusinessException("Les identifiants du projet et/ou du membre sont incorrects");
         } catch (Exception e) {

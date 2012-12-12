@@ -74,17 +74,10 @@ public class Tache implements Serializable {
     private char archive;
     @JoinColumn(name = "PROJET", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Projet projet;
+    private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private List<Commentaire> conversation;
 
-    public List<Commentaire> getConversation() {
-        return conversation;
-    }
-
-    public void setConversation(List<Commentaire> conversation) {
-        this.conversation = conversation;
-    }
 
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");
@@ -118,6 +111,14 @@ public class Tache implements Serializable {
         this(nom, description);
         this.importance = importance;
         this.projet = p;
+    }
+    
+    public List<Commentaire> getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(List<Commentaire> conversation) {
+        this.conversation = conversation;
     }
 
     /**
@@ -239,7 +240,7 @@ public class Tache implements Serializable {
 
     @Override
     public String toString() {
-        return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + "\n Description : " + this.description;
+        return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + " Projet : " + projet + "\n Description : " + this.description;
     }
 
     public boolean isTimerLaunched() {

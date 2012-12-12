@@ -29,10 +29,6 @@ public class TacheEJB {
     public TacheEJB() {
     }
 
-    public Tache creerTache(String nom, String description) throws DBException {
-        return creerTache(nom, description, ImportanceEnum.IMPORTANT);
-    }
-
     public Tache creerTache(String nom, String description, ImportanceEnum importance, Projet p) throws DBException {
         Tache uneTache = null;
         try {
@@ -44,16 +40,6 @@ public class TacheEJB {
         return uneTache;
     }
 
-    public Tache creerTache(String nom, String description, ImportanceEnum importance) throws DBException {
-        Tache uneTache = null;
-        try {
-            uneTache = new Tache(nom, description, importance);
-            em.persist(uneTache);
-        } catch (TacheException ex) {
-            throw new DBException("Création de tâche impossible : " + ex.getMessage());
-        }
-        return uneTache;
-    }
 
     public Tache getTache(String nom) {
         Query query = em.createNamedQuery("Tache.findByNom");
@@ -80,19 +66,20 @@ public class TacheEJB {
     public void modificationTache(Tache tacheCourante) {
     }
 
-    public void ajouterConversation(Tache tacheCourante, Membre membre, String commentaire) {
+    public void ajouterCommentaire(Tache tacheCourante, Membre membre, String commentaire) {
         if (em.find(Tache.class, tacheCourante.getId()) != null) {
-            tacheCourante.getConversation().add(new Commentaire(tacheCourante, membre, commentaire,new Date()));
+            Commentaire comment = new Commentaire(tacheCourante, membre, commentaire,new Date());
+            em.persist(comment);
+            tacheCourante.getConversation().add(comment);
         } else {
             throw new IllegalArgumentException("La tache ne peut être null");
         }
-
     }
 
     public List<Commentaire> getConversation(Tache tacheCourante) {
          Query query = null;
         if (em.find(Tache.class, tacheCourante.getId()) != null) {
-            query = em.createNamedQuery("Commmentaire.findByTache");
+            query = em.createNamedQuery("Commentaire.findByTache");
             query.setParameter("tache", tacheCourante);
         }
         return query.getResultList();
@@ -110,16 +97,14 @@ public class TacheEJB {
         return query.getResultList();
     }
 
-    public void archiverTache(Long id) {
-        Tache tache = em.find(Tache.class, id);
-        tache.setArchive(true);
-        em.merge(tache);
+    public void archiverTache(Tache tacheCourante) {
+        tacheCourante.setArchive(true);
+        em.merge(tacheCourante);
     }
 
-    public void desarchiverTache(Long id) {
-        Tache tache = em.find(Tache.class, id);
-        tache.setArchive(false);
-        em.merge(tache);
+    public void desarchiverTache(Tache tacheCourante) {
+        tacheCourante.setArchive(false);
+        em.merge(tacheCourante);
     }
 
     public Collection<Tache> getTaches(Boolean archive, Projet p) {
