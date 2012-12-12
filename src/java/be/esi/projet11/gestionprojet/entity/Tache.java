@@ -30,6 +30,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
 /**
@@ -51,7 +52,8 @@ public class Tache implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Tache")
+    @TableGenerator(name = "Tache", allocationSize = 1)
     private Long id;
     @Column(unique = true, nullable = false)
     private String nom;
@@ -71,8 +73,8 @@ public class Tache implements Serializable {
     private Collection<ParticipeTache> membres;
     private char archive;
     @JoinColumn(name = "PROJET", referencedColumnName = "ID")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
+    @ManyToOne(optional = false)
+    private Projet projet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private List<Commentaire> conversation;
 
@@ -295,8 +297,8 @@ public class Tache implements Serializable {
             return;
         
         membres.add(new ParticipeTache(this, membre));
-        String sujet = "[PROJET " + projet.getNom() + "] Invitation à rejoindre une tâche";
-        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche " + nom + " du projet " + projet.getNom() + "</h1>";
+        String sujet = "[PROJET " + getProjet().getNom() + "] Invitation à rejoindre une tâche";
+        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche " + nom + " du projet " + getProjet().getNom() + "</h1>";
         corps += "<p>Pour accepter ou refuser, cliquez sur un des liens suivants :</p>";
         corps += "<p><a href='http://localhost:27583/GestionProjet/pages/accepterTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Accepter</a></p>";
         corps += "<p><a href='http://localhost:27583/GestionProjet/pages/refuserTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Refuser</a></p>"; // TODO: Corriger les liens

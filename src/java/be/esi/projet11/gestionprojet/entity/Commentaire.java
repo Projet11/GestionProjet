@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
 /**
@@ -32,7 +33,8 @@ public class Commentaire implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Commentaire")
+    @TableGenerator(name = "Commentaire", allocationSize = 1)
     private Long id;
     @JoinColumn(name = "TACHE", referencedColumnName = "ID", insertable = false, updatable = false, nullable = false)
     @ManyToOne(optional = false)
