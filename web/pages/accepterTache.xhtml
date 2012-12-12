@@ -20,7 +20,7 @@
         <h2>Accepter une tâche</h2>
         <c:choose>
             <c:when test="#{membreCtrl.authenticated}">
-                Bienvenue #{membreCtrl.membreCourant.nom}<br/>
+                Bienvenue #{membreCtrl.membreCourant.prenom} #{membreCtrl.membreCourant.nom}<br/>
                 Vous avez été ajouté à la tâche #{mailCtrl.tache.nom}
             </c:when>
             <c:otherwise>
