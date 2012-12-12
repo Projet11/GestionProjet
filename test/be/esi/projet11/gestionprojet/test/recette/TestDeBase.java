@@ -25,7 +25,6 @@ public class TestDeBase {
     }
 
     public static void seConnecter() {
-        System.out.println("seConnecter");
         if (selenium == null) {
             selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:26764");
             selenium.start();
