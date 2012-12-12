@@ -16,7 +16,7 @@
             <legend>Ajout de tache</legend>
             <!-- Debut formulaire -->
 
-            <h:form name="Ajouter une tâche" class="form-horizontal">
+            <h:form id="formCreerTache" name="Ajouter une tâche" class="form-horizontal">
                 <fieldset>
                     <!-- Nom -->
                     <div class="control-group">
@@ -31,7 +31,7 @@
                     <div class="control-group">
                         <label class="control-label" for="priorite">Importance</label>
                         <div class="controls">
-                            <h:selectOneMenu value="#{tacheCtrl.creationImportance}">
+                            <h:selectOneMenu id="priorite" value="#{tacheCtrl.creationImportance}">
                                 <f:selectItems value="#{tacheCtrl.importanceValues}"/>
                             </h:selectOneMenu>
                             
@@ -49,10 +49,10 @@
                     <!-- Fin -->
                     <div class="controls">
                         <div class="span1">
-                            <h:commandButton class="btn btn-success" action="#{tacheCtrl.creerTache(projetCtrl.projetCourant.id)}" value="Créer"/> 
+                            <h:commandButton id="btnCreer" class="btn btn-success" action="#{tacheCtrl.creerTache(projetCtrl.projetCourant.id)}" value="Créer"/> 
                         </div>
                         <div class="span1">
-                            <h:commandButton class="btn btn-danger" action="#{tacheCtrl.annulerCreation()}" value="Annuler" immediate="true"/>
+                            <h:commandButton id="btnAnnuler" class="btn btn-danger" action="#{tacheCtrl.annulerCreation()}" value="Annuler" immediate="true"/>
                         </div>
                     </div>
                     <h:message for="Nom" />

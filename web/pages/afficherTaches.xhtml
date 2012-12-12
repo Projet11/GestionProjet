@@ -10,9 +10,9 @@
         <title>Afficher Taches</title>
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="formAfficherTaches">
             <div class="pull-left">
-                <h:commandButton class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
+                <h:commandButton id="creerTacheBtn" class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Crée"/> 
                 <h:commandButton class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
             </div> 
             <div class="pull-right">
