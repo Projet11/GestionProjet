@@ -31,9 +31,7 @@ public class MembreController {
         this.setInscriptionEchouee(false);
         this.setStatusMessage(null);
     }
-    public MembreEJB getMembreEJB() {
-        return membreEJB;
-    }
+
     public String getInputLogin() {
         return inputLogin;
     }
@@ -156,7 +154,7 @@ public class MembreController {
             return membreEJB.addUser(login, password, mail, nom, prenom);
         } catch (Exception e) {
             System.out.println("FacadeException : " + e);
-            throw new BusinessException(e.getMessage());
+            throw new BusinessException(e.getMessage(), e);
         }
     }
 
