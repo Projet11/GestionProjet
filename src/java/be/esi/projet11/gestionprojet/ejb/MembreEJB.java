@@ -104,7 +104,7 @@ public class MembreEJB {
                 return usr;
             }
         } catch (PersistenceException e) {
-            throw new DBException(erreur);
+            throw new DBException(erreur, e);
         } catch (ConstraintViolationException e) {
             erreur += "Un ou plusieurs champ contiennent trop de caractères.\n";
             Set<ConstraintViolation<?>> contraintes = e.getConstraintViolations();

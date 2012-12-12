@@ -6,7 +6,7 @@
 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
 	  xmlns:f="http://java.sun.com/jsf/core">
 	<ui:component>
-		<h:form id="formInscription" styleClass="form-signin form-horizontal" onsubmit="return onSubmit();">
+		<h:form id="formInscription" styleClass="form-signin form-horizontal" onsubmit="return onRegistrationSubmit();">
 			<h2 class="form-signin-heading">Inscription</h2>
 			
 			<hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%;"/>
@@ -14,42 +14,42 @@
 			<div id="controlNom" class="control-group">
 				<label class="control-label" for="nom">Nom</label>
 				<div class="controls">
-					<h:inputText id="nom" value="#{membreCtrl.inputNom}" onblur="clearErrors()"/>
+					<h:inputText id="nom" value="#{membreCtrl.inputNom}" onblur="clearRegistrationErrors()"/>
 				</div>
 			</div>
 
 			<div id="controlPrenom" class="control-group">
 				<label class="control-label" for="prenom">Pr&eacute;nom</label>
 				<div class="controls">
-					<h:inputText id="prenom" value="#{membreCtrl.inputPrenom}" onblur="clearErrors()"/>
+					<h:inputText id="prenom" value="#{membreCtrl.inputPrenom}" onblur="clearRegistrationErrors()"/>
 				</div>
 			</div>
 
 			<div id="controlMail" class="control-group">
 				<label class="control-label" for="email">Adresse mail</label>
 				<div class="controls">
-					<h:inputText id="email" value="#{membreCtrl.inputMail}" onblur="clearErrors()"/>
+					<h:inputText id="email" value="#{membreCtrl.inputMail}" onblur="clearRegistrationErrors()"/>
 				</div>
 			</div>
 
 			<div id="controlLogin" class="control-group">
 				<label class="control-label" for="login">Identifiant</label>
 				<div class="controls">
-					<h:inputText id="login" value="#{membreCtrl.inputLogin}" onblur="clearErrors()"/>
+					<h:inputText id="login" value="#{membreCtrl.inputLogin}" onblur="clearRegistrationErrors()"/>
 				</div>
 			</div>
 
 			<div id="controlPass1" class="control-group">
 				<label class="control-label" for="mdp">Mot de passe</label>
 				<div class="controls">
-					<h:inputSecret id="mdp" value="#{membreCtrl.inputPassword}" onblur="clearErrors()"/>
+					<h:inputSecret id="mdp" value="#{membreCtrl.inputPassword}" onblur="clearRegistrationErrors()"/>
 				</div>
 			</div>
 
 			<div id="controlPass2" class="control-group">
 				<label class="control-label" for="mdpconfirm">Mot de passe (confirmation)</label>
 				<div class="controls">
-					<h:inputSecret id="mdpconfirm" onblur="clearErrors()"/>
+					<h:inputSecret id="mdpconfirm" onblur="clearRegistrationErrors()"/>
 				</div>
 			</div>
 

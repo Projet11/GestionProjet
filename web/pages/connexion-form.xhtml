@@ -1,49 +1,48 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:c="http://java.sun.com/jsp/jstl/core"
-	  xmlns:f="http://java.sun.com/jsf/core">
-	<ui:component>
-		<h:form id="formIdentification" styleClass="form-signin form-horizontal" onsubmit="return onSubmit();">
-			<h2 class="form-signin-heading">
-				Connexion
-				<small>Pas encore inscrit? <a href="/GestionProjet/pages/inscription.xhtml">Inscrivez-vous</a></small>
-			</h2>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:component>
+        <h:form id="formIdentification" styleClass="form-signin form-horizontal" onsubmit="return onLoginSubmit();">
+            <h2 class="form-signin-heading">
+                Connexion
+                <small>Pas encore inscrit? <a href="/GestionProjet/pages/inscription.xhtml">Inscrivez-vous</a></small>
+            </h2>
 
-			<hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%;"/>
+            <hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%;"/>
 
-			<div id="fieldNom" class="control-group">
-				<label class="control-label" for="txtLogin">Identifiant</label>
-				<div id="controlNom" class="controls">
-					<h:inputText id="txtNom" required="true" onfocus="clearErrors()"
-								 value="#{membreCtrl.inputLogin}"/>
-				</div>
-			</div>
+            <div id="fieldNom" class="control-group">
+                <label class="control-label" for="txtLogin">Identifiant</label>
+                <div id="controlNom" class="controls">
+                    <h:inputText id="txtNom" required="true" onfocus="clearLoginErrors()"
+                                 value="#{membreCtrl.inputLogin}"/>
+                </div>
+            </div>
 
-			<div id="fieldMdp" class="control-group">
-				<label class="control-label" for="txtMdp">Mot de passe</label>
-				<div id="controlMdp" class="controls">
-					<h:inputSecret id="txtPass" required="true" onfocus="clearErrors()"
-								   value="#{membreCtrl.inputPassword}"/>
-				</div>
-			</div>
+            <div id="fieldMdp" class="control-group">
+                <label class="control-label" for="txtMdp">Mot de passe</label>
+                <div id="controlMdp" class="controls">
+                    <h:inputSecret id="txtPass" required="true" onfocus="clearLoginErrors()"
+                                   value="#{membreCtrl.inputPassword}"/>
+                </div>
+            </div>
 
-			<div class="controls">
-				<h:commandButton value="Identification"
-								 styleClass="btn btn-primary"
-								 action="#{membreCtrl.identifier}"/>
-			</div>
+            <div class="controls">
+                <h:commandButton value="Identification"
+                                 styleClass="btn btn-primary"
+                                 action="#{membreCtrl.identifier}"/>
+            </div>
 
-			<hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%;"/>
+            <hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%;"/>
 
-			<p class="text-error">
-				<h:outputText
-					rendered="#{membreCtrl.identificationEchouee}"
-					value="Identifiant ou mot de passe invalide"/>
-				<h:messages/>
-			</p>
-		</h:form>
-	</ui:component>
+            <p class="text-error">
+                <h:outputText
+                    rendered="#{membreCtrl.identificationEchouee}"
+                    value="Identifiant ou mot de passe invalide"/>
+            </p>
+        </h:form>
+    </ui:component>
 </html>
