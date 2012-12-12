@@ -97,16 +97,14 @@ public class TacheEJB {
         return query.getResultList();
     }
 
-    public void archiverTache(Long id) {
-        Tache tache = em.find(Tache.class, id);
-        tache.setArchive(true);
-        em.merge(tache);
+    public void archiverTache(Tache tacheCourante) {
+        tacheCourante.setArchive(true);
+        em.merge(tacheCourante);
     }
 
-    public void desarchiverTache(Long id) {
-        Tache tache = em.find(Tache.class, id);
-        tache.setArchive(false);
-        em.merge(tache);
+    public void desarchiverTache(Tache tacheCourante) {
+        tacheCourante.setArchive(false);
+        em.merge(tacheCourante);
     }
 
     public Collection<Tache> getTaches(Boolean archive, Projet p) {

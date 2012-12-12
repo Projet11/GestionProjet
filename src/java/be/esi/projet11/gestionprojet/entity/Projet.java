@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -154,7 +152,7 @@ public class Projet implements Serializable {
         }
     }
 
-    public ParticipeProjet refuserParticipant(Membre mbr) {
+    public ParticipeProjet refuserParticipant(Membre mbr) throws ProjetException {
         ParticipeProjet pp = getParticipeProjet(mbr);
         if (pp != null) {
             participants.remove(pp);
@@ -166,7 +164,7 @@ public class Projet implements Serializable {
                 try {
                     Mailer.send(unMembre.getMail(), objet, corps);
                 } catch (MailException ex) {
-                    Logger.getLogger(Projet.class.getName()).log(Level.WARNING, null, ex);
+                    throw new ProjetException("Impossible d'envoyer un mail à " + mbr.getMail());
                 }
             }
         }
@@ -184,8 +182,10 @@ public class Projet implements Serializable {
     }
 
     public List<Membre> getAllParticipant() {
+        System.out.println("all participant");
         List<Membre> membres = new ArrayList<Membre>();
         for (ParticipeProjet pp : participants) {
+            System.out.println("membre");
             membres.add(pp.getMembre());
         }
         return membres;

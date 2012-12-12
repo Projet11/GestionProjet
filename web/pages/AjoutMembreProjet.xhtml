@@ -2,27 +2,44 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <script type ="text/javascript" src ="/GestionProjet/js/verificationCreeTache.js"></script>
+        <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
+        <link href="/GestionProjet/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <title>Ajout de membres</title>
     </h:head>
     <h:body>
-        <div class="ajoutMembre">
+        <ui:include src="comp-navbar.xhtml"/>
+        <div class="container-fluid">
+            <legend>Liste des membres</legend>
+            <!-- Debut formulaire -->
+
             <h:form>
-                Ajouter un nouveau membre<br/>
-                Email: <h:inputText value="#{projetCtrl.email}"/><br/>
-                <h:commandButton action="#{projetCtrl.ajouterMembre()}" value="Ajouter"/>
+                <h:dataTable value="#{projetCtrl.membres}" var="membre" styleClass="table table-bordered table-striped">
+                    <h:column>
+                        <h:outputText value="#{membre.mail}"/>
+                    </h:column>
+                </h:dataTable>
             </h:form>
-        </div>
-        <div class="listeMembre">
-            <h:dataTable value="#{projetCtrl.projetCourant.allParticipant}" var="membre">
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Liste des membres"/>
-                    </f:facet>
-                    <h:outputText value="#{membre.mail}"/>
-                </h:column>
-            </h:dataTable>
+
+            <legend>Ajout de membre au projet</legend>
+            <h:form name="Ajout de membre au projet" class="form-horizontal">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label">Email:</label>
+                        <div class="controls">
+                            <h:inputText value="#{projetCtrl.email}"/>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <div class="span1">
+                            <h:commandButton class="btn btn-success" action="#{projetCtrl.ajouterMembre()}" value="Ajouter"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </h:form>
         </div>
     </h:body>
 </html>

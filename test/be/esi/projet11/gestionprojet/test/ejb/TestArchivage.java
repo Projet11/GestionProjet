@@ -27,6 +27,7 @@ public class TestArchivage {
     static EJBContainer container;
     static TacheEJB instanceTacheEJB;
     static Long id;
+    static Tache tache;
     private static HashMap<Object, Object> properties;
     static Collection<Tache> collection;
     private static ProjetEJB instanceProjetEJB;
@@ -42,8 +43,9 @@ public class TestArchivage {
         instanceTacheEJB = (TacheEJB) container.getContext().lookup("java:global/GestionProjet/classes/TacheEJB");
         instanceProjetEJB = (ProjetEJB) container.getContext().lookup("java:global/GestionProjet/classes/ProjetEJB");
         collection = new ArrayList<Tache>();
-        collection.add(instanceTacheEJB.creerTache("4","", ImportanceEnum.IMPORTANT,instanceProjetEJB.creerProjet("Projet 1","description")));    
+        collection.add(instanceTacheEJB.creerTache("4","", ImportanceEnum.IMPORTANT,instanceProjetEJB.creerProjet("Projet 6","description")));    
         id = instanceTacheEJB.getTache("4").getId();
+        tache = instanceTacheEJB.getTache("4");
     }
 
     @AfterClass
@@ -53,13 +55,13 @@ public class TestArchivage {
 
     @Test
     public void testArchivageRéussi() throws TacheException {
-        instanceTacheEJB.archiverTache(id);
+        instanceTacheEJB.archiverTache(tache);
         assertTrue(instanceTacheEJB.getTache(id).isArchive());
     }
 
     @Test
     public void testDesarchivageRéussi() throws TacheException {
-        instanceTacheEJB.desarchiverTache(id);
+        instanceTacheEJB.desarchiverTache(tache);
         assertFalse(instanceTacheEJB.getTache(id).isArchive());
     }
    

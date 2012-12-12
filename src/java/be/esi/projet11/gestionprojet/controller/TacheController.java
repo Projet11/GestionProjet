@@ -17,12 +17,12 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
+import javax.faces.bean.ManagedProperty;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -56,10 +56,8 @@ public class TacheController {
     private Projet projetCourant;
     @ManagedProperty(value = "#{membreCtrl}")
     private MembreController membreCtrl;
-
-    public void setMembreCtrl(MembreController membreCtrl) {
-        this.membreCtrl = membreCtrl;
-    }
+    private Projet projet;
+    private String etatArchive;
 
     public String getCreationNom() {
         return creationNom;
@@ -81,8 +79,6 @@ public class TacheController {
         System.out.println("+++++++++" + projetCourant);
         this.projetCourant = projetCourant;
     }
-    private Projet projet;
-
     public void setCreationImportance(ImportanceEnum creationImportance) {
         this.creationImportance = creationImportance;
     }
@@ -325,12 +321,13 @@ public class TacheController {
         this.taches = taches;
     }
 
-    public void archiverTache() {
-        tacheCourante.setArchive(true);
-    }
-
-    public void desarchiverTache() {
-        tacheCourante.setArchive(false);
+    public String archiverTache() {
+        if (tacheCourante.isArchive()) {
+            tacheEJB.desarchiverTache(tacheCourante);
+        } else {
+            tacheEJB.archiverTache(tacheCourante);
+        }
+       return null;
     }
 
     public String affichageTaches() {
@@ -386,5 +383,29 @@ public class TacheController {
             return false;
         }
     }
+    
+        public boolean isArchivee() {
+        if (tacheCourante != null) {
+            if (tacheEJB.getTache(tacheCourante.getId()).isArchive()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
+    public String getEtatArchive() {
+        if (isArchivee()) {
+            setEtatArchive("Désarchiver");
+        } else {
+            setEtatArchive("Archiver");
+        }
+        return etatArchive;
+    }
+
+    public void setEtatArchive(String etatArchive) {
+        this.etatArchive = etatArchive;
+    }
 }
