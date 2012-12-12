@@ -13,14 +13,16 @@
 
     </h:head>
     <h:body>
-		<ui:include src="comp-navbar.xhtml"/>
+        <ui:include src="comp-navbar.xhtml"/>
 
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="pull-left">
-                    <ui:include src="afficherProjet.xhtml" />
+                <div class="span3">
+                    <div class="well">
+                        <ui:include src="afficherProjet.xhtml" />
+                    </div>
                 </div>  
-                <div class="span6">
+                <div class="span9">
                     <ui:include src="afficherTaches.xhtml" />
                 </div>
             </div>
