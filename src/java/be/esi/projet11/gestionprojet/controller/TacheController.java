@@ -39,9 +39,6 @@ public class TacheController {
     private TacheEJB tacheEJB;
     @EJB
     private MembreEJB membreEJB;
-//    @ManagedProperty("#{projetCtrl}")
-//    private ProjetController projetCtrl;
-    // Attributs utilisés par le formulaire de création d'une tâche uniquement
     private String nomParam;
     private String descriptionParam;
     private ImportanceEnum importanceParam;
@@ -85,18 +82,6 @@ public class TacheController {
         this.projetCourant = projetCourant;
     }
     private Projet projet;
-
-    public String getCreationNom() {
-        return creationNom;
-    }
-
-    public void setCreationNom(String creationNom) {
-        this.creationNom = creationNom;
-    }
-
-    public ImportanceEnum getCreationImportance() {
-        return creationImportance;
-    }
 
     public void setCreationImportance(ImportanceEnum creationImportance) {
         this.creationImportance = creationImportance;
@@ -307,7 +292,7 @@ public class TacheController {
 
     public String modifierTache(Tache tache) throws BusinessException {
         if (tache != null) {
-            membreCourantParam = membreCtrl.authenticateUser("Freddy", "Freddo");
+            membreCourantParam = membreCtrl.getMembreCourant();
             tacheCourante = tache;
             nomParam = tache.getNom();
             descriptionParam = tache.getDescription();
@@ -401,12 +386,5 @@ public class TacheController {
             return false;
         }
     }
-    
-    public boolean isMembreInCurrentTache(Long membreId) {
-        Membre membre = membreEJB.getById(membreId);
-        if (membre != null)
-            return tacheCourante.hasMembre(membre);
-        else
-            return false;
-    }
+
 }
