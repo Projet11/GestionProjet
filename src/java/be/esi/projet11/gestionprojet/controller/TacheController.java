@@ -86,6 +86,18 @@ public class TacheController {
     }
     private Projet projet;
 
+    public String getCreationNom() {
+        return creationNom;
+    }
+
+    public void setCreationNom(String creationNom) {
+        this.creationNom = creationNom;
+    }
+
+    public ImportanceEnum getCreationImportance() {
+        return creationImportance;
+    }
+
     public void setCreationImportance(ImportanceEnum creationImportance) {
         this.creationImportance = creationImportance;
     }
@@ -258,10 +270,12 @@ public class TacheController {
                 getTacheCourante().addMembre(membre);
             }
             tacheEJB.saveTache(getTacheCourante());
-        } catch (TacheException ex) {
+        }
+        catch (TacheException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("inscrireMembresATache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible d'ajouter un membre à la tâche <br/>" + ex.getMessage(), ""));
-        } catch (BusinessException ex) {
+        }
+        catch (BusinessException ex) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("inscrireMembresATache", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible d'ajouter un membre à la tâche <br/>" + ex.getMessage(), ""));
         }
@@ -386,5 +400,13 @@ public class TacheController {
         } else {
             return false;
         }
+    }
+    
+    public boolean isMembreInCurrentTache(Long membreId) {
+        Membre membre = membreEJB.getById(membreId);
+        if (membre != null)
+            return tacheCourante.hasMembre(membre);
+        else
+            return false;
     }
 }

@@ -111,10 +111,10 @@ public class MembreController {
     public String identifier() {
         final String NAV_CASE_SUCCESS = "success";
         final String NAV_CASE_FAILURE = "failure";
-
+        
         if (!this.isAuthenticated()) {
             try {
-                this.membreCourant = this.authenticateUser(this.inputNom, this.inputPassword);
+                this.membreCourant = this.authenticateUser(this.inputLogin, this.inputPassword);
                 this.setIdentificationEchouee(!this.isAuthenticated());
             } catch (BusinessException ex) {
                 this.setIdentificationEchouee(true);
@@ -123,7 +123,6 @@ public class MembreController {
 
         return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
     }
-
 
     public String inscrire() {
         try {
@@ -142,6 +141,12 @@ public class MembreController {
 
         return null;
     }
+	
+    public String deconnexion()
+    {
+        this.membreCourant = null;
+        return null;
+    }
 
     private Membre createUser(String login, String password, String mail,
             String nom, String prenom) throws BusinessException {
@@ -153,7 +158,7 @@ public class MembreController {
         }
     }
 
-    public Membre authenticateUser(String login, String password) throws BusinessException {
+    private Membre authenticateUser(String login, String password) throws BusinessException {
         try {
             setMembreCourant(membreEJB.getUserByAuthentification(login, password));
             return getMembreCourant();
