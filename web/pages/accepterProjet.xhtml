@@ -23,14 +23,18 @@
     <h:body>
         <ui:include src="comp-navbar.xhtml"/>
         <f:view beforePhase="#{mailCtrl.ajoutMembreProjet()}"/>
-        Ajout Membre au projet <br/>
+        <br/>
         <c:choose>
             <c:when test="#{membreCtrl.authenticated}">
-                Bienvenue #{membreCtrl.membreCourant.nom}<br/>
-                Vous avez été ajouter au projet #{mailCtrl.projet.nom}
+                <legend>
+                    Bienvenue #{membreCtrl.membreCourant.nom}<br/>
+                    Vous avez été ajouter au projet #{mailCtrl.projet.nom}
+                </legend>
             </c:when>
             <c:otherwise>
-                Veuillez vous authentifier avant d'etre ajouter au projet #{mailCtrl.projet.nom}
+                <legend>
+                    Veuillez vous authentifier avant d'etre ajouter au projet #{mailCtrl.projet.nom}
+                </legend>
                 <div id="connexion">
                     <ui:include src="connexion-form.xhtml"/>
                 </div>
