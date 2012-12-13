@@ -34,7 +34,6 @@ public class TestLienNavBar extends TestDeBase {
     @Test
     public void testAcceuil() {
         seConnecter();
-        attendre();
         selenium.click("id=acceuil");
         attendre();
         Assert.assertTrue(selenium.isTextPresent("Noms des projets"));
@@ -43,7 +42,6 @@ public class TestLienNavBar extends TestDeBase {
     @Test
     public void testLogo() {
         seConnecter();
-        attendre();
         selenium.click("id=logo");
         attendre();
         Assert.assertTrue(selenium.isTextPresent("Noms des projets"));

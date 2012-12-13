@@ -55,7 +55,7 @@ public class Tache implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "Tache")
     @TableGenerator(name = "Tache", allocationSize = 1)
     private Long id;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String nom;
     @Column(nullable = false)
     private ImportanceEnum importance;
