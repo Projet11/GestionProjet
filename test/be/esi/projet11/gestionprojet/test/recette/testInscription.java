@@ -13,7 +13,7 @@ public class testInscription extends TestDeBase {
 
     @Test
     public void testInscriptionReussie() {
-        remplirEtTesterFormulaire("plu", "plu", "plu", "plu@gamil.com", "plu", "plu", "testInsciption reussi", messageInscriptionReussie);
+        remplirEtTesterFormulaire("plu", "plu", "plu", "plu@gamil.com", "plu", "plu", "testInscription reussi", messageInscriptionReussie);
     }
     
     @Test

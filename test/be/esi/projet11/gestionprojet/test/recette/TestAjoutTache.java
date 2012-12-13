@@ -32,8 +32,8 @@ public class TestAjoutTache extends TestDeBase {
     @BeforeClass
     public static void setUpClass() throws Exception {
         creerUser();
-        seConnecter();
-        selenium.open("/GestionProjet/pages/accueil.xhtml");
+        //seConnecter();
+        //selenium.open("/GestionProjet/pages/accueil.xhtml");
     }
 
     @AfterClass
@@ -43,6 +43,7 @@ public class TestAjoutTache extends TestDeBase {
 
     @Test
     public void ajoutTachePrioEtNomDifferents() {
+        seConnecter();
         ajouterUneTacheEtLaRetrouver("tache1", prioNormale);
         ajouterUneTacheEtLaRetrouver("tache2", prioImportante);
         ajouterUneTacheEtLaRetrouver("tache3", prioTresHaute);
@@ -50,15 +51,16 @@ public class TestAjoutTache extends TestDeBase {
 
     @Test
     public void ajoutDeuxTachesMemeNoms() {
+        seConnecter();
         ajouterUneTacheEtLaRetrouver("tache5", prioNormale);
         ajouterUneTacheEtLaRetrouver("tache5", prioImportante);
     }
 
     @Test
     public void ajoutTachePuisAnnuler() {
-        selenium.open("/GestionProjet/pages/accueil.xhtml");
-        attendre();
+        seConnecter();
         selenium.click(lienProjet1);
+        attendre();
         selenium.click(bouton_ajout_tache);
         attendre();
         selenium.type(champ_tache_nom, "tache annulee");
@@ -69,6 +71,7 @@ public class TestAjoutTache extends TestDeBase {
     }
 
     public void ajouterUneTacheEtLaRetrouver(String nomTache, String priorite) {
+//        seConnecter();
         selenium.open("/GestionProjet/pages/accueil.xhtml");
         selenium.click(lienProjet1);
         attendre();

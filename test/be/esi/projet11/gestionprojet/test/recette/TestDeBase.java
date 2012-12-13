@@ -98,7 +98,7 @@ public class TestDeBase {
 
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:26764");
+        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:27583");
         selenium.start();
     }
 

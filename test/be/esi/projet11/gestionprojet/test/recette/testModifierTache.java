@@ -5,7 +5,6 @@
 package be.esi.projet11.gestionprojet.test.recette;
 
 import be.esi.projet11.gestionprojet.entity.Membre;
-import be.esi.projet11.gestionprojet.entity.Tache;
 import junit.framework.Assert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -38,9 +37,7 @@ public class testModifierTache extends TestDeBase {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        creerUser();
-        seConnecter();
-        selenium.open("/GestionProjet/pages/accueil.xhtml");
+        //creerUser();
     }
 
     @AfterClass
@@ -50,8 +47,7 @@ public class testModifierTache extends TestDeBase {
 
     @Test
     public void modifierEtAnnulerTache() {
-        selenium.open("/GestionProjet/pages/accueil.xhtml");
-        attendre();
+        seConnecter();
         selenium.click(lienProjet1);
         attendre();
         selenium.click(bouton_modifier_tache);
@@ -67,14 +63,13 @@ public class testModifierTache extends TestDeBase {
 
     @Test
     public void modifierTache() {
+        seConnecter();
         modifierTacheEtValider(0, prioHaute, 80, 159);
         modifierTacheEtValider(1, prioNormale, 78, 160);
-        modifierTacheEtValider(2, prioTresHaute, 79, 170);
     }
 
     public void modifierTacheEtValider(int tacheId, String priorite, int pourcentage, int numSvn) {
-        selenium.open("/GestionProjet/pages/accueil.xhtml");
-        attendre();
+        seConnecter();
         selenium.click(lienProjet1);
         attendre();
         selenium.click("id=formAfficherTaches:resultat:" + tacheId + ":btnTacheMod");
