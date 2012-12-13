@@ -4,9 +4,6 @@
  */
 package be.esi.projet11.gestionprojet.test.recette;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -43,56 +40,56 @@ public class TestLogin extends TestDeBase {
 
     @Test
     public void testIdentifiantReussiAvecLogin() {
-        remplirChamps("Pluquet", "Pluquet");
+        remplirChamps("mbr", "mbr");
         boolean ok = cliquerEtTesterMessage(deconnexionButtonText);
         Assert.assertTrue(ok);
     }
 
     @Test
     public void testIdentifiantReussiAvecEmail() {
-        remplirChamps("pluquet@gmail.com", "Pluquet");
+        remplirChamps("mbr@mbr.be", "mbr");
         boolean ok = cliquerEtTesterMessage(deconnexionButtonText);
         Assert.assertTrue(ok);
     }
 
     @Test
     public void testIdentifiantRateAvecEmailInvalide() {
-        remplirChamps("pluquezeftt@gmail.com", "Pluquet");
+        remplirChamps("pluquezeftt@gmail.com", "mbr");
         boolean ok = cliquerEtTesterMessage(connexionEchouee);
         Assert.assertTrue(ok);
     }
 
     @Test
     public void testIdentifiantRateAvecLoginIncorrecte() {
-        remplirChamps("zefze", "Pluquet");
+        remplirChamps("zefze", "mbr");
         boolean ok = cliquerEtTesterMessage(connexionEchouee);
         Assert.assertTrue(ok);
     }
 
     @Test
     public void testIdentifiantRateAvecLoginValideEtMDPIncorrect() {
-        remplirChamps("Pluquet", "ergyre");
+        remplirChamps("mbr", "ergyre");
         boolean ok = cliquerEtTesterMessage(connexionEchouee);
         Assert.assertTrue(ok);
     }
 
     @Test
     public void testIdentifiantRateAvecEmailValideEtMDPIncorrect() {
-        remplirChamps("pluquet@gmail.com", "ergyre");
+        remplirChamps("mbr@mbr.be", "ergyre");
         boolean ok = cliquerEtTesterMessage(connexionEchouee);
         Assert.assertTrue(ok);
     }
 
     @Test
     public void testIdentifiantRateAvecLoginVide() {
-        remplirChamps("", "Pluquet");
+        remplirChamps("", "mbr");
         boolean ok = cliquerEtTesterMessage(messageChampVide);
         Assert.assertTrue(ok);
     }
 
     @Test
     public void testIdentifiantRateAvecMDPVide() {
-        remplirChamps("Pluquet", "");
+        remplirChamps("mbr", "");
         boolean ok = cliquerEtTesterMessage(messageChampVide);
         Assert.assertTrue(ok);
     }

@@ -121,6 +121,6 @@ public class ProjetController {
     }
 
     public boolean isCurrentProject(Projet projet) {
-        return projet == projetCourant;
+        return projet.equals(projetCourant);
     }
 }

@@ -33,7 +33,7 @@ public class TestLienNavBar extends TestDeBase {
     
     @Test
     public void testAcceuil() {
-        selenium.open("/GestionProjet/pages/connexion.xhtml");
+        seConnecter();
         attendre();
         selenium.click("id=acceuil");
         attendre();
@@ -42,7 +42,7 @@ public class TestLienNavBar extends TestDeBase {
     
     @Test
     public void testLogo() {
-        selenium.open("/GestionProjet/pages/connexion.xhtml");
+        seConnecter();
         attendre();
         selenium.click("id=logo");
         attendre();

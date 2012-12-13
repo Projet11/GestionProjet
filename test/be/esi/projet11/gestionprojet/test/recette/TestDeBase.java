@@ -38,8 +38,8 @@ public class TestDeBase {
 
     public void seConnecter() {
         selenium.open("/GestionProjet/pages/connexion.xhtml");
-        selenium.type("id=formIdentification:txtNom", "Pluquet");
-        selenium.type("id=formIdentification:txtPass", "Pluquet");
+        selenium.type("id=formIdentification:txtNom", "mbr");
+        selenium.type("id=formIdentification:txtPass", "mbr");
         selenium.click("id=formIdentification:login");
         attendre();
     }
@@ -53,7 +53,7 @@ public class TestDeBase {
 
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:35195");
+        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:32094");
         selenium.start();
     }
 
@@ -66,7 +66,7 @@ public class TestDeBase {
         try {
             selenium.waitForPageToLoad("3000");
         } catch (Exception ex) {
-            System.out.println("Attention probleme sleep" + ex.getMessage());
+            //Cas normal quand la page n'est pas recharger
         }
     }
 }

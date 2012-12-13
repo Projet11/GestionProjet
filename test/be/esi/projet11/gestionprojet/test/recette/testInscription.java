@@ -1,23 +1,22 @@
 package be.esi.projet11.gestionprojet.test.recette;
 
-import com.thoughtworks.selenium.*;
 import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class testInscription extends TestDeBase {
 
-    String nom = "Pluquet", prenom = "Frederic", login = "pluquet", email = "pluquet@gmail.com", mdp = "pluquet";
+    String nom = "test", prenom = "testprenom", login = "test", email = "test@gamil.be", mdp = "test";
     String messageInscriptionReussie = "Merci. Votre compte a été créé.";
     String messageChampVide = "Un champ a été laissé vide";
     String messageMotDePasseInvalide = "Les deux mots de passe ne correspondent pas";
     String messageEmailInvalide = "L'email n'est pas valide";
 
+    @Test
     public void testInscriptionReussie() {
         remplirEtTesterFormulaire("plu", "plu", "plu", "plu@gamil.com", "plu", "plu", "testInsciption reussi", messageInscriptionReussie);
     }
-
+    
+    @Test
     public void testInscriptionAvecChampVide() {
         String messageTest = "L'inscription n'a pas eu lieu";
         remplirEtTesterFormulaire(nom, prenom, "", email, mdp, mdp, messageTest, messageChampVide);
