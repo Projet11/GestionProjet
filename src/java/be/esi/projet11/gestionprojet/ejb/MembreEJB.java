@@ -58,15 +58,14 @@ public class MembreEJB {
         }
     }
 
-    public Membre updateUser(String login, String password, String mail, String nom, String prenom) throws DBException {
-        Query qry = em.createNamedQuery("Membre.findByMail");
-        qry.setParameter("mail", mail);
-        Membre mbr = (Membre) qry.getSingleResult();
+    public Membre updateUser(Long id, String login, String password, String mail, String nom, String prenom) throws DBException {
+        Membre mbr = em.find(Membre.class, id);
         if (mbr == null) {
-            throw new DBException("Aucune utilisateur ne possède cette adresse mail.\n");
+            throw new DBException("Aucun utilisateur ne possède cet identifiant.\n");
         }
         mbr.setLogin(login);
         mbr.setNom(nom);
+        mbr.setMail(mail);
         mbr.setPrenom(prenom);
         mbr.setPassword(password);
         return mbr;
@@ -86,23 +85,15 @@ public class MembreEJB {
                 erreur += "L'identifiant est déjà utilisé.\n";
             }
             if (mailExists(mail)) {
-                Membre mbr = getMembreByEmail(mail);
-                if (mbr != null && mbr.getLogin() == null) {
-                    updateUser(login, password, mail, nom, prenom);
-                    return mbr;
-                } else {
-                    erreur += "L'adresse mail est déjà utilisée.\n";
-                    throw new DBException(erreur);
-                }
-            } else {
-                Membre usr = new Membre(0l, login, password, mail, nom, prenom);
-                em.persist(usr);
-                em.flush();
-                Mailer.send(mail, "GestionProjet - Inscription", "Mlle, Mme, Mr " + nom + "\n"
-                        + "Votre inscription a été validée.\n"
-                        + "Votre login est : " + login);
-                return usr;
+                erreur += "L'adresse mail est déjà utilisée.\n";
             }
+            Membre usr = new Membre(0l, login, password, mail, nom, prenom);
+            em.persist(usr);
+            em.flush();
+            Mailer.send(mail, "GestionProjet - Inscription", "Mlle, Mme, Mr " + nom + "\n"
+                    + "Votre inscription a été validée.\n"
+                    + "Votre login est : " + login);
+            return usr;
         } catch (PersistenceException e) {
             throw new DBException(erreur, e);
         } catch (ConstraintViolationException e) {
@@ -140,7 +131,6 @@ public class MembreEJB {
     }
 
     public boolean mailExists(String mail) {
-        boolean exists = true;
         try {
             if (mail == null) {
                 return false;
@@ -150,9 +140,9 @@ public class MembreEJB {
                 return false;
             }
         } catch (DBException e) {
-            exists = false;
+            return false;
         }
-        return exists;
+        return true;
     }
 
     public Membre getMembreById(long mbrId) {

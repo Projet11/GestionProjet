@@ -30,6 +30,7 @@ public class MailController {
 //    private String idProjet;
 //    @ManagedProperty(value = "#{param.idMembre}")
 //    private String idMembre;
+
     @ManagedProperty("#{membreCtrl}")
     private MembreController membreCtrl;
     private Membre membre;
@@ -57,22 +58,6 @@ public class MailController {
         return projet;
     }
 
-//    public String getIdMembre() {
-//        return idMembre;
-//    }
-//
-//    public void setIdMembre(String idMembre) {
-//        this.idMembre = idMembre;
-//    }
-//
-//    public String getIdProjet() {
-//        return idProjet;
-//    }
-//
-//    public void setIdProjet(String idProjet) {
-//        this.idProjet = idProjet;
-//    }
-
     public MembreController getMembreCtrl() {
         return membreCtrl;
     }
@@ -89,8 +74,6 @@ public class MailController {
         this.tache = tache;
     }
 
-    
-    
     /**
      * Set the value of projet
      *
@@ -118,17 +101,13 @@ public class MailController {
         this.membre = membre;
     }
 
-    public void ajoutMembreProjet() throws BusinessException {
-        try {
-            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-            long projectlong = Long.parseLong(map.get("idProjet"));
-            long membrelong = Long.parseLong(map.get("idMembre"));
-            projet = projetEJB.getProjetById(projectlong);
-            membre = membreEJB.getMembreById(membrelong);
-        } catch (Exception e) {
-            //Pas de traitement en cas d'exception car ca veux juste dire
-            //que le projet et le membre sont bien initialise
-        }
+    public void ajoutMembreProjet() {
+        Map<String, String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        long projectlong = Long.parseLong(map.get("idProjet"));
+        long membrelong = Long.parseLong(map.get("idMembre"));
+        projet = projetEJB.getProjetById(projectlong);
+        membre = membreEJB.getMembreById(membrelong);
+        membreCtrl.setMembreFromEmail(membre);
         if (membreCtrl.isAuthenticated()) {
             projetEJB.accepterParticipant(projet, membre);
         }
@@ -136,7 +115,7 @@ public class MailController {
 
     public void refusAjoutMembreProjet() throws BusinessException {
         try {
-            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            Map<String, String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             long projectlong = Long.parseLong(map.get("idProjet"));
             long membrelong = Long.parseLong(map.get("idMembre"));
             projet = projetEJB.getProjetById(projectlong);
@@ -148,10 +127,10 @@ public class MailController {
             throw new BusinessException("Impossible de refuser l'ajout du membre au projet :" + e.getMessage());
         }
     }
-    
+
     public void ajoutMembreTache() throws BusinessException {
         try {
-            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            Map<String, String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             long tachelong = Long.parseLong(map.get("idTache"));
             long membrelong = Long.parseLong(map.get("idMembre"));
             tache = tacheEJB.getTache(tachelong);
@@ -160,15 +139,15 @@ public class MailController {
             //Pas de traitement en cas d'exception car ça veut juste dire
             //que la tâche et le membre sont bien initialisés
         }
-        
+
         if (membreCtrl.isAuthenticated()) {
             tacheEJB.ajouterMembre(tache, getMembre());
         }
     }
-    
+
     public void refusAjoutMembreTache() throws BusinessException {
         try {
-            Map<String,String> map=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            Map<String, String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             long tachelong = Long.parseLong(map.get("idTache"));
             long membrelong = Long.parseLong(map.get("idMembre"));
             tache = tacheEJB.getTache(tachelong);
@@ -178,7 +157,7 @@ public class MailController {
         } catch (Exception ex) {
             throw new BusinessException("Impossible de refuser l'ajout du membre à la tâche :" + ex.getMessage());
         }
-        
+
         if (membreCtrl.isAuthenticated()) {
             tacheEJB.supprimerMembre(tache, getMembre());
         }
