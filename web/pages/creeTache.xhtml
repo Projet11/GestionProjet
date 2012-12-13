@@ -12,11 +12,10 @@
         <title>Création de tâche</title>
     </h:head>
     <h:body>
-
+        <ui:include src="comp-navbar.xhtml"/>
         <div class="hero-unit">
             <legend>Ajout de tache</legend>
             <!-- Debut formulaire -->
-
             <h:form name="Ajouter une tâche" class="form-horizontal">
                 <fieldset>
                     <!-- Nom -->
@@ -56,6 +55,7 @@
                             <h:commandButton class="btn btn-danger" action="#{tacheCtrl.annulerCreation()}" value="Annuler" immediate="true"/>
                         </div>
                     </div>
+                    <br/>
                     <h:message for="Nom" />
                 </fieldset>
             </h:form>
