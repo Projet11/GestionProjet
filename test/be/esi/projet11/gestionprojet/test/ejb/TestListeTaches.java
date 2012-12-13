@@ -9,6 +9,7 @@ import be.esi.projet11.gestionprojet.ejb.TacheEJB;
 import be.esi.projet11.gestionprojet.entity.Projet;
 import be.esi.projet11.gestionprojet.entity.Tache;
 import be.esi.projet11.gestionprojet.enumeration.ImportanceEnum;
+import be.esi.projet11.gestionprojet.exception.DBException;
 import be.esi.projet11.gestionprojet.exception.TacheException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,13 +65,13 @@ public class TestListeTaches {
     }
 
     @Test
-    public void testGetTachesArchivees() {
+    public void testGetTachesArchivees() throws DBException {
         instanceTacheEJB.archiverTache(instanceTacheEJB.getTache("4"));
         assertEquals(instanceTacheEJB.getTaches(true, p).size(), 1);
     }
 
     @Test
-    public void testGetTachesNonArchivees() {
+    public void testGetTachesNonArchivees() throws DBException {
 
         instanceTacheEJB.desarchiverTache(instanceTacheEJB.getTache("5"));
         instanceTacheEJB.desarchiverTache(instanceTacheEJB.getTache("6"));
@@ -80,7 +81,7 @@ public class TestListeTaches {
     }
 
     @Test
-    public void testGetTachesNonArchiveesListeVide() {
+    public void testGetTachesNonArchiveesListeVide() throws DBException {
 
         instanceTacheEJB.archiverTache(instanceTacheEJB.getTache("5"));
         instanceTacheEJB.archiverTache(instanceTacheEJB.getTache("6"));

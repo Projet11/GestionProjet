@@ -113,16 +113,20 @@ public class Tache implements Serializable {
         this.importance = importance;
     }
 
-    public Tache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {    
+    public Tache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {
+        if (nom == null || nom.equals("") || description == null || description.equals("") || importance == null || p == null) {
+            throw new TacheException("Pour crée une tache il faut un nom, une description, une importance et un projet.");
+        }
         this.id = 0l;
         this.nom = nom;
         this.description = description;
-        this.importance = ImportanceEnum.NORMALE;
+        this.importance = importance;
         this.pourcentage = 0;
         this.revision = null;
         conversation = new ArrayList<Commentaire>();
         membres = new ArrayList<ParticipeTache>();
-   this.projet = p;    }
+        this.projet = p;
+    }
 
     /**
      * Get the value of pourcentage

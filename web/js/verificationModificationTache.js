@@ -8,6 +8,7 @@ function valideSVN() {
     return true;
 }
 function validePourcentage() {
+    console.log("Bonjour");
     if (isEmpty($("#divPourcentage input").val())) {
         document.getElementById("Error").innerHTML = "Attention les champs ne sont pas remplis!";
         return false;

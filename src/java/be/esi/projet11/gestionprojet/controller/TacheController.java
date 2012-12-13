@@ -268,13 +268,15 @@ public class TacheController {
         }
     }
 
-    public void ajouterCommentaire() {
+    public String ajouterCommentaire() {
         if (tacheCourante != null && membreCourantParam != null
                 && commentaireParam != null && !commentaireParam.isEmpty()) {
             tacheEJB.ajouterCommentaire(tacheCourante, membreCourantParam, commentaireParam);
+            commentaireParam=null;
         } else {
             System.err.println("la tache, le membre ou le commentaire ne peut être vide");
         }
+        return null;
     }
 
     public String modifierTache(Tache tache) throws BusinessException {
