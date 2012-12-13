@@ -26,6 +26,7 @@ public class MembreController {
     private String inputMail;
     private boolean inscriptionEchouee;
     private String statusMessage;
+    private Membre membreFromEmail;
 
     @PostConstruct
     public void init() {
@@ -49,7 +50,7 @@ public class MembreController {
     public void setInputNom(String inputNom) {
         this.inputNom = inputNom;
     }
-    
+
     public String getInputPrenom() {
         return this.inputPrenom;
     }
@@ -106,6 +107,10 @@ public class MembreController {
         this.membreCourant = membreCourant;
     }
 
+    public void setMembreFromEmail(Membre membreFromEmail) {
+        this.membreFromEmail = membreFromEmail;
+    }
+
     public boolean isAuthenticated() {
         return getMembreCourant() != null;
     }
@@ -120,42 +125,38 @@ public class MembreController {
             } catch (BusinessException ex) {
                 this.setIdentificationEchouee(true);
             }
-        }        
+        }
 
         return this.isAuthenticated() ? NAV_CASE_SUCCESS : NAV_CASE_FAILURE;
     }
 
     public String inscrire() {
         try {
-            this.membreCourant = this.createUser(inputLogin, inputPassword, inputMail, inputNom, inputPrenom);
-
+            Membre mbr = null;
+            if (membreFromEmail != null) {
+                mbr = membreEJB.getMembreByEmail(membreFromEmail.getMail());
+            }
+            if (mbr == null) {
+                this.membreCourant = membreEJB.addUser(inputLogin, inputPassword, inputMail, inputNom, inputPrenom);
+            } else {
+                this.membreCourant = membreEJB.updateUser(membreFromEmail.getId(), inputLogin, inputPassword, inputMail, inputNom, inputPrenom);
+                membreFromEmail = null;
+            }
             if (this.membreCourant == null) {
                 throw new IllegalStateException("L'inscription a échoué");
             }
-
             this.setInscriptionEchouee(false);
             this.setStatusMessage("Merci. Votre compte a été créé.");
         } catch (Exception e) {
             this.setInscriptionEchouee(true);
             this.setStatusMessage(e.getMessage());
         }
-
         return null;
     }
-	
-    public String deconnexion()
-    {
+
+    public String deconnexion() {
         this.membreCourant = null;
         return null;
-    }
-
-    private Membre createUser(String login, String password, String mail,
-            String nom, String prenom) throws BusinessException {
-        try {
-            return membreEJB.addUser(login, password, mail, nom, prenom);
-        } catch (Exception e) {
-            throw new BusinessException(e.getMessage());
-        }
     }
 
     private Membre authenticateUser(String login, String password) throws BusinessException {
@@ -167,9 +168,9 @@ public class MembreController {
             throw new BusinessException(e.getMessage());
         }
     }
-    
-    public void navigationIsAuthenticated() throws BusinessException{
-        if(!isAuthenticated()){
+
+    public void navigationIsAuthenticated() throws BusinessException {
+        if (!isAuthenticated()) {
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/GestionProjet/pages/connexion.xhtml");
             } catch (IOException ex) {
