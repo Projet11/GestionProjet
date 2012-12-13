@@ -5,6 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
+        <f:event type="preRenderView" listener="#{membreCtrl.navigationIsAuthenticated()}"/>
         <script type ="text/javascript" src ="/GestionProjet/js/verificationCreeTache.js"></script>
         <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
         <link href="/GestionProjet/css/bootstrap.min.css" rel="stylesheet" media="screen"/>

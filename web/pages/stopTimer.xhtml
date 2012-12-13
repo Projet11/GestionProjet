@@ -7,7 +7,7 @@
         <title>Arret du timer</title>
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="stopTimerForm">
             <ul class="nav">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -21,7 +21,7 @@
                                     <h:outputText value="#{tache.nom}"/>
                                     <h:outputText value=" démarrée à "/>
                                     <h:outputText value="#{tache.date} "/>
-                                    <h:commandButton class="btn" action="#{tacheCtrl.stopTimer(tache)}" value="Arrêter"/>
+                                    <h:commandButton id="boutonArreter#{tache.id}" class="btn" action="#{tacheCtrl.stopTimer(tache)}" value="Arrêter"/>
                                 </a>
                             </li>
                         </c:forEach>

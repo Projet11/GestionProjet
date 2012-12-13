@@ -64,7 +64,7 @@ public class TestDeBase {
 
     public void attendre() {
         try {
-            selenium.waitForPageToLoad("3000");
+            selenium.waitForPageToLoad("4000");
         } catch (Exception ex) {
             //Cas normal quand la page n'est pas recharger
         }
