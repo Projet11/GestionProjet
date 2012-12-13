@@ -44,16 +44,16 @@ public class TestAjoutTache extends TestDeBase {
     @Test
     public void ajoutTachePrioEtNomDifferents() {
         seConnecter();
-        ajouterUneTacheEtLaRetrouver("tache1", prioNormale);
-        ajouterUneTacheEtLaRetrouver("tache2", prioImportante);
-        ajouterUneTacheEtLaRetrouver("tache3", prioTresHaute);
+        ajouterUneTacheEtLaRetrouver("tache21", prioNormale);
+        ajouterUneTacheEtLaRetrouver("tache22", prioImportante);
+        ajouterUneTacheEtLaRetrouver("tache23", prioTresHaute);
     }
 
     @Test
     public void ajoutDeuxTachesMemeNoms() {
         seConnecter();
-        ajouterUneTacheEtLaRetrouver("tache5", prioNormale);
-        ajouterUneTacheEtLaRetrouver("tache5", prioImportante);
+        ajouterUneTacheEtLaRetrouver("tache15", prioNormale);
+        ajouterUneTacheEtLaRetrouver("tache15", prioImportante);
     }
 
     @Test
@@ -81,6 +81,8 @@ public class TestAjoutTache extends TestDeBase {
         selenium.select(combo_priorite, "label=" + priorite);
         selenium.type(champ_description, "Commentaire");
         selenium.click(bouton_cree_tache);
+        attendre();
+        selenium.click(lienProjet1);
         attendre();
         Assert.assertTrue(selenium.isTextPresent(nomTache));
     }
