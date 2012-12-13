@@ -65,19 +65,25 @@ public class Tache implements Serializable {
     private Byte pourcentage;
     private Long revision;
     private char timerLaunched;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateDeb;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date tempsPasseSurTache;
+    private long tempsPasseSurTache;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private Collection<ParticipeTache> membres;
     private char archive;
     @JoinColumn(name = "PROJET", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Projet projet; // TODO: établir un lien entre projet et tâche avec un ManyToOne comme pour membres
+    private Projet projet; 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tache")
     private List<Commentaire> conversation;
 
+    public List<Commentaire> getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(List<Commentaire> conversation) {
+        this.conversation = conversation;
+    }
 
     public Tache() throws TacheException {
         this("<nomInexistant>", "<descriptionInexistante>");
@@ -107,19 +113,16 @@ public class Tache implements Serializable {
         this.importance = importance;
     }
 
-    public Tache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {
-        this(nom, description);
-        this.importance = importance;
-        this.projet = p;
-    }
-    
-    public List<Commentaire> getConversation() {
-        return conversation;
-    }
-
-    public void setConversation(List<Commentaire> conversation) {
-        this.conversation = conversation;
-    }
+    public Tache(String nom, String description, ImportanceEnum importance, Projet p) throws TacheException {    
+        this.id = 0l;
+        this.nom = nom;
+        this.description = description;
+        this.importance = ImportanceEnum.NORMALE;
+        this.pourcentage = 0;
+        this.revision = null;
+        conversation = new ArrayList<Commentaire>();
+        membres = new ArrayList<ParticipeTache>();
+   this.projet = p;    }
 
     /**
      * Get the value of pourcentage
@@ -240,7 +243,7 @@ public class Tache implements Serializable {
 
     @Override
     public String toString() {
-        return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + " Projet : " + projet + "\n Description : " + this.description;
+        return "Tache n°" + id + " Nom : " + nom + " Importance : " + importance + "\n Description : " + this.description;
     }
 
     public boolean isTimerLaunched() {
@@ -250,9 +253,14 @@ public class Tache implements Serializable {
     /**
      * @param timerLaunched the timerLaunched to set
      */
-    public void setTimerLaunched(boolean timerLaunched) {
-        this.timerLaunched = (timerLaunched ? '1' : '0');
-        setDateDeb(new Date());
+    public void setTimerLaunched() {
+        if (isTimerLaunched()) {
+            this.timerLaunched = '0';
+            setTempsPasseSurTache(new Date().getTime() - dateDeb.getTime());
+        }else{
+            this.timerLaunched = '1';
+            dateDeb=new Date();
+        }
     }
 
     public Time getTimer() {
@@ -260,8 +268,6 @@ public class Tache implements Serializable {
         return new Time(currDate.getTime() - getDateDeb().getTime());
     }
     
-
-
     /**
      * @return the dateDeb
      */
@@ -279,15 +285,15 @@ public class Tache implements Serializable {
     /**
      * @return the tempsPasseSurTache
      */
-    public Date getTempsPasseSurTache() {
+    public long getTempsPasseSurTache() {
         return tempsPasseSurTache;
     }
 
     /**
      * @param tempsPasseSurTache the tempsPasseSurTache to set
      */
-    public void setTempsPasseSurTache(Date tempsPasseSurTache) {
-        this.tempsPasseSurTache = tempsPasseSurTache;
+    public void setTempsPasseSurTache(long tempsEnPlus) {
+        this.tempsPasseSurTache+= tempsEnPlus;
     }
 
     public void addMembre(Membre membre) throws TacheException {
@@ -298,8 +304,8 @@ public class Tache implements Serializable {
             return;
         
         membres.add(new ParticipeTache(this, membre));
-        String sujet = "[PROJET " + getProjet().getNom() + "] Invitation à rejoindre une tâche";
-        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche " + nom + " du projet " + getProjet().getNom() + "</h1>";
+        String sujet = "[PROJET " + projet.getNom() + "] Invitation à rejoindre une tâche";
+        String corps = "<html><h1>Vous avez reçu une invitation pour participer à la tâche " + nom + " du projet " + projet.getNom() + "</h1>";
         corps += "<p>Pour accepter ou refuser, cliquez sur un des liens suivants :</p>";
         corps += "<p><a href='http://localhost:27583/GestionProjet/pages/accepterTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Accepter</a></p>";
         corps += "<p><a href='http://localhost:27583/GestionProjet/pages/refuserTache.xhtml?idMembre=" + membre.getId() + "&idTache=" + getId() + "'>Refuser</a></p>"; // TODO: Corriger les liens
@@ -322,7 +328,6 @@ public class Tache implements Serializable {
     public Collection<ParticipeTache> getParticipations() {
         return membres;
     }
-
 
     public int getNbMembres() {
         return membres.size();
@@ -401,7 +406,8 @@ public class Tache implements Serializable {
     }
     
     public String getDate(){
-        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-        return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(dateDeb);
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat formatTime = new SimpleDateFormat("kk:mm:ss");
+        return formatTime.format(dateDeb)+" le "+formatDate.format(dateDeb);
     }
 }

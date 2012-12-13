@@ -41,7 +41,6 @@ public class ProjetEJB {
         q.setParameter("idProjet", projet.getId());
         q.executeUpdate();
         em.merge(projet);
-        System.out.println("projetejb "+ projet.getParticipants().size());
     }
 
     public List<Projet> getAllProjets() {

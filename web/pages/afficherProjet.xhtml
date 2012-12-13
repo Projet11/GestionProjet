@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>Afficher Projet</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:commandButton class="btn" value="Créer un projet"/>
-        </h:form>
-        <br/>
+        <p style="white-space: nowrap; overflow: hidden;">
+            <strong>Bienvenue, #{membreCtrl.membreCourant.prenom}!</strong>
+        </p>
+
+        <hr style="border: 0px; height: 1px; background-color: #E0E0E0; width: 100%; margin-top: 29px;"/>
+
         <h:form>
             <p:dataTable value="#{projetCtrl.projets}" var="projet" styleClass="table">
                 <p:column>
