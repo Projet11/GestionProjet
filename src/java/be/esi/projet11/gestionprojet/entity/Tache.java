@@ -127,14 +127,6 @@ public class Tache implements Serializable {
         membres = new ArrayList<ParticipeTache>();
         this.projet = p;
     }
-    
-    public List<Commentaire> getConversation() {
-        return conversation;
-    }
-
-    public void setConversation(List<Commentaire> conversation) {
-        this.conversation = conversation;
-    }
 
     /**
      * Get the value of pourcentage
