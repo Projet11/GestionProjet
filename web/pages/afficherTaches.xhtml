@@ -17,7 +17,7 @@
                     <div class="btn-group pull-left">
                         <c:if test="#{not empty projetCtrl.projetCourant}">
                             <h:commandButton id="creerTacheBtn" class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Créer"/> 
-                            <h:commandButton class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
+                            <h:commandButton id="ajoutMembreProjet" class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
                         </c:if>
                     </div> 
                     <div id="tachesFilter" class="pull-right">

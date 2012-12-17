@@ -31,14 +31,10 @@ public class TestAjoutTache extends TestDeBase {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        creerUser();
-        //seConnecter();
-        //selenium.open("/GestionProjet/pages/accueil.xhtml");
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        //supprimerUser();
     }
 
     @Test
@@ -70,8 +66,7 @@ public class TestAjoutTache extends TestDeBase {
         Assert.assertFalse(selenium.isTextPresent("tache annulee"));
     }
 
-    public void ajouterUneTacheEtLaRetrouver(String nomTache, String priorite) {
-//        seConnecter();
+    private void ajouterUneTacheEtLaRetrouver(String nomTache, String priorite) {
         selenium.open("/GestionProjet/pages/accueil.xhtml");
         selenium.click(lienProjet1);
         attendre();

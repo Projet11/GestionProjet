@@ -19,15 +19,6 @@ public class TestDeBase {
 
     protected static Selenium selenium;
 
-    public static void creerUser() throws DBException, NamingException {
-        //Nom, prenom, login, email, mdp
-//         properties = new HashMap<Object, Object>();
-//        properties.put(EJBContainer.APP_NAME, "GestionProjet");
-//        container = javax.ejb.embeddable.EJBContainer.createEJBContainer(properties);
-//        membreEJB = (MembreEJB) container.getContext().lookup("java:global/GestionProjet/classes/MembreEJB");
-//        membreEJB.addUser("Pluquet", "Pluquet", "pluquet@gmail.com", "Pluquet", "Frederic");
-    }
-
     public void seConnecter() {
         selenium.open("/GestionProjet/pages/connexion.xhtml");
         selenium.type("id=formIdentification:txtNom", "mbr");
@@ -36,10 +27,6 @@ public class TestDeBase {
         attendre();
     }
 
-//    public static void supprimerUser() {
-//        MembreController mc = new MembreController().
-//        UserDB.supprimerUser(utilisateur);
-//    }
     public TestDeBase() {
     }
 
@@ -59,7 +46,6 @@ public class TestDeBase {
             selenium.waitForPageToLoad("4000");
         } catch (Exception ex) {
             //Cas normal quand la page n'est pas rechargée
-//>>>>>>> branch 'master' of https://github.com/Projet11/GestionProjet.git
         }
     }
 }
