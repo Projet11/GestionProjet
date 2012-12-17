@@ -10,7 +10,6 @@ import be.esi.projet11.gestionprojet.exception.TacheException;
 import be.esi.projet11.gestionprojet.mail.Mailer;
 import java.io.Serializable;
 import java.sql.Time;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -154,12 +153,11 @@ public class Tache implements Serializable {
      *
      * @param pourcentage est le pourcentage ex: 50% = 50
      */
-    public void setPourcentage(Byte pourcentage) throws TacheException {
+    public void setPourcentage(byte pourcentage) throws TacheException {
         if (pourcentage < 0 || pourcentage > 100) {
-            throw new TacheException("Le pourcentage doit être compris entre 0 et 10000(=100%)");
+            throw new TacheException("Le pourcentage doit être compris entre 0 et 100 %");
         }
         this.pourcentage = pourcentage;
-
     }
 
     public void setPourcentage(int pourcentage) throws TacheException {
@@ -230,13 +228,13 @@ public class Tache implements Serializable {
      */
     public void setSVNRevision(Long revision) throws TacheException {
         if (revision != null && !this.isFinie()) {
-            throw new TacheException("La tache n'est pas finie");
+            throw new TacheException("La tâche n'est pas finie, impossible d'assigner cette valeur de révision.\n");
         }
         if (revision != null && revision < 1L) {
-            throw new TacheException("Le numéro de révision doit être strictement positif");
+            throw new TacheException("Le numéro de révision doit être strictement positif.\n");
         }
         if(revision == null){
-            throw new TacheException("La revision ne peut etre null");
+            throw new TacheException("La révision doit être précisée.\n");
         }
         this.revision = revision;
     }

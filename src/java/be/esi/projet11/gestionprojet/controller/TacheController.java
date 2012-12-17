@@ -258,12 +258,14 @@ public class TacheController {
         try {
             if (nomParam != null || pourcentageParam != null) {
                 tacheEJB.modificationTache(tacheCourante, pourcentageParam.intValue(), revisionParam, importanceParam);
-            } else {
-                throw new TacheException();
             }
             return retourneAccueil();
         } catch (TacheException ex) {
-            System.err.println("Il existe au moins une donnée entrés dans les paramètres qui est vide");
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("modifTache", 
+                    new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, 
+                    ex.getMessage(), ""));
             return null;
         }
     }

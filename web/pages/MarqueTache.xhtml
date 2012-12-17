@@ -47,7 +47,6 @@
                         <div class="controls">
                             <div class="input-append" id="divPourcentage">
                                 <h:inputText class="span3"  id="pourcentage" value="#{tacheCtrl.pourcentageParam}">
-                                    <f:validateLongRange maximum="100" minimum="0"/>
                                 </h:inputText>
                                 <span class="add-on">%</span>
                             </div>
@@ -57,11 +56,9 @@
                         <label class="control-label" for="revision">Revision</label>
                         <div class="controls" id="divSVN">
                             <h:inputText  id="revision" value="#{tacheCtrl.revisionParam}">
-                                <f:validateLongRange maximum="1000" minimum="0"/>
                             </h:inputText>
                         </div>
                     </div>
-
                     <span class="controls">
                         <h:commandButton id="btnValider" class="btn btn-success" action ="#{tacheCtrl.modificationTache()}" value="Valider"/>
                         <a href="/GestionProjet"><input id="btnAnnuler" type="button" value="Retour" class="btn btn-danger"/></a>
@@ -71,15 +68,12 @@
                     <span class="controls">
                         <h:commandButton class="btn btn-warning" action="#{tacheCtrl.archiverTache()}" value="#{tacheCtrl.etatArchive}"/>
                     </span>
+                    <div id="Error" style="color: #ff0000; padding-top: 15px; list-style: none;"><h:messages /></div>
                 </h:form>
                 <hr class="separator" />
                 <p>Ajouter des membres</p>
                 <ui:include src="ajoutMembreTache.xhtml"/>
-                <br/>
-                <span class="help-inline" id="Error"></span>
-                <br/>
                 <hr class="separator"/>
-
                 <div  style="max-height: 250px; overflow: auto">
                     <c:forEach items="#{tacheCtrl.conversation}" var ="detailCommentaire">
                         <blockquote>

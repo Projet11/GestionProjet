@@ -4,10 +4,8 @@
  */
 package be.esi.projet11.gestionprojet.test.recette;
 
-import be.esi.projet11.gestionprojet.exception.DBException;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
-import javax.naming.NamingException;
 import org.junit.After;
 import org.junit.Before;
 
@@ -32,7 +30,7 @@ public class TestDeBase {
 
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:18217");
+        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:14186");
         selenium.start();
     }
 
