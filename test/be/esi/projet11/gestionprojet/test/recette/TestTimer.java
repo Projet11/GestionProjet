@@ -19,7 +19,7 @@ public class TestTimer extends TestDeBase {
         attendre();
         selenium.click("link=Projet 1");
         attendre();
-        selenium.click("id=formAfficheTache:resultat:0:demarreTimer");
+        selenium.click("id=formAfficherTaches:resultat:0:demarreTimer");
         attendre();
         selenium.click("link=Timers");
         attendre();

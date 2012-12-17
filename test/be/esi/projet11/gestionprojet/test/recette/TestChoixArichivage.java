@@ -19,7 +19,7 @@ public class TestChoixArichivage extends TestDeBase {
         attendre();
         selenium.click("link=Projet 1");
         attendre();
-        selenium.click("id=formAfficheTache:selection:1");
+        selenium.click("id=formAfficherTaches:selection:1");
         attendre();
         Assert.assertFalse(selenium.isTextPresent("Tache2"));
     }
@@ -30,7 +30,7 @@ public class TestChoixArichivage extends TestDeBase {
         attendre();
         selenium.click("link=Projet 1");
         attendre();
-        selenium.click("id=formAfficheTache:selection:2");
+        selenium.click("id=formAfficherTaches:selection:2");
         attendre();
         Assert.assertFalse(selenium.isTextPresent("Tache3"));
     }
@@ -41,9 +41,9 @@ public class TestChoixArichivage extends TestDeBase {
         attendre();
         selenium.click("link=Projet 1");
         attendre();
-        selenium.click("id=formAfficheTache:selection:2");
+        selenium.click("id=formAfficherTaches:selection:2");
         attendre();
-        selenium.click("id=formAfficheTache:selection:0");
+        selenium.click("id=formAfficherTaches:selection:0");
         attendre();
         Assert.assertTrue(selenium.isTextPresent("Tache3"));
         Assert.assertTrue(selenium.isTextPresent("Tache2"));

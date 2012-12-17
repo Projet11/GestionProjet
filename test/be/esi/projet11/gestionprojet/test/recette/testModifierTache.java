@@ -21,7 +21,7 @@ public class testModifierTache extends TestDeBase {
     private String champ_pourcentage = "id=formModTache:pourcentage";
     private String champ_revision = "id=formModTache:revision";
     private String bouton_valider_modif = "id=formModTache:btnValider";
-    private String bouton_retour = "id=formModTache:btnAnnuler";
+    private String bouton_retour = "id=btnAnnuler";
     private String bouton_archiver_modif = "id=formModTache:btnArchiver";
     private String bouton_ajout_membre = "id=butAjoutMembre";
     private String liste_membres = "id=listeMembre";
@@ -76,6 +76,7 @@ public class testModifierTache extends TestDeBase {
         attendre();
         selenium.select(combo_priorite, "label=" + priorite);
         selenium.type(champ_pourcentage, String.valueOf(pourcentage));
+        selenium.type(champ_revision, "");
         /*ajouterMembres(nbMembres);
         verifierMembre(nbMembres);*/
         selenium.click(bouton_valider_modif);
