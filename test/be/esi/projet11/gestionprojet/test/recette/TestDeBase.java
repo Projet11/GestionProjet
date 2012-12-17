@@ -53,7 +53,7 @@ public class TestDeBase {
 
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:32094");
+        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:18217");
         selenium.start();
     }
 
