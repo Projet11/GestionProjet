@@ -23,6 +23,10 @@
                             <li><h:commandLink id="logout" action="#{membreCtrl.deconnexion()}" value="Déconnexion"/></li>
                         </c:if>
                     </ul>
+					
+					<span style="display: none;">
+						<h:messages/>
+					</span>
 
                     <c:if test="#{membreCtrl.authenticated}">
                         <div class="pull-right">
