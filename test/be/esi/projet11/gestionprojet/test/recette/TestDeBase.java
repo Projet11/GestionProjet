@@ -45,7 +45,7 @@ public class TestDeBase {
 
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:38611");
+        selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:18217");
         selenium.start();
     }
 
@@ -56,7 +56,7 @@ public class TestDeBase {
 
     public void attendre() {
         try {
-            selenium.waitForPageToLoad("3000");
+            selenium.waitForPageToLoad("4000");
         } catch (Exception ex) {
             //Cas normal quand la page n'est pas rechargée
 //>>>>>>> branch 'master' of https://github.com/Projet11/GestionProjet.git

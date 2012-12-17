@@ -23,9 +23,8 @@
                             <li><h:commandLink id="logout" action="#{membreCtrl.deconnexion()}" value="Déconnexion"/></li>
                         </c:if>
                     </ul>
-
                     <c:if test="#{membreCtrl.authenticated}">
-                        <div class="pull-right">
+                        <div id="timerMenu" class="pull-right">
                             <ui:include src="stopTimer.xhtml"/>
                         </div>
                     </c:if>
