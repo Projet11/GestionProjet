@@ -24,12 +24,10 @@ public class TestLogin extends TestDeBase {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        creerUser();
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-//        supprimerUser();
     }
 
     public void remplirChamps(String identifiant, String mdp) {

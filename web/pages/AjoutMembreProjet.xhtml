@@ -5,6 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
+        <f:event type="preRenderView" listener="#{membreCtrl.navigationIsAuthenticated()}"/>
         <script type ="text/javascript" src ="/GestionProjet/js/verificationCreeTache.js"></script>
         <script type ="text/javascript" src="/GestionProjet/js/bootstrap.min.js"></script>
         <link href="/GestionProjet/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
@@ -16,7 +17,7 @@
             <legend>Liste des membres</legend>
             <!-- Debut formulaire -->
 
-            <h:form>
+            <h:form id="listeMembre">
                 <h:dataTable value="#{projetCtrl.membres}" var="membre" styleClass="table table-bordered table-striped">
                     <h:column>
                         <h:outputText value="#{membre.mail}"/>
@@ -25,21 +26,22 @@
             </h:form>
 
             <legend>Ajout de membre au projet</legend>
-            <h:form name="Ajout de membre au projet" class="form-horizontal">
+            <h:form  id="ajoutMembre" name="Ajout de membre au projet" class="form-horizontal">
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label">Email:</label>
                         <div class="controls">
-                            <h:inputText value="#{projetCtrl.email}"/>
+                            <h:inputText id="email" value="#{projetCtrl.email}"/>
                         </div>
                     </div>
                     <div class="controls">
                         <div class="span1">
-                            <h:commandButton class="btn btn-success" action="#{projetCtrl.ajouterMembre()}" value="Ajouter"/>
+                            <h:commandButton id="ajouter" class="btn btn-success" action="#{projetCtrl.ajouterMembre()}" value="Ajouter"/>
                         </div>
                     </div>
                 </fieldset>
             </h:form>
+            <h:message for="ajoutMembre"/>
         </div>
     </h:body>
 </html>

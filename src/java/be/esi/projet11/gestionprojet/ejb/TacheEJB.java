@@ -56,11 +56,6 @@ public class TacheEJB {
         return em.find(Tache.class, id);
     }
 
-    public Collection<Tache> getAllTache() {
-        Query query = em.createNamedQuery("Tache.findAll");
-        return query.getResultList();
-    }
-
     public void saveTache(Tache tache) {
         if (em.find(Tache.class, tache.getId()) != null) {
             em.merge(tache);
@@ -123,11 +118,6 @@ public class TacheEJB {
         }
         query.setParameter("projet", p);
         return query.getResultList();
-    }
-
-    public void removeParticipeTache(Tache tache, Membre membre) {
-        tache.refuserParticipant(membre);
-        em.merge(tache);
     }
 
     public void ajouterMembre(Tache tache, Membre membre) {

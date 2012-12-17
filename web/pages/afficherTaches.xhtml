@@ -17,14 +17,14 @@
                     <div class="btn-group pull-left">
                         <c:if test="#{not empty projetCtrl.projetCourant}">
                             <h:commandButton id="creerTacheBtn" class="btn" action="#{tacheCtrl.fenetreCreeTache()}" value="Créer"/> 
-                            <h:commandButton class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
+                            <h:commandButton id="ajoutMembreProjet" class="btn" action="#{projetCtrl.ajouterMembreProjet()}" value="Liste des membres du projet"/>
                         </c:if>
                     </div> 
                     <div id="tachesFilter" class="pull-right">
                         <h:selectOneRadio value="#{tacheCtrl.archive}" id="selection">
-                            <f:selectItem itemValue="toutes" itemLabel="Toutes"/>
-                            <f:selectItem itemValue="archivees" itemLabel="Archivées"/>
-                            <f:selectItem itemValue="nonarchivees" itemLabel="Non archivées"/>     
+                            <f:selectItem id="toutes" itemValue="toutes" itemLabel="Toutes"/>
+                            <f:selectItem id="archivees" itemValue="archivees" itemLabel="Archivées"/>
+                            <f:selectItem id="nonarchivees" itemValue="nonarchivees" itemLabel="Non archivées"/>     
                             <f:ajax event="change" listener="#{tacheCtrl.affichageTaches()}" execute="selection" render="resultat"/> 
                         </h:selectOneRadio>
                     </div>
@@ -59,7 +59,7 @@
                             <h:commandButton id="btnTacheMod" styleClass="btn" action="#{tacheCtrl.modifierTache(item)}" value="Modifier"/>
                         </div>
                         <div class="span2">
-                            <h:commandButton styleClass="btn"  action="#{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
+                            <h:commandButton id="demarreTimer" styleClass="btn"  action="#{tacheCtrl.startTimer(item)}" value="Démarrer le timer"/>
                         </div>
                     </div>
                 </p:column>

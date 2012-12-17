@@ -13,9 +13,11 @@ import be.esi.projet11.gestionprojet.exception.DBException;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -106,7 +108,12 @@ public class ProjetController {
         try {
             membreEJB.ajoutMembreProjet(email, getProjetCourant());
         } catch (DBException ex) {
-            throw new BusinessException("Ajout du membre au projet impossible : " + ex.getMessage());
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("ajoutMembre", 
+                    new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, 
+                    "Ajout du membre au projet impossible :  <br/> Email invalide"
+                    , ""));
         }
         membres = projetCourant.getAllParticipant();
         return "ajouter";

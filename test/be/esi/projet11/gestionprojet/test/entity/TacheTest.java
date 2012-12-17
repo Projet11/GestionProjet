@@ -276,4 +276,16 @@ public class TacheTest {
         tache.accepterMembre(membre1);
         assertEquals(1, tache.getParticipantsAcceptes().size());
     }
+
+    /**
+     * Test of supprimerMembre method, of class TacheEJB.
+     */
+    @Test
+    public void testSupprimerMembre() throws Exception {
+        Tache tache=new Tache("TacheSuppMembre", "Tâche de testSupp");
+        Membre membre1 = new Membre(1l, "Membre 2", "pass", "mail@ex.com", "Nom2", "Prenom2");
+        tache.addMembre(membre1);
+        tache.refuserParticipant(membre1);
+        assertEquals(0, tache.getParticipantsAcceptes().size());
+    }
 }

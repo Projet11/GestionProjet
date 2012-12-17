@@ -32,7 +32,7 @@
             <div class="row-fluid">
                 <legend>#{tacheCtrl.nomParam}</legend>
 
-                <h:form class=" form-signin form-horizontal" onsubmit="return validate();" style="display: inline;">
+                <h:form id="formModTache" class=" form-signin form-horizontal" onsubmit="return validate();" style="display: inline;">
                     <div class="control-group">
                         <label class="control-label" for="priorite">Importance</label>
                         <div class="controls">
@@ -63,8 +63,8 @@
                     </div>
 
                     <span class="controls">
-                        <h:commandButton class="btn btn-success" action ="#{tacheCtrl.modificationTache()}" value="Valider"/>
-                        <a href="/GestionProjet"><input type="button" value="Retour" class="btn btn-danger"/></a>
+                        <h:commandButton id="btnValider" class="btn btn-success" action ="#{tacheCtrl.modificationTache()}" value="Valider"/>
+                        <a href="/GestionProjet"><input id="btnAnnuler" type="button" value="Retour" class="btn btn-danger"/></a>
                     </span>
                 </h:form>
                 <h:form style="display: inline;">
